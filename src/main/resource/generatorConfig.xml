@@ -31,7 +31,7 @@
 
 		<!-- targetProject:生成PO类的位置 -->
 		<javaModelGenerator targetPackage="${javaModelGenerator.targetPackage}"
-			targetProject="SpringBootLogin/src/main/java">
+			targetProject="${project.name}/src/main/java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 			<!-- 从数据库返回的值被清理前后的空格 -->
@@ -39,13 +39,13 @@
 		</javaModelGenerator>
 		<!-- targetProject:mapper映射文件生成的位置 -->
 		<sqlMapGenerator targetPackage="${sqlMapGenerator.targetPackage}"
-			targetProject="SpringBootLogin/src/main/mapper">
+			targetProject="${project.name}/src/main/mapper">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 		<!-- targetPackage：mapper接口生成的位置 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="${javaClientGenerator.targetPackage}" targetProject="SpringBootLogin/src/main/java">
+			targetPackage="${javaClientGenerator.targetPackage}" targetProject="${project.name}/src/main/java">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
