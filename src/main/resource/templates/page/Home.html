@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="commonLayout">
+
+<head>
+	<title>Home</title>
+	<meta charset="utf-8">
+	
+		<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" href="crm_tempaltes/css/icon.css">
+	
+	<link rel="stylesheet" th:href="@{~/crm_tempaltes/table/bootstrap-table.css}">
+	
+	<script th:src="@{~/crm_tempaltes/vendor/bootstrap/js/bootstrap.js}"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script th:src="@{~/crm_tempaltes/table/bootstrap-table.min.js}"></script>
+
+<!-- Latest compiled and minified Locales -->
+<script th:src="@{~/crm_tempaltes/table/locale/bootstrap-table-zh-CN.js}"></script>
+
+<script type="text/javascript"  layout:fragment="javascript-content">
+
+</script>
+</head>
+
+<body >
+			
+			<div layout:fragment="main-content" class="main-content" id="main-content">
+			<table data-toggle="table">
+    <thead>
+        <tr>
+            <th data-width="200px">Item ID</th>
+            <th data-halign="right">Item Name</th>
+            <th>Item Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td >1</td>
+            <td data-align="right">Item 1</td>
+            <td  data-switchable="false">$1</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td data-align="right">Item 2</td>
+            <td  data-switchable="false">$2</td>
+        </tr>
+    </tbody>
+</table>
+			
+			
+	</div>
+	
+									
+ 
+		
+
+</body>
+
+</html>

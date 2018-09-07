@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>test</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+</head>
+
+<body>
+	<div th:fragment="dialog-content">
+<script type="text/javascript">
+	$(function(){
+		initTimePicker();
+	})
+</script>
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="ModifyModalTitle">
+							填写粉丝信息
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form id="modifyDataFrom" class="form-horizontal" role="form">
+							<input id="modifyId" name="custId" type="hidden" th:attr="value=${custInfo==null}?'':${custInfo.custId}">
+							<input name="userId" type="hidden" th:attr="value=${session.user.uId}">
+							<input id="modifyModel" name="modifyModel" type="hidden" th:attr="value=${modifyModel==null}?'':${modifyModel}">
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">微信号</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="custWechatNo" 
+										   placeholder="请输入微信号" th:attr="value=${custInfo==null}?'':${custInfo.custWechatNo}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">姓名</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="custName" id="edit-custName" 
+										   placeholder="请输入姓名" th:attr="value=${custInfo==null}?'':${custInfo.custName}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">手机号</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="custPhone" 
+										   placeholder="请输入手机号" th:attr="value=${custInfo==null}?'':${custInfo.custPhone}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">会员等级</label>
+								<div class="col-sm-10">
+									
+									<select class="form-control" name="level">
+										<option th:each="obj:${session.levelMap}" th:selected="${custInfo!=null&&custInfo.level == obj.key}" 
+												th:value="${obj.key}" th:text="${obj.value}"></option>
+									</select>
+										 <!-- 
+										<option value="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☆</option>
+										<option value="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
+										<option value="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
+										<option value="3">&nbsp;&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
+										<option value="4">&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
+										-->
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">加粉时间</label>
+								<div class="col-sm-10">
+							  		<span class="input-group input-append date form_datetime" id="datetimepicker">
+                                         <input readonly type="text" class="form-control" name="addTime"
+                                             placeholder="yyyy/mm/dd hh:mi" data-date-format="yyyy-mm-dd hh:ii" th:attr="value=${custInfo==null}?${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}:${custInfo.addTime}">
+                                         <span class="input-group-addon add-on" style="background-color:white">
+                                            <i class="fa fa-clock-o"></i>
+                                         </span>
+                                     </span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">常用地址</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="address" 
+										   placeholder="常用地址" th:attr="value=${custInfo==null}?'':${custInfo.address}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">备注</label>
+								<div class="col-sm-10">
+									<textarea name="remark" class="form-control" rows="3" placeholder="请输入备注信息" th:text="${custInfo==null}?'':${custInfo.remark}"></textarea>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" id="ModifyModalSubmit">
+							提交
+						</button>
+					</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$("#ModifyModal").on("hidden.bs.modal", function() {  
+		    $(this).removeData("bs.modal");  
+		}); 
+		
+	    $('#modifyDataFrom').bootstrapValidator({
+	        message: '输入无效,请重新输入',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	            custWechatNo: {
+	                message: '微信号不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '微信号不能为空'
+	                    }
+	                }
+	            },
+	            custPhone: {
+	                message: '无效手机号',
+	                validators: {
+	                    stringLength: {
+	                        min: 11,
+	                        max: 11,
+	                        message: '手机号长度必须是11位'
+	                    },
+	                    regexp: {
+	                        regexp: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
+	                        message: '手机号格式不正确'
+	                    }
+	                }
+	            }
+	        }
+	    });
+	});
+</script>
+</html>

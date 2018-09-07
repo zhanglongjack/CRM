@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.level.dao.LevelMapper">
+  <resultMap id="BaseResultMap" type="com.base.crm.level.entity.Level">
+    <id column="l_id" jdbcType="BIGINT" property="lId" />
+    <result column="l_name" jdbcType="VARCHAR" property="lName" />
+    <result column="l_Discount" jdbcType="DECIMAL" property="lDiscount" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    l_id, l_name, l_Discount
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer_level
+    where l_id = #{lId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+   		<include refid="Base_Column_List" />
+    from customer_level
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from customer_level
+    where l_id = #{lId,jdbcType=BIGINT}
+  </delete>
+
+  
+  <insert id="insertSelective" parameterType="com.base.crm.level.entity.Level">
+    insert into customer_level
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lId != null">
+        l_id,
+      </if>
+      <if test="lName != null">
+        l_name,
+      </if>
+      <if test="lDiscount != null">
+        l_Discount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lId != null">
+        #{lId,jdbcType=BIGINT},
+      </if>
+      <if test="lName != null">
+        #{lName,jdbcType=VARCHAR},
+      </if>
+      <if test="lDiscount != null">
+        #{lDiscount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.base.crm.level.entity.Level">
+    update customer_level
+    <set>
+      <if test="lName != null">
+        l_name = #{lName,jdbcType=VARCHAR},
+      </if>
+      <if test="lDiscount != null">
+        l_Discount = #{lDiscount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where l_id = #{lId,jdbcType=BIGINT}
+  </update>
+</mapper>

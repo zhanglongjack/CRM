@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.customer.dao.CustInfoMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.customer.entity.CustInfo">
+		<id column="cust_id" jdbcType="BIGINT" property="custId" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="cust_name" jdbcType="VARCHAR" property="custName" />
+		<result column="cust_wechat_no" jdbcType="VARCHAR" property="custWechatNo" />
+		<result column="cust_phone" jdbcType="BIGINT" property="custPhone" />
+		<result column="level" jdbcType="INTEGER" property="level" />
+		<result column="amt" jdbcType="DECIMAL" property="amt" />
+		<result column="add_time" jdbcType="VARCHAR" property="addTime" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<collection property="levelInfo" column="level" select="com.base.crm.level.dao.LevelMapper.selectByPrimaryKey">
+        </collection>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		cust_id,user_id, cust_name, cust_wechat_no, cust_phone, level,amt,
+		add_time, address,
+		remark
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="custId != null">cust_id=#{custId}</if>
+			<if test="userId != null">user_id=#{userId}</if>
+			<if test="custName != null and custName.length()>0">and cust_name like  CONCAT(#{custName},'%')</if>
+			<if test="custWechatNo != null and custWechatNo.length()>0">and cust_wechat_no=#{custWechatNo}</if>
+			<if test="custPhone != null">and cust_phone = #{custPhone}</if>
+			<if test="level != null">and level = #{level}</if>
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_info
+		where cust_id = #{custId,jdbcType=BIGINT}
+	</select>
+	<select id="selectByPrimaryWechatNo" parameterType="String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_info
+		where cust_wechat_no = #{custWechatNo,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByObjectForList" parameterType="com.base.crm.customer.entity.CustInfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_info
+		<include refid="dynamicWhere" />
+		order by cust_id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.customer.entity.CustInfo"
+		resultType="Long">
+		select
+			count(1)
+		from cust_info
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		cust_info
+		where cust_id = #{custId,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.customer.entity.CustInfo">
+		insert into cust_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="custId != null">
+				cust_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="custName != null">
+				cust_name,
+			</if>
+			<if test="custWechatNo != null">
+				cust_wechat_no,
+			</if>
+			<if test="custPhone != null">
+				cust_phone,
+			</if>
+			<if test="level != null">
+				level,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="custId != null">
+				#{custId,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="custName != null">
+				#{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="custWechatNo != null">
+				#{custWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="custPhone != null">
+				#{custPhone,jdbcType=BIGINT},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.customer.entity.CustInfo">
+		update cust_info
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="custName != null">
+				cust_name = #{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="custWechatNo != null">
+				cust_wechat_no = #{custWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="custPhone != null">
+				cust_phone = #{custPhone,jdbcType=BIGINT},
+			</if>
+			<if test="level != null">
+				level = #{level,jdbcType=INTEGER},
+			</if>
+			<if test="amt != null">
+				amt = amt + #{amt,jdbcType=DECIMAL},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where cust_id = #{custId,jdbcType=BIGINT}
+	</update>
+
+</mapper>

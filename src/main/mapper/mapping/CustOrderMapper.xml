@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.orders.dao.CustOrderMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.orders.entity.CustOrder">
+		<id column="order_no" jdbcType="BIGINT" property="orderNo" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="o_wechat_no" jdbcType="VARCHAR" property="oWechatNo" />
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+		<result column="contact" jdbcType="VARCHAR" property="contact" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="o_phone" jdbcType="BIGINT" property="oPhone" />
+		<result column="product_list" jdbcType="VARCHAR" property="productList" />
+		<result column="deposits" jdbcType="DECIMAL" property="deposits" />
+		<result column="cash_on_delivery_amt" jdbcType="DECIMAL" property="cashOnDeliveryAmt" />
+		<result column="total_amt" jdbcType="DECIMAL" property="totalAmt" />
+		<result column="after_Discount_Amt" jdbcType="DECIMAL" property="afterDiscountAmt" />
+		<result column="pay_Amount" jdbcType="DECIMAL" property="payAmount" />
+		<result column="payment_method" jdbcType="INTEGER" property="paymentMethod" />
+		<result column="express_company" jdbcType="VARCHAR" property="expressCompany" />
+		<result column="express_no" jdbcType="VARCHAR" property="expressNo" />
+		<result column="order_date" jdbcType="VARCHAR" property="orderDate" />
+		<result column="order_datetime" jdbcType="TIMESTAMP" property="orderDatetime" />
+	</resultMap>
+	
+	<resultMap id="pagCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
+		<id column="order_no" jdbcType="BIGINT" property="orderNo" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="o_wechat_no" jdbcType="VARCHAR" property="oWechatNo" />
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+		<result column="contact" jdbcType="VARCHAR" property="contact" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="o_phone" jdbcType="BIGINT" property="oPhone" />
+		<result column="product_list" jdbcType="VARCHAR" property="productList" />
+		<result column="deposits" jdbcType="DECIMAL" property="deposits" />
+		<result column="cash_on_delivery_amt" jdbcType="DECIMAL" property="cashOnDeliveryAmt" />
+		<result column="total_amt" jdbcType="DECIMAL" property="totalAmt" />
+		<result column="after_Discount_Amt" jdbcType="DECIMAL" property="afterDiscountAmt" />
+		<result column="pay_Amount" jdbcType="DECIMAL" property="payAmount" />
+		<result column="payment_method" jdbcType="INTEGER" property="paymentMethod" />
+		<result column="express_company" jdbcType="VARCHAR" property="expressCompany" />
+		<result column="express_no" jdbcType="VARCHAR" property="expressNo" />
+		<result column="order_date" jdbcType="VARCHAR" property="orderDate" />
+		<result column="order_datetime" jdbcType="TIMESTAMP" property="orderDatetime" />
+        <collection property="user" column="user_id" select="com.base.crm.users.dao.UserInfoMapper.selectByPrimaryKey">
+        </collection>
+        <collection property="custInfo" column="o_wechat_no" select="com.base.crm.customer.dao.CustInfoMapper.selectByPrimaryWechatNo">
+        </collection>
+    </resultMap>
+		
+	<sql id="Base_Column_List">
+		order_no, user_id, o_wechat_no, order_status, contact, address, o_phone,
+		product_list,
+		deposits, cash_on_delivery_amt, total_amt, after_Discount_Amt, pay_Amount,
+		payment_method,
+		express_company, express_no, order_date, order_datetime
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="orderNo != null">order_no=#{orderNo}</if>
+			<if test="userId != null">user_id=#{userId}</if>
+			<if test="orderStatus != null">and order_status = #{orderStatus}</if>
+			<if test="contact != null and contact.length()>0">and contact like  CONCAT(#{contact},'%')</if>
+			<if test="address != null and address.length()>0">and address like  CONCAT(#{address},'%')</if>
+			<if test="orderDate != null and orderDate.length()>0">and order_date=#{orderDate}</if>
+			<if test="oPhone != null">and o_phone = #{oPhone}</if>
+			<if test="deposits != null">and deposits = #{deposits}</if>
+			<if test="paymentMethod != null">and payment_method = #{paymentMethod}</if>
+			<if test="expressCompany != null and expressCompany.length()>0">and express_company like  CONCAT(#{expressCompany},'%')</if>
+			<if test="expressNo != null and expressNo.length()>0">and express_no = #{expressNo}</if>
+		</where>
+	</sql>
+	
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="pagCustOrderMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_orders
+		where order_no = #{orderNo,jdbcType=BIGINT}
+	</select>
+		
+	<select id="selectByObjectForList" parameterType="com.base.crm.orders.entity.CustOrder"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_orders
+		<include refid="dynamicWhere" />
+		order by order_no desc
+	</select>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.orders.entity.CustOrder"
+		resultMap="pagCustOrderMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_orders
+		<include refid="dynamicWhere" />
+		order by order_no desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.orders.entity.CustOrder"
+		resultType="Long">
+		select
+			count(1)
+		from cust_orders
+		<include refid="dynamicWhere" />
+	</select>
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from cust_orders
+		where order_no = #{orderNo,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.orders.entity.CustOrder">
+		insert into cust_orders
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="oWechatNo != null">
+				o_wechat_no,
+			</if>
+			<if test="orderStatus != null">
+				order_status,
+			</if>
+			<if test="contact != null">
+				contact,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="oPhone != null">
+				o_phone,
+			</if>
+			<if test="productList != null">
+				product_list,
+			</if>
+			<if test="deposits != null">
+				deposits,
+			</if>
+			<if test="cashOnDeliveryAmt != null">
+				cash_on_delivery_amt,
+			</if>
+			<if test="totalAmt != null">
+				total_amt,
+			</if>
+			<if test="afterDiscountAmt != null">
+				after_Discount_Amt,
+			</if>
+			<if test="payAmount != null">
+				pay_Amount,
+			</if>
+			<if test="paymentMethod != null">
+				payment_method,
+			</if>
+			<if test="expressCompany != null">
+				express_company,
+			</if>
+			<if test="expressNo != null">
+				express_no,
+			</if>
+			<if test="orderDate != null">
+				order_date,
+			</if>
+			<if test="orderDatetime != null">
+				order_datetime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="oWechatNo != null">
+				#{oWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="contact != null">
+				#{contact,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="oPhone != null">
+				#{oPhone,jdbcType=BIGINT},
+			</if>
+			<if test="productList != null">
+				#{productList,jdbcType=VARCHAR},
+			</if>
+			<if test="deposits != null">
+				#{deposits,jdbcType=DECIMAL},
+			</if>
+			<if test="cashOnDeliveryAmt != null">
+				#{cashOnDeliveryAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="totalAmt != null">
+				#{totalAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="afterDiscountAmt != null">
+				#{afterDiscountAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="payAmount != null">
+				#{payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="paymentMethod != null">
+				#{paymentMethod,jdbcType=INTEGER},
+			</if>
+			<if test="expressCompany != null">
+				#{expressCompany,jdbcType=VARCHAR},
+			</if>
+			<if test="expressNo != null">
+				#{expressNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderDate != null">
+				#{orderDate,jdbcType=VARCHAR},
+			</if>
+			<if test="orderDatetime != null">
+				#{orderDatetime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.orders.entity.CustOrder">
+		update cust_orders
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="oWechatNo != null">
+				o_wechat_no = #{oWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderStatus != null">
+				order_status = #{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="contact != null">
+				contact = #{contact,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="oPhone != null">
+				o_phone = #{oPhone,jdbcType=BIGINT},
+			</if>
+			<if test="productList != null">
+				product_list = #{productList,jdbcType=VARCHAR},
+			</if>
+			<if test="deposits != null">
+				deposits = #{deposits,jdbcType=DECIMAL},
+			</if>
+			<if test="cashOnDeliveryAmt != null">
+				cash_on_delivery_amt = #{cashOnDeliveryAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="totalAmt != null">
+				total_amt = #{totalAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="afterDiscountAmt != null">
+				after_Discount_Amt = #{afterDiscountAmt,jdbcType=DECIMAL},
+			</if>
+			<if test="payAmount != null">
+				pay_Amount = #{payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="paymentMethod != null">
+				payment_method = #{paymentMethod,jdbcType=INTEGER},
+			</if>
+			<if test="expressCompany != null">
+				express_company = #{expressCompany,jdbcType=VARCHAR},
+			</if>
+			<if test="expressNo != null">
+				express_no = #{expressNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderDate != null">
+				order_date = #{orderDate,jdbcType=VARCHAR},
+			</if>
+			<if test="orderDatetime != null">
+				order_datetime = #{orderDatetime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where order_no = #{orderNo,jdbcType=BIGINT}
+	</update>
+	
+</mapper>
