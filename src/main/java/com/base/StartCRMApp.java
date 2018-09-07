@@ -13,12 +13,11 @@ import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
  *
  */
 @SpringBootApplication
-public class App 
+public class StartCRMApp 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        SpringApplication.run(App.class,args);
+        SpringApplication.run(StartCRMApp.class,args);
     }
     
     @Bean
