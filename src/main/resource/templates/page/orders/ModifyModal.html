@@ -107,7 +107,7 @@
 								<label class="col-sm-3 control-label">总金额</label> 
 								<div class="col-sm-9">
 									<input type="text" class="form-control"  placeholder="0.00" name="totalAmt" 
-										th:attr="value=${modifyOrder==null}?'':${modifyOrder.totalAmt},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+										th:attr="value=${modifyOrder==null}?'':${modifyOrder.totalAmt},readonly=${modifyOrder!=null&&(modifyOrder.orderStatus>0||modifyOrder.paymentMethod==3)}">
 								</div>
 							</div>
 							
@@ -115,7 +115,7 @@
 								<label class="col-sm-3 control-label">折后金额</label> 
 								<div class="col-sm-9">
 									<input type="text" class="form-control"  placeholder="0.00" name="afterDiscountAmt" 
-										th:attr="value=${modifyOrder==null}?'':${modifyOrder.afterDiscountAmt},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+										th:attr="value=${modifyOrder==null}?'':${modifyOrder.afterDiscountAmt},readonly=${modifyOrder!=null&&(modifyOrder.orderStatus>0||modifyOrder.paymentMethod==3)}">
 								</div>
 							</div>
 							<div class="clearfix"></div>
@@ -123,7 +123,7 @@
 								<label class="col-sm-3 control-label">定金</label> 
 								<div class="col-sm-9">
 									<input type="text" class="form-control"  placeholder="0.00" name="deposits" 
-										th:attr="value=${modifyOrder==null}?'':${modifyOrder.deposits},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+										th:attr="value=${modifyOrder==null}?'':${modifyOrder.deposits},readonly=${modifyOrder!=null&&(modifyOrder.orderStatus>0||modifyOrder.paymentMethod==3)}">
 								</div>
 							</div>
 							
@@ -131,7 +131,7 @@
 								<label class="col-sm-3 control-label">到付金额</label> 
 								<div class="col-sm-9">
 									<input type="text" class="form-control"  placeholder="0.00" name="cashOnDeliveryAmt" 
-										th:attr="value=${modifyOrder==null}?'':${modifyOrder.cashOnDeliveryAmt},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+										th:attr="value=${modifyOrder==null}?'':${modifyOrder.cashOnDeliveryAmt},readonly=${modifyOrder!=null&&(modifyOrder.orderStatus>0||modifyOrder.paymentMethod==3)}">
 								</div>
 							</div>
 							<div class="clearfix"></div>

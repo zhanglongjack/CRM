@@ -118,16 +118,21 @@ var initOrderCheck = function(){
             totalAmt: {
                 message: '总金额输入无效',
                 validators: {
-                    notEmpty: {
-                        message: '总金额不能为空'
-                    },
                     greaterThan: {
-                        value: 1,
-                		message: '总金额必须大于0'
+                        value: 0,
+                		message: '总金额必须大于等于0'
                     },
                     numeric: {message: '总金额只能输入数字'},
 	                callback: {
                         callback:function(value, validator,$field){
+                        	var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+                        	if(paymentMethod!=3 && value<=0){
+                        		return  {
+			                        valid: false,
+			                        message: '非赠品,总金额必须大于0'
+			                    };
+                        	}
+                        	
                         	var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
             				if(orderStatus==0){
             					//computeDscount(value);
@@ -205,7 +210,9 @@ var initOrderCheck = function(){
 								validator.updateStatus('deposits', 'VALID');
 							}
 							
-							if(userAmt==0 && afterDiscountAmt==0 && value<=0){
+							var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+							
+							if(userAmt==0 && afterDiscountAmt==0 && value<=0 && paymentMethod!=3){
 								return  {
 			                        valid: false,
 			                        message: '会员余额为0时,到付金额必填,且不可为0'
@@ -314,6 +321,41 @@ var initOrderCheck = function(){
 	var oldValue = 0;
 	$("#ModifyModal").find('.modal-body select[name="orderStatus"]').click(function(){
 		var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
+		var payAmountObj = $("#ModifyModal").find('.modal-body input[name="payAmount"]');
+		if(oldValue==0){
+			oldValue = Number(payAmountObj.val());
+		}
+		
+		if(Number(orderStatus)==3){
+			var cashOnDeliveryAmt = Number($("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val());
+			payAmountObj.val((oldValue + cashOnDeliveryAmt).toFixed(2));
+		}else{
+			payAmountObj.val(oldValue.toFixed(2));
+		}
+	});
+	
+	$("#ModifyModal").find('.modal-body select[name="paymentMethod"]').click(function(){
+		var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+		if(paymentMethod==3){
+			$("#ModifyModal").find('.modal-body input[name="deposits"]').val(0);
+			$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val(0);
+			$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').val(0);
+			$("#ModifyModal").find('.modal-body input[name="totalAmt"]').val(0);
+			
+			$("#ModifyModal").find('.modal-body input[name="deposits"]').attr("readonly","true");
+			$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').attr("readonly","true");
+			$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').attr("readonly","true");
+			$("#ModifyModal").find('.modal-body input[name="totalAmt"]').attr("readonly","true");
+		}else{
+			$("#ModifyModal").find('.modal-body input[name="deposits"]').removeAttr("readonly");
+			$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').removeAttr("readonly");
+			$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').removeAttr("readonly");
+			$("#ModifyModal").find('.modal-body input[name="totalAmt"]').removeAttr("readonly");
+		}
+		
+		
+		
+		
 		var payAmountObj = $("#ModifyModal").find('.modal-body input[name="payAmount"]');
 		if(oldValue==0){
 			oldValue = Number(payAmountObj.val());

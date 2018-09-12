@@ -9,6 +9,12 @@
 		<div th:fragment="container-fluid"  class="container-fluid">
 			<script type="text/javascript">
 				$(function(){
+					$("tr[row-ext]").hide();
+					$("td[row-id]").click(function() {
+						var id = $(this).attr("row-id");
+						$("tr[row-ext='"+id+"']").toggle("fast");
+					})
+					
 					pageQueryParams.index = '[[${pageTools.index}]]';
 					pageQueryParams.pageSize = '[[${pageTools.pageSize}]]';
 					pageQueryParams.total = '[[${pageTools.total}]]';
@@ -129,28 +135,23 @@
 									</div>
 							</div>
 						</form>
-						<div class="panel-body" >
+						<div class="panel-body table-responsive" >
 							<table class="table table-hover">
 							<thead>
 								<tr>
-									<th width="7%" >订单编号</th>
-									<th width="5%" th:if="${session.user.isAdmin()}">客服编号</th>
-									<th width="10%" >下单微信</th>
-									<th width="8%">快递单号</th>
-									<th width="5%">快递公司</th>
-									<th width="5%">联系人</th>
-									<th>地址</th>
-									<th width="6%">电话</th>
-									<th width="5%">产品列表</th>
-									<th width="5%">付款方式</th>
-									<th width="5%">订单状态</th>
-									<th width="5%">定金</th>
-									<th width="5%">到付金额</th>
-									<th width="5%">总金额</th>
-									<th width="5%">折后金额</th>
-									<th width="5%">实付金额</th>
-									<th width="5%">下单日期</th>
-									<th>备注</th>
+									<th>订单编号</th>
+									<th th:if="${session.user.isAdmin()}">客服编号</th>
+									<th>下单微信</th>
+									<th>联系人</th>
+									<th>电话</th>
+									<th>付款方式</th>
+									<th>定金</th>
+									<th>到付金额</th>
+									<th>总金额</th>
+									<th>折后金额</th>
+									<th>实付金额</th>
+									<th>下单日期</th>
+									<th>订单状态</th>
 									<!-- 
 									<th>下单时间</th>
 									 -->
@@ -158,26 +159,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="obj : ${orderList}">
-									<td th:text="${obj.orderNo}" data-width="100px"></td>								
+							 <th:block th:each="obj : ${orderList}">
+								<tr>
+									<td th:text="${obj.orderNo}" th:attr="row-id=${obj.orderNo}" style="cursor: pointer;"></td>								
 									<td th:text="${obj.user.name}" th:if="${session.user.isAdmin()}"></td>								
 									<td th:text="${obj.oWechatNo}"></td>							
-									<td th:text="${obj.expressNo}"></td>							
-									<td th:text="${obj.expressCompany}" class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.expressCompany}"></td>
 									<td th:text="${obj.contact}"></td>
-									<td th:text="${obj.address}" class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.address}"></td>
 									<td th:text="${obj.oPhone}"></td>
-									<td th:text="${obj.productList}" class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.productList}"></td>
 									<td th:text="${session.paymentMethodMap.get(obj.paymentMethod)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.deposits)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.cashOnDeliveryAmt)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.totalAmt)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.afterDiscountAmt)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.payAmount)}"></td>
+									<td th:text="${obj.orderDate}"></td> 
 									<td>
 										<span class="label label-info" th:if="${obj.orderStatus==0}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
 										<span class="label label-primary" th:if="${obj.orderStatus==1}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
@@ -186,16 +181,6 @@
 										<span class="label label-danger" th:if="${obj.orderStatus==4}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
 										<span class="label label-default" th:if="${obj.orderStatus==5}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
 									</td>
-									<td th:text="${#numbers.formatCurrency(obj.deposits)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.cashOnDeliveryAmt)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.totalAmt)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.afterDiscountAmt)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.payAmount)}"></td>
-									<td th:text="${obj.orderDate}"></td>
-									<td th:text="${obj.remark}"class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.remark}"></td>
 									<!-- 
 									<td th:text="${#dates.format(obj.orderDatetime, 'yyyy-MM-dd HH:mm:ss')}"
 										class="textOverFlowHide" 
@@ -218,6 +203,34 @@
 										</div>
 									</td>
 								</tr>
+								<tr th:attr="row-ext=${obj.orderNo}">
+									<td colspan="16" style="border-collapse: collapse">
+											<table class="table table-hover" width="30%" style="border-style: none;width:30%">
+												<tr>
+													<td style="border-style: none;border-collapse: collapse" width="20%">快递单号</td>
+													<td style="border-style: none;border-collapse: collapse" th:text="${obj.expressNo}"></td>
+												</tr>
+												<tr>
+													<td style="border-collapse: collapse" width="25%">快递公司</td>
+													<td style="border-collapse: collapse" th:text="${obj.expressCompany}"></td>
+												</tr>
+												<tr>
+													<td style="border-collapse: collapse" width="25%">购买产品</td>
+													<td style="border-collapse: collapse" th:text="${obj.productList}"></td>
+												</tr>
+												<tr>
+													<td style="border-collapse: collapse" width="25%">地址</td>
+													<td style="border-collapse: collapse" th:text="${obj.address}"></td>
+												</tr>
+												<tr>
+													<td style="border-collapse: collapse" width="25%">备注</td>
+													<td style="border-collapse: collapse" th:text="${obj.remark}"></td>
+												</tr>
+											</table>
+									
+									</td>
+								</tr>
+							</th:block>
 							</tbody>
 						</table>
 						</div>

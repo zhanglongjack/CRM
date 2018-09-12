@@ -100,7 +100,7 @@
 								<tr th:each="obj : ${resultList}">
 									<td th:text="${obj.consumeId}"></td>
 									<td th:text="${obj.wechatNo}"></td>
-									<td th:text="${obj.userId}"></td>
+									<td th:text="${obj.userId}" th:if="${session.user.isAdmin()}"></td>
 									<td th:text="${obj.amount}"></td>
 									<td th:text="${obj.orderNo}"></td>
 									<td th:text="${session.consumeTypeMap.get(obj.consumeType)}"></td>

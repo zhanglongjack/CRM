@@ -108,7 +108,7 @@ public class OrdersController {
 			customerConsumeService.updateByOrderNo(consume);
 		}
 		
-		if(consume.getRemark()!=null){
+		if(consume.getRemark()!=null && order.getPaymentMethod()!=3){
 			logger.info(consume.getRemark());
 			customerConsumeService.insertSelective(consume);
 		}
