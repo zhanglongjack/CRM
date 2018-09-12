@@ -129,26 +129,26 @@
 									</div>
 							</div>
 						</form>
-						<div class="panel-body">
+						<div class="panel-body" >
 							<table class="table table-hover">
 							<thead>
 								<tr>
-									<th width="8%" >订单编号</th>
-									<th th:if="${session.user.isAdmin()}">客服编号</th>
-									<th width="6%" >下单微信</th>
-									<th>快递单号</th>
-									<th>快递公司</th>
-									<th>联系人</th>
+									<th width="7%" >订单编号</th>
+									<th width="5%" th:if="${session.user.isAdmin()}">客服编号</th>
+									<th width="10%" >下单微信</th>
+									<th width="8%">快递单号</th>
+									<th width="5%">快递公司</th>
+									<th width="5%">联系人</th>
 									<th>地址</th>
 									<th width="6%">电话</th>
-									<th>产品列表</th>
+									<th width="5%">产品列表</th>
 									<th width="5%">付款方式</th>
 									<th width="5%">订单状态</th>
-									<th>定金</th>
-									<th>到付金额</th>
-									<th>总金额</th>
-									<th>折后金额</th>
-									<th>实付金额</th>
+									<th width="5%">定金</th>
+									<th width="5%">到付金额</th>
+									<th width="5%">总金额</th>
+									<th width="5%">折后金额</th>
+									<th width="5%">实付金额</th>
 									<th width="5%">下单日期</th>
 									<th>备注</th>
 									<!-- 
@@ -178,7 +178,14 @@
 										data-trigger="hover" data-placement="top"
 										th:attr="data-content=${obj.productList}"></td>
 									<td th:text="${session.paymentMethodMap.get(obj.paymentMethod)}"></td>
-									<td th:text="${session.orderStatusMap.get(obj.orderStatus)}"></td>
+									<td>
+										<span class="label label-info" th:if="${obj.orderStatus==0}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
+										<span class="label label-primary" th:if="${obj.orderStatus==1}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
+										<span class="label label-warning" th:if="${obj.orderStatus==2}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
+										<span class="label label-success" th:if="${obj.orderStatus==3}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
+										<span class="label label-danger" th:if="${obj.orderStatus==4}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
+										<span class="label label-default" th:if="${obj.orderStatus==5}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
+									</td>
 									<td th:text="${#numbers.formatCurrency(obj.deposits)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.cashOnDeliveryAmt)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.totalAmt)}"></td>

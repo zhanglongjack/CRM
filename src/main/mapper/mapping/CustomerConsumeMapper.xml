@@ -29,6 +29,7 @@
 			<if test="wechatNo != null and wechatNo.length()>0">and wechat_no=#{wechatNo}</if>
 			<if test="userId != null">and user_id=#{userId}</if>
 			<if test="orderNo != null">and order_no=#{orderNo}</if>
+			<if test="consumeType != null">and consume_type=#{consumeType}</if>
 			<if test="consumeDate != null and consumeDate.length()>0">and consume_date=#{consumeDate}</if>
 		</where>
 	</sql>
