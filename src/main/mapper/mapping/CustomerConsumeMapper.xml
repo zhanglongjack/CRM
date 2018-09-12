@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.consume.dao.CustomerConsumeMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.consume.entity.CustomerConsume">
+		<id column="consume_id" jdbcType="BIGINT" property="consumeId" />
+		<result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="order_no" jdbcType="BIGINT" property="orderNo" />
+		<result column="consume_type" jdbcType="INTEGER" property="consumeType" />
+		<result column="consume_date" jdbcType="VARCHAR" property="consumeDate" />
+		<result column="consume_time" jdbcType="TIMESTAMP" property="consumeTime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		consume_id, 
+		wechat_no, 
+		user_id, 
+		amount, 
+		order_no, 
+		consume_type, 
+		consume_date,
+		consume_time,
+		remark
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="consumeId != null">consume_id=#{consumeId}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">and wechat_no=#{wechatNo}</if>
+			<if test="userId != null">and user_id=#{userId}</if>
+			<if test="orderNo != null">and order_no=#{orderNo}</if>
+			<if test="consumeDate != null and consumeDate.length()>0">and consume_date=#{consumeDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from customer_consume
+		where consume_id = #{consumeId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.consume.entity.CustomerConsume"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from customer_consume
+		<include refid="dynamicWhere" />
+		order by consume_id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.consume.entity.CustomerConsume"
+		resultType="Long">
+		select
+			count(1)
+		from customer_consume
+		<include refid="dynamicWhere" />
+	</select>
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from customer_consume
+		where consume_id = #{consumeId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insertSelective" parameterType="com.base.crm.consume.entity.CustomerConsume">
+		insert into customer_consume
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="consumeId != null">
+				consume_id,
+			</if>
+			<if test="wechatNo != null">
+				wechat_no,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="consumeType != null">
+				consume_type,
+			</if>
+			<if test="consumeDate != null">
+				consume_date,
+			</if>
+			<if test="consumeTime != null">
+				consume_time,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="consumeId != null">
+				#{consumeId,jdbcType=BIGINT},
+			</if>
+			<if test="wechatNo != null">
+				#{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=BIGINT},
+			</if>
+			<if test="consumeType != null">
+				#{consumeType,jdbcType=INTEGER},
+			</if>
+			<if test="consumeDate != null">
+				#{consumeDate,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeTime != null">
+				#{consumeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.consume.entity.CustomerConsume">
+		update customer_consume
+		<set>
+			<if test="wechatNo != null">
+				wechat_no = #{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="orderNo != null">
+				order_no = #{orderNo,jdbcType=BIGINT},
+			</if>
+			<if test="consumeType != null">
+				consume_type = #{consumeType,jdbcType=INTEGER},
+			</if>
+			<if test="consumeDate != null">
+				consume_date = #{consumeDate,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeTime != null">
+				consume_time = #{consumeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where consume_id = #{consumeId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByOrderNo" parameterType="com.base.crm.consume.entity.CustomerConsume">
+		update customer_consume
+		set consume_type = #{consumeType,jdbcType=INTEGER}
+		where order_no = #{orderNo,jdbcType=BIGINT}
+	</update>
+</mapper>
