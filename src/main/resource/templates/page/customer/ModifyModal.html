@@ -34,7 +34,7 @@
 								<label  class="col-sm-2 control-label">微信号</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name="custWechatNo" 
-										   placeholder="请输入微信号" th:attr="value=${custInfo==null}?'':${custInfo.custWechatNo}">
+										   placeholder="请输入微信号" th:attr="value=${custInfo==null}?'':${custInfo.custWechatNo},readonly=${custInfo!=null}">
 								</div>
 							</div>
 							<div class="form-group">
@@ -105,13 +105,16 @@
 	</div>
 </body>
 
-<script type="text/javascript">
+<script th:inline="javascript">
+/*<![CDATA[*/
+	var modifyInfo = /*[[${custInfo}]]*/;
+/*]]>*/
+ 
 	$(document).ready(function() {
 		
 		$("#ModifyModal").on("hidden.bs.modal", function() {  
 		    $(this).removeData("bs.modal");  
 		}); 
-		
 	    $('#modifyDataFrom').bootstrapValidator({
 	        message: '输入无效,请重新输入',
 	        feedbackIcons: {
@@ -125,6 +128,42 @@
 	                validators: {
 	                    notEmpty: {
 	                        message: '微信号不能为空'
+	                    },
+	                    callback: {
+	                        message: '客户微信号已存在',
+	                        callback:function(value, validator,$field){
+	                        	var id = Number($("#ModifyModal").find('.modal-body input[name="modifyId"]').val());
+	                        	if(modifyInfo && modifyInfo.custWechatNo.length>=0&&modifyInfo.custWechatNo==value){
+	                        		return true;
+	                        	}
+	                        	var checkWechatNoURL = "/customer/checkWechatNo";
+	                        	var oWechatNoExists = false;
+	                        	var message = null;
+	                        	$.ajax({
+	                        		url: checkWechatNoURL,
+	                        		data:{oWechatNo:value},
+	                        		type: 'get',
+	                        		cache : false,
+	                        		async : false,
+	                        		dataType: 'json',
+	                        		success: function(data) {
+	                        			oWechatNoExists = data!=null;
+	                        		},error:function(data){
+	                        			alert(data.responseJSON.message);
+	                        			oWechatNoExists = false;
+	                        			if(data.responseJSON){
+	                        				message = data.responseJSON.message;
+	            						}
+	                        		}
+	                        		
+	                        	});
+	                        	
+	                        	if(message!=null){
+	                        		toastr.error(data.responseJSON.message); 
+	                        	}
+	                        	
+	                        	return !oWechatNoExists;
+	                        }
 	                    }
 	                }
 	            },

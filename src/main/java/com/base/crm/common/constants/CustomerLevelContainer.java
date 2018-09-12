@@ -18,7 +18,7 @@ import com.base.crm.level.service.LevelService;
 @Component
 public class CustomerLevelContainer implements ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerLevelContainer.class);
-	public static Map<Long,String> levelMap = new HashMap<Long,String>();
+	public static Map<Integer,String> levelMap = new HashMap<Integer,String>();
 	public static List<Level> levelList = new ArrayList<Level>();
 	
 	@Autowired
@@ -29,12 +29,12 @@ public class CustomerLevelContainer implements ApplicationListener<ContextRefres
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if(levelMap.size()==0){
 			levelList = levelService.selectAllForMap();
-			
+			logger.debug("levelList:{}",levelList);
 			for(Level level : levelList){
 				levelMap.put(level.getlId(), level.getlName());
 			}
 			
-			logger.debug("levelMap:",levelMap);
+			logger.debug("levelMap:{}",levelMap);
 		}
 		
 	}

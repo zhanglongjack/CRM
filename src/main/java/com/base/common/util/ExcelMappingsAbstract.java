@@ -28,6 +28,8 @@ public abstract class ExcelMappingsAbstract {
 	public void setData(JSONArray data) {
 		this.data = data;
 	}
+
+	public abstract String getColumnsMappingValue(String dictionaries, String key);
 	
 	
 	

@@ -24,7 +24,7 @@
 	<sql id="dynamicWhere">
 		<where>
 			<if test="custId != null">cust_id=#{custId}</if>
-			<if test="userId != null">user_id=#{userId}</if>
+			<if test="userId != null">and user_id=#{userId}</if>
 			<if test="custName != null and custName.length()>0">and cust_name like  CONCAT(#{custName},'%')</if>
 			<if test="custWechatNo != null and custWechatNo.length()>0">and cust_wechat_no=#{custWechatNo}</if>
 			<if test="custPhone != null">and cust_phone = #{custPhone}</if>
@@ -161,7 +161,10 @@
 				remark = #{remark,jdbcType=VARCHAR},
 			</if>
 		</set>
-		where cust_id = #{custId,jdbcType=BIGINT}
+		<where>
+			<if test="custId != null">cust_id=#{custId}</if>
+			<if test="custWechatNo != null and custWechatNo.length()>0">and cust_wechat_no=#{custWechatNo}</if>
+		</where>
 	</update>
 
 </mapper>

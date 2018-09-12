@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -39,11 +41,19 @@ public class ExcelView extends AbstractXlsxView {
 		responseContextBuild(response, mapping);
 
 		Sheet sheet = workbook.createSheet(mapping.getSheetName());
-		CellStyle style = buildStyle(workbook, sheet);
+		CellStyle headerStyle = buildHeaderStyle(workbook, sheet);
+		CellStyle rowStyle = buildRowStyle(workbook, sheet);
+		
+		buildHeaderColumns(mapping, sheet.createRow(0), headerStyle);
 
-		buildHeaderColumns(mapping, sheet.createRow(0), style);
+		buildRowColumns(mapping, sheet,rowStyle);
+	}
 
-		buildRowColumns(mapping, sheet);
+	private CellStyle buildRowStyle(Workbook workbook, Sheet sheet) {
+		CellStyle rowStyle = workbook.createCellStyle();
+		DataFormat format = workbook.createDataFormat();
+		rowStyle.setDataFormat(format.getFormat("@"));
+		return rowStyle;
 	}
 
 	private void responseContextBuild(HttpServletResponse response, ExcelMappingsAbstract mapping)
@@ -54,7 +64,7 @@ public class ExcelView extends AbstractXlsxView {
 		response.setCharacterEncoding("UTF-8");
 	}
 
-	private CellStyle buildStyle(Workbook workbook, Sheet sheet) {
+	private CellStyle buildHeaderStyle(Workbook workbook, Sheet sheet) {
 		logger.info("build sheet:" + sheet);
 		sheet.setDefaultColumnWidth(30);
 		CellStyle style = workbook.createCellStyle();
@@ -68,15 +78,22 @@ public class ExcelView extends AbstractXlsxView {
 		return style;
 	}
 
-	private void buildRowColumns(ExcelMappingsAbstract mapping, Sheet sheet) {
-		List<String> headerMapping = mapping.getColumnsMappings();
+	
+	private void buildRowColumns(ExcelMappingsAbstract mapping, Sheet sheet, CellStyle style) {
+		List<String> columnsMapping = mapping.getColumnsMappings();
 		JSONArray jsonObj = mapping.getData();
 		logger.info("build row:" + jsonObj);
+		   
+		   
 		for (int i = 0; i < jsonObj.size(); i++) {
 			Row userRow = sheet.createRow(i + 1);
 			JSONObject info = (JSONObject) jsonObj.get(i);
-			for (int j = 0; j < headerMapping.size(); j++) {
-				userRow.createCell(j).setCellValue(info.get(headerMapping.get(j)) + "");
+			for (int j = 0; j < columnsMapping.size(); j++) {
+				String value = mapping.getColumnsMappingValue(columnsMapping.get(j),info.get(columnsMapping.get(j))+"");
+				Cell cell = userRow.createCell(j);
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellStyle(style);
+				cell.setCellValue(value);
 			}
 		}
 	}

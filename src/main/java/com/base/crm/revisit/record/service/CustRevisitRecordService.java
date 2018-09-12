@@ -1,13 +1,10 @@
 package com.base.crm.revisit.record.service;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
 import com.base.crm.revisit.record.entity.CustRevisitRecord;
-@Mapper
 public interface CustRevisitRecordService {
     int deleteByPrimaryKey(Long returnVisit);
-
-    int insert(CustRevisitRecord record);
 
     int insertSelective(CustRevisitRecord record);
 
@@ -15,5 +12,7 @@ public interface CustRevisitRecordService {
 
     int updateByPrimaryKeySelective(CustRevisitRecord record);
 
-    int updateByPrimaryKey(CustRevisitRecord record);
+	Long selectPageTotalCount(CustRevisitRecord revisit);
+
+	List<CustRevisitRecord> selectPageByObjectForList(CustRevisitRecord revisit);
 }

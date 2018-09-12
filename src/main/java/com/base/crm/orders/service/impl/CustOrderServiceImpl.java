@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.base.crm.orders.dao.CustOrderMapper;
 import com.base.crm.orders.entity.CustOrder;
@@ -56,6 +58,14 @@ public class CustOrderServiceImpl implements CustOrderService {
 	@Override
 	public List<CustOrder> selectPageByObjectForList(CustOrder order) {
 		return custOrderMapper.selectPageByObjectForList(order);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void batchUpdateOrders(List<CustOrder> orderList) {
+        for(CustOrder record : orderList){
+        	custOrderMapper.updateByPrimaryKeySelective(record);
+        }
 	}
 
 }

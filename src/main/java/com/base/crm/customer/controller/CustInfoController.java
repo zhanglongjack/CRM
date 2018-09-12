@@ -1,21 +1,29 @@
 package com.base.crm.customer.controller;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.expression.Dates;
 
 import com.base.common.util.PageTools;
+import com.base.crm.consume.entity.CustomerConsume;
+import com.base.crm.consume.service.CustomerConsumeService;
 import com.base.crm.customer.entity.CustInfo;
 import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.users.entity.UserInfo;
@@ -27,7 +35,8 @@ public class CustInfoController {
 	private static final Logger logger = LoggerFactory.getLogger(CustInfoController.class);
 	@Autowired
 	private CustInfoService custInfoService;
-	private static Map<String,String> wechatMap = new HashMap<String,String>();
+	@Autowired
+	private CustomerConsumeService customerConsumeService;
 	
 	@RequestMapping(value="/custInfoView")
 	public ModelAndView custInfoView(CustInfo ci,PageTools pageTools,@ModelAttribute("user") UserInfo user){
@@ -50,6 +59,31 @@ public class CustInfoController {
 	@ResponseBody
 	public Map<String,Object> custInfoEdit(CustInfo custInfo){
 		logger.info("custInfoEdit request");
+		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		map.put("editNumber", num);
+		return map;
+	}
+	
+	@RequestMapping(value="/custInfoRecharge")
+	@ResponseBody
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public Map<String,Object> custInfoRecharge(CustInfo custInfo){
+		logger.info("custInfoRecharge request:{}",custInfo);
+		
+		CustomerConsume consume = new CustomerConsume();
+		consume.setConsumeType(1);
+		consume.setAmount(new BigDecimal(custInfo.getAmt()));
+		consume.setUserId(custInfo.getUserId());
+		consume.setWechatNo(custInfo.getCustWechatNo());
+		consume.setConsumeDate(new Dates(Locale.ROOT).format(new Date(), "yyyyMMdd"));
+		consume.setRemark(String.format("微信号[%s]的会员充值:%s元",custInfo.getCustWechatNo(), custInfo.getAmt()));
+		logger.info(consume.getRemark());
+		customerConsumeService.insertSelective(consume);
+		
+		
 		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);
@@ -96,7 +130,9 @@ public class CustInfoController {
 		}
 		model.addAttribute("modifyModel", modifyModel);
 		logger.info("model : "+model);
-		
+		if(modifyModel.equals("custInfoRecharge")){
+			return "page/customer/ModifyModalRecharge";
+		}
 		return "page/customer/ModifyModal";
 	}
 	
@@ -104,6 +140,9 @@ public class CustInfoController {
 	@ResponseBody
 	public CustInfo checkWechatNo(String oWechatNo) throws Exception{
 		logger.info("checkWechatNo request:"+oWechatNo);
-		return custInfoService.selectByPrimaryWechatNo(oWechatNo);
+		CustInfo cust = custInfoService.selectByPrimaryWechatNo(oWechatNo);
+		logger.info("customer : "+cust);
+		return cust;
+		
 	}
 }

@@ -20,6 +20,7 @@
 		<result column="express_no" jdbcType="VARCHAR" property="expressNo" />
 		<result column="order_date" jdbcType="VARCHAR" property="orderDate" />
 		<result column="order_datetime" jdbcType="TIMESTAMP" property="orderDatetime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
 	</resultMap>
 	
 	<resultMap id="pagCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
@@ -41,6 +42,7 @@
 		<result column="express_no" jdbcType="VARCHAR" property="expressNo" />
 		<result column="order_date" jdbcType="VARCHAR" property="orderDate" />
 		<result column="order_datetime" jdbcType="TIMESTAMP" property="orderDatetime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
         <collection property="user" column="user_id" select="com.base.crm.users.dao.UserInfoMapper.selectByPrimaryKey">
         </collection>
         <collection property="custInfo" column="o_wechat_no" select="com.base.crm.customer.dao.CustInfoMapper.selectByPrimaryWechatNo">
@@ -52,13 +54,13 @@
 		product_list,
 		deposits, cash_on_delivery_amt, total_amt, after_Discount_Amt, pay_Amount,
 		payment_method,
-		express_company, express_no, order_date, order_datetime
+		express_company, express_no, order_date, order_datetime,remark
 	</sql>
 	
 	<sql id="dynamicWhere">
 		<where>
 			<if test="orderNo != null">order_no=#{orderNo}</if>
-			<if test="userId != null">user_id=#{userId}</if>
+			<if test="userId != null">and user_id=#{userId}</if>
 			<if test="orderStatus != null">and order_status = #{orderStatus}</if>
 			<if test="contact != null and contact.length()>0">and contact like  CONCAT(#{contact},'%')</if>
 			<if test="address != null and address.length()>0">and address like  CONCAT(#{address},'%')</if>
@@ -170,6 +172,9 @@
 			<if test="orderDatetime != null">
 				order_datetime,
 			</if>
+			<if test="remark != null">
+				remark,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderNo != null">
@@ -225,6 +230,9 @@
 			</if>
 			<if test="orderDatetime != null">
 				#{orderDatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -282,8 +290,14 @@
 			<if test="orderDatetime != null">
 				order_datetime = #{orderDatetime,jdbcType=TIMESTAMP},
 			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where order_no = #{orderNo,jdbcType=BIGINT}
+		<if test="oldOrderStatus != null">
+			and order_status = #{oldOrderStatus,jdbcType=INTEGER}
+		</if>
 	</update>
 	
 </mapper>

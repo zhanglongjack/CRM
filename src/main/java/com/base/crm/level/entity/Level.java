@@ -3,17 +3,17 @@ package com.base.crm.level.entity;
 import java.math.BigDecimal;
 
 public class Level {
-    private Long lId;
+    private Integer lId;
 
     private String lName;
 
     private BigDecimal lDiscount;
 
-    public Long getlId() {
+    public Integer getlId() {
         return lId;
     }
 
-    public void setlId(Long lId) {
+    public void setlId(Integer lId) {
         this.lId = lId;
     }
 

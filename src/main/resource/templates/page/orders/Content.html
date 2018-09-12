@@ -25,7 +25,7 @@
 
 						var url = '/orders/orderExport?'+buildParams();
 						window.location.href=url;
-						
+
 					});
 					
 					$("[data-toggle='popover']").popover();
@@ -70,13 +70,13 @@
 									<div class="form-group">
 										<label>下单日期</label>
 										<span class="input-group input-append date" datepicker-flag="datepicker">
-										<input type="text" class="form-control" name="orderDate"
-                                            placeholder="yyyymmdd" data-date-format="yyyymmdd" 
-                                            th:attr="value=${queryOrder==null}?${#dates.format(#dates.createNow(), 'yyyyMMdd')}:${queryOrder.orderDate}">
-                                         <span class="input-group-addon add-on">
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                         </span>
-									</span>
+											<input type="text" class="form-control" name="orderDate"
+	                                            placeholder="yyyymmdd" data-date-format="yyyymmdd" 
+	                                            th:attr="value=${queryOrder==null}?${#dates.format(#dates.createNow(), 'yyyyMMdd')}:${queryOrder.orderDate}">
+	                                         <span class="input-group-addon add-on">
+	                                            <i class="glyphicon glyphicon-calendar"></i>
+	                                         </span>
+										 </span>
 									</div>
 							</div>
 							<div class="panel-body" style="border-bottom:solid #ddd 1px;">
@@ -114,9 +114,16 @@
 												 <span class="fa fa-plus-square"></span>&nbsp;添加订单
 											</a>
 										</div>
-										<div class="btn-group" style="margin:0px 5px;">
+										<div class="btn-group" style="margin:0px 5px;" th:if="${session.user.isAdmin()}">
 											<a id="orderExportBTN" class="btn btn-default"> 
 												 <span class="glyphicon glyphicon-save"></span>&nbsp;订单导出
+											</a>
+										</div>
+										<div class="btn-group" style="margin:0px 5px;" th:if="${session.user.isAdmin()}">
+											<a id="orderImportBTN" class="btn btn-default" 
+												th:attr="href='/orders/importModalView'" 
+												data-toggle="modal" data-target="#ModifyModal"> 
+												 <span class="glyphicon glyphicon-open"></span>&nbsp;订单导入
 											</a>
 										</div>
 									</div>
@@ -128,19 +135,22 @@
 								<tr>
 									<th width="8%" >订单编号</th>
 									<th th:if="${session.user.isAdmin()}">客服编号</th>
-									<th>下单微信</th>
+									<th width="6%" >下单微信</th>
 									<th>快递单号</th>
 									<th>快递公司</th>
 									<th>联系人</th>
 									<th>地址</th>
-									<th>电话</th>
+									<th width="6%">电话</th>
 									<th>产品列表</th>
 									<th width="5%">付款方式</th>
 									<th width="5%">订单状态</th>
 									<th>定金</th>
 									<th>到付金额</th>
 									<th>总金额</th>
+									<th>折后金额</th>
+									<th>实付金额</th>
 									<th width="5%">下单日期</th>
+									<th>备注</th>
 									<!-- 
 									<th>下单时间</th>
 									 -->
@@ -172,7 +182,13 @@
 									<td th:text="${#numbers.formatCurrency(obj.deposits)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.cashOnDeliveryAmt)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.totalAmt)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.afterDiscountAmt)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.payAmount)}"></td>
 									<td th:text="${obj.orderDate}"></td>
+									<td th:text="${obj.remark}"class="textOverFlowHide" 
+										data-container="body" data-toggle="popover"
+										data-trigger="hover" data-placement="top"
+										th:attr="data-content=${obj.remark}"></td>
 									<!-- 
 									<td th:text="${#dates.format(obj.orderDatetime, 'yyyy-MM-dd HH:mm:ss')}"
 										class="textOverFlowHide" 
@@ -184,7 +200,11 @@
 									<td>
 										<!-- Single button -->
 										<div class="btn-group">
-											<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
+											<a th:if="${obj.orderStatus>=3 || obj.orderStatus==1}" class="btn btn-default btn-sm disabled" data-toggle="modal" data-target="#ModifyModal"
+												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
+												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>
+											</a>
+											<a th:if="${obj.orderStatus<3&&obj.orderStatus!=1}" class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
 												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
 												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>
 											</a>

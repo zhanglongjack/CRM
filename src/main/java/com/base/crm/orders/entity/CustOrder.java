@@ -1,6 +1,5 @@
 package com.base.crm.orders.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.base.common.util.PageTools;
@@ -24,15 +23,15 @@ public class CustOrder {
 
 	private String productList;
 
-	private BigDecimal deposits;
+	private Double deposits;
 
-	private BigDecimal cashOnDeliveryAmt;
+	private Double cashOnDeliveryAmt;
 
-	private BigDecimal totalAmt;
+	private Double totalAmt;
 
-	private BigDecimal afterDiscountAmt;
+	private Double afterDiscountAmt;
 
-	private BigDecimal payAmount;
+	private Double payAmount;
 
 	private Integer paymentMethod;
 
@@ -44,10 +43,14 @@ public class CustOrder {
 
 	private Date orderDatetime;
 
+	private String remark;
+	
 	private PageTools pageTools;
 	private UserInfo user;
 	private CustInfo custInfo;
-
+	
+	private Integer oldOrderStatus;
+	
 	public Long getOrderNo() {
 		return orderNo;
 	}
@@ -112,43 +115,43 @@ public class CustOrder {
 		this.productList = productList;
 	}
 
-	public BigDecimal getDeposits() {
+	public Double getDeposits() {
 		return deposits;
 	}
 
-	public void setDeposits(BigDecimal deposits) {
+	public void setDeposits(Double deposits) {
 		this.deposits = deposits;
 	}
 
-	public BigDecimal getCashOnDeliveryAmt() {
+	public Double getCashOnDeliveryAmt() {
 		return cashOnDeliveryAmt;
 	}
 
-	public void setCashOnDeliveryAmt(BigDecimal cashOnDeliveryAmt) {
+	public void setCashOnDeliveryAmt(Double cashOnDeliveryAmt) {
 		this.cashOnDeliveryAmt = cashOnDeliveryAmt;
 	}
 
-	public BigDecimal getTotalAmt() {
+	public Double getTotalAmt() {
 		return totalAmt;
 	}
 
-	public void setTotalAmt(BigDecimal totalAmt) {
+	public void setTotalAmt(Double totalAmt) {
 		this.totalAmt = totalAmt;
 	}
 
-	public BigDecimal getAfterDiscountAmt() {
+	public Double getAfterDiscountAmt() {
 		return afterDiscountAmt;
 	}
 
-	public void setAfterDiscountAmt(BigDecimal afterDiscountAmt) {
+	public void setAfterDiscountAmt(Double afterDiscountAmt) {
 		this.afterDiscountAmt = afterDiscountAmt;
 	}
 
-	public BigDecimal getPayAmount() {
+	public Double getPayAmount() {
 		return payAmount;
 	}
 
-	public void setPayAmount(BigDecimal payAmount) {
+	public void setPayAmount(Double payAmount) {
 		this.payAmount = payAmount;
 	}
 
@@ -216,6 +219,22 @@ public class CustOrder {
 		this.custInfo = custInfo;
 	}
 
+	public Integer getOldOrderStatus() {
+		return oldOrderStatus;
+	}
+
+	public void setOldOrderStatus(Integer oldOrderStatus) {
+		this.oldOrderStatus = oldOrderStatus;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -223,5 +242,7 @@ public class CustOrder {
 				orderNo, userId, oWechatNo, orderStatus, contact, oPhone, productList, deposits, afterDiscountAmt,
 				payAmount, cashOnDeliveryAmt, totalAmt, paymentMethod, expressNo, orderDate, pageTools, user, custInfo);
 	}
+
+
 
 }

@@ -24,4 +24,6 @@ public interface CustOrderService {
 	Long selectPageTotalCount(CustOrder order);
 
 	List<CustOrder> selectPageByObjectForList(CustOrder order);
+
+	void batchUpdateOrders(List<CustOrder> orderList);
 }

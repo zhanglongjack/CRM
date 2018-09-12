@@ -2,6 +2,7 @@ $(function() {
 	$("#ModifyModal").on("shown.bs.modal", function() {  
 		$("#ModifyModalSubmit").click(function(){
 			var bootstrapValidator = $("#modifyDataFrom").data("bootstrapValidator");
+			$('#modifyDataFrom').data('bootstrapValidator').resetForm();
 			bootstrapValidator.validate();
 			if($("#modifyDataFrom").data('bootstrapValidator').isValid()){
 				var targetUrl = pageQueryParams.preUrl+$("#modifyDataFrom #modifyModel").val();
@@ -36,7 +37,7 @@ $(function() {
 
 var initTimePicker =function(){
 	$('#datepicker').datepicker({
-	    format: "yyyymmdd",
+	    format: "yyyy-mm-dd",
 	    maxViewMode: 0,
 	    autoclose: true,
 	    todayHighlight: true

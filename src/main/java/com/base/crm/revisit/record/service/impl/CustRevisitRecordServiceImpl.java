@@ -1,5 +1,7 @@
 package com.base.crm.revisit.record.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +16,6 @@ public class CustRevisitRecordServiceImpl implements CustRevisitRecordService {
 	@Override
 	public int deleteByPrimaryKey(Long returnVisit) {
 		return custRevisitRecordMapper.deleteByPrimaryKey(returnVisit);
-	}
-
-	@Override
-	public int insert(CustRevisitRecord record) {
-		return custRevisitRecordMapper.insert(record);
 	}
 
 	@Override
@@ -37,8 +34,13 @@ public class CustRevisitRecordServiceImpl implements CustRevisitRecordService {
 	}
 
 	@Override
-	public int updateByPrimaryKey(CustRevisitRecord record) {
-		return custRevisitRecordMapper.updateByPrimaryKey(record);
+	public Long selectPageTotalCount(CustRevisitRecord revisit) {
+		return custRevisitRecordMapper.selectPageTotalCount(revisit);
+	}
+
+	@Override
+	public List<CustRevisitRecord> selectPageByObjectForList(CustRevisitRecord revisit) {
+		return custRevisitRecordMapper.selectPageByObjectForList(revisit);
 	}
 
 }

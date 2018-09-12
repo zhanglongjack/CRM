@@ -2,74 +2,115 @@ package com.base.crm.revisit.record.entity;
 
 import java.util.Date;
 
+import com.base.common.util.PageTools;
+import com.base.crm.users.entity.UserInfo;
+
 public class CustRevisitRecord {
-    private Long revisitId;
+	private Long revisitId;
 
-    private Long custId;
+	private String wechatNo;
 
-    private String revisitRecordInfo;
+	private Long userId;
 
-    private String revisitResult;
+	private String revisitRecordInfo;
 
-    private String revisitDate;
+	private String revisitResult;
 
-    private String revisitTime;
+	private String revisitDate;
 
-    private Date createDate;
+	private String revisitTime;
 
-    public Long getRevisitId() {
-        return revisitId;
-    }
+	private Date createDate;
 
-    public void setRevisitId(Long revisitId) {
-        this.revisitId = revisitId;
-    }
+	private PageTools pageTools;
+	private UserInfo user;
 
-    public Long getCustId() {
-        return custId;
-    }
+	public Long getRevisitId() {
+		return revisitId;
+	}
 
-    public void setCustId(Long custId) {
-        this.custId = custId;
-    }
+	public void setRevisitId(Long revisitId) {
+		this.revisitId = revisitId;
+	}
 
-    public String getRevisitRecordInfo() {
-        return revisitRecordInfo;
-    }
+	public String getWechatNo() {
+		return wechatNo;
+	}
 
-    public void setRevisitRecordInfo(String revisitRecordInfo) {
-        this.revisitRecordInfo = revisitRecordInfo;
-    }
+	public void setWechatNo(String wechatNo) {
+		this.wechatNo = wechatNo;
+	}
 
-    public String getRevisitResult() {
-        return revisitResult;
-    }
+	public Long getUserId() {
+		return userId;
+	}
 
-    public void setRevisitResult(String revisitResult) {
-        this.revisitResult = revisitResult;
-    }
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
-    public String getRevisitDate() {
-        return revisitDate;
-    }
+	public String getRevisitRecordInfo() {
+		return revisitRecordInfo;
+	}
 
-    public void setRevisitDate(String revisitDate) {
-        this.revisitDate = revisitDate;
-    }
+	public void setRevisitRecordInfo(String revisitRecordInfo) {
+		this.revisitRecordInfo = revisitRecordInfo;
+	}
 
-    public String getRevisitTime() {
-        return revisitTime;
-    }
+	public String getRevisitResult() {
+		return revisitResult;
+	}
 
-    public void setRevisitTime(String revisitTime) {
-        this.revisitTime = revisitTime;
-    }
+	public void setRevisitResult(String revisitResult) {
+		this.revisitResult = revisitResult;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public String getRevisitDate() {
+		return revisitDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public void setRevisitDate(String revisitDate) {
+		this.revisitDate = revisitDate;
+	}
+
+	public String getRevisitTime() {
+		return revisitTime;
+	}
+
+	public void setRevisitTime(String revisitTime) {
+		this.revisitTime = revisitTime;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public PageTools getPageTools() {
+		return pageTools;
+	}
+
+	public void setPageTools(PageTools pageTools) {
+		this.pageTools = pageTools;
+	}
+
+	public UserInfo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfo user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return String.format(
+				"CustRevisitRecord [revisitId=%s, wechatNo=%s, userId=%s, revisitRecordInfo=%s, revisitResult=%s, revisitDate=%s, revisitTime=%s, createDate=%s, pageTools=%s, user=%s]",
+				revisitId, wechatNo, userId, revisitRecordInfo, revisitResult, revisitDate, revisitTime, createDate,
+				pageTools, user);
+	}
+
 }

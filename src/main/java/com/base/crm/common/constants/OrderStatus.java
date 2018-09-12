@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum OrderStatus {
-	NON_DELIVERY(0, "未派送"),
-	DELIVERING(1, "派送中"),
-	SIGNED(2, "已签收"),
-	REFUSED(3, "已拒签"),
-	INVALIDATED(4, "已作废");
+	NON_DELIVERY(0, "已下单"),
+	WAITING(1, "待发货"),
+	DELIVERING(2, "派送中"),
+	SIGNED(3, "已签收"),
+	REFUSED(4, "已拒签"),
+	INVALIDATED(5, "已作废");
 	
 	public static final Map<Integer,String> orderStatusMap = new HashMap<Integer,String>();
 	

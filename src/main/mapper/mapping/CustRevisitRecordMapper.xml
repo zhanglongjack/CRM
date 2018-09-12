@@ -1,118 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.base.crm.revisit.record.dao.CustRevisitRecordMapper">
-  <resultMap id="BaseResultMap" type="com.base.crm.revisit.record.entity.CustRevisitRecord">
-    <id column="revisit_id" jdbcType="BIGINT" property="revisitId" />
-    <result column="cust_id" jdbcType="BIGINT" property="custId" />
-    <result column="revisit_record_info" jdbcType="VARCHAR" property="revisitRecordInfo" />
-    <result column="revisit_result" jdbcType="VARCHAR" property="revisitResult" />
-    <result column="revisit_date" jdbcType="VARCHAR" property="revisitDate" />
-    <result column="revisit_time" jdbcType="VARCHAR" property="revisitTime" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    revisit_id, cust_id, revisit_record_info, revisit_result, revisit_date, revisit_time, 
-    create_date
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from cust_revisit_record
-    where revisit_id = #{revisitId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from cust_revisit_record
-    where revisit_id = #{revisitId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord">
-    insert into cust_revisit_record (revisit_id, cust_id, revisit_record_info, 
-      revisit_result, revisit_date, revisit_time, 
-      create_date)
-    values (#{revisitId,jdbcType=BIGINT}, #{custId,jdbcType=BIGINT}, #{revisitRecordInfo,jdbcType=VARCHAR}, 
-      #{revisitResult,jdbcType=VARCHAR}, #{revisitDate,jdbcType=VARCHAR}, #{revisitTime,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord">
-    insert into cust_revisit_record
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="revisitId != null">
-        revisit_id,
-      </if>
-      <if test="custId != null">
-        cust_id,
-      </if>
-      <if test="revisitRecordInfo != null">
-        revisit_record_info,
-      </if>
-      <if test="revisitResult != null">
-        revisit_result,
-      </if>
-      <if test="revisitDate != null">
-        revisit_date,
-      </if>
-      <if test="revisitTime != null">
-        revisit_time,
-      </if>
-      <if test="createDate != null">
-        create_date,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="revisitId != null">
-        #{revisitId,jdbcType=BIGINT},
-      </if>
-      <if test="custId != null">
-        #{custId,jdbcType=BIGINT},
-      </if>
-      <if test="revisitRecordInfo != null">
-        #{revisitRecordInfo,jdbcType=VARCHAR},
-      </if>
-      <if test="revisitResult != null">
-        #{revisitResult,jdbcType=VARCHAR},
-      </if>
-      <if test="revisitDate != null">
-        #{revisitDate,jdbcType=VARCHAR},
-      </if>
-      <if test="revisitTime != null">
-        #{revisitTime,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord">
-    update cust_revisit_record
-    <set>
-      <if test="custId != null">
-        cust_id = #{custId,jdbcType=BIGINT},
-      </if>
-      <if test="revisitRecordInfo != null">
-        revisit_record_info = #{revisitRecordInfo,jdbcType=VARCHAR},
-      </if>
-      <if test="revisitResult != null">
-        revisit_result = #{revisitResult,jdbcType=VARCHAR},
-      </if>
-      <if test="revisitDate != null">
-        revisit_date = #{revisitDate,jdbcType=VARCHAR},
-      </if>
-      <if test="revisitTime != null">
-        revisit_time = #{revisitTime,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where revisit_id = #{revisitId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord">
-    update cust_revisit_record
-    set cust_id = #{custId,jdbcType=BIGINT},
-      revisit_record_info = #{revisitRecordInfo,jdbcType=VARCHAR},
-      revisit_result = #{revisitResult,jdbcType=VARCHAR},
-      revisit_date = #{revisitDate,jdbcType=VARCHAR},
-      revisit_time = #{revisitTime,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP}
-    where revisit_id = #{revisitId,jdbcType=BIGINT}
-  </update>
+	<resultMap id="BaseResultMap" type="com.base.crm.revisit.record.entity.CustRevisitRecord">
+		<id column="revisit_id" jdbcType="BIGINT" property="revisitId" />
+		<result column="wechat_no" jdbcType="BIGINT" property="wechatNo" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="revisit_record_info" jdbcType="VARCHAR" property="revisitRecordInfo" />
+		<result column="revisit_result" jdbcType="VARCHAR" property="revisitResult" />
+		<result column="revisit_date" jdbcType="VARCHAR" property="revisitDate" />
+		<result column="revisit_time" jdbcType="VARCHAR" property="revisitTime" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<collection property="user" column="user_id" select="com.base.crm.users.dao.UserInfoMapper.selectByPrimaryKey">
+        </collection>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		revisit_id, 
+		wechat_no, 
+		user_id, 
+		revisit_record_info, 
+		revisit_result,
+		revisit_date,
+		revisit_time,
+		create_date
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="revisitId != null">revisit_id=#{revisitId}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">and wechat_no=#{wechatNo}</if>
+			<if test="userId != null">and user_id=#{userId}</if>
+			<if test="revisitDate != null and revisitDate.length()>0">and revisit_date=#{revisitDate}</if>
+		</where>
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_revisit_record
+		where revisit_id = #{revisitId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cust_revisit_record
+		<include refid="dynamicWhere" />
+		order by revisit_id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord"
+		resultType="Long">
+		select
+			count(1)
+		from cust_revisit_record
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from cust_revisit_record
+		where revisit_id = #{revisitId,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective"
+		parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord">
+		insert into cust_revisit_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="revisitId != null">
+				revisit_id,
+			</if>
+			<if test="wechatNo != null">
+				wechat_no,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="revisitRecordInfo != null">
+				revisit_record_info,
+			</if>
+			<if test="revisitResult != null">
+				revisit_result,
+			</if>
+			<if test="revisitDate != null">
+				revisit_date,
+			</if>
+			<if test="revisitTime != null">
+				revisit_time,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="revisitId != null">
+				#{revisitId,jdbcType=BIGINT},
+			</if>
+			<if test="wechatNo != null">
+				#{wechatNo,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="revisitRecordInfo != null">
+				#{revisitRecordInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="revisitResult != null">
+				#{revisitResult,jdbcType=VARCHAR},
+			</if>
+			<if test="revisitDate != null">
+				#{revisitDate,jdbcType=VARCHAR},
+			</if>
+			<if test="revisitTime != null">
+				#{revisitTime,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.base.crm.revisit.record.entity.CustRevisitRecord">
+		update cust_revisit_record
+		<set>
+			<if test="wechatNo != null">
+				wechat_no = #{wechatNo,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="revisitRecordInfo != null">
+				revisit_record_info = #{revisitRecordInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="revisitResult != null">
+				revisit_result = #{revisitResult,jdbcType=VARCHAR},
+			</if>
+			<if test="revisitDate != null">
+				revisit_date = #{revisitDate,jdbcType=VARCHAR},
+			</if>
+			<if test="revisitTime != null">
+				revisit_time = #{revisitTime,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where revisit_id = #{revisitId,jdbcType=BIGINT}
+	</update>
+
 </mapper>

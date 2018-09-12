@@ -86,10 +86,11 @@
 									<th>姓名</th>
 									<th>手机号</th>
 									<th>会员等级</th>
+									<th>会员余额</th>
 									<th>加粉时间</th>
 									<th>地址</th>
 									<th>备注</th>
-									<th>操作</th>
+									<th width="12%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -100,6 +101,7 @@
 									<td th:text="${obj.custName}"></td>
 									<td th:text="${obj.custPhone}"></td>
 									<td th:text="${session.levelMap.get(obj.level)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.amt)}"></td>
 									<td th:text="${obj.addTime}"></td>
 									<td th:text="${obj.address}" class="textOverFlowHide"
 										data-container="body" data-toggle="popover"
@@ -108,14 +110,18 @@
 									<td th:text="${obj.remark}" class="textOverFlowHide"
 										data-container="body" data-toggle="popover"
 										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.remark}"></td>
+										th:attr="data-content=@{${obj.remark}}"></td>
 									<td>
 										<!-- Single button -->
 										<div class="btn-group">
-											<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
+											<a class="btn btn-default btn-sm " data-toggle="modal" data-target="#ModifyModal"
 												th:attr="href='/customer/primaryCustInfoModalView?modifyModel=custInfoEdit&id='+${obj.custId}" > 
 												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新
 												 <i class="icon-star"></i>
+											</a>
+											<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
+												th:attr="href='/customer/primaryCustInfoModalView?modifyModel=custInfoRecharge&id='+${obj.custId}"> 
+												 <span class="glyphicon glyphicon-jpy"></span>&nbsp;充值
 											</a>
 										</div>
 									</td>
