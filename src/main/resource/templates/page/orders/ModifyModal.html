@@ -47,7 +47,7 @@
 							<div class="form-group col-sm-6">
 								<label class="col-sm-3 control-label">下单日期</label> 
 								<div class="col-sm-9">
-									<span class="input-group input-append date" id="datepicker">
+									<span class="input-group input-append date" datepicker-flag="datepicker">
 										<input readonly type="text" class="form-control" name="orderDate"
                                             placeholder="yyyymmdd" data-date-format="yyyymmdd" 
                                             th:attr="value=${modifyOrder==null}?${#dates.format(#dates.createNow(), 'yyyyMMdd')}:${modifyOrder.orderDate},disabled=${modifyOrder!=null&&modifyOrder.orderStatus>0}">

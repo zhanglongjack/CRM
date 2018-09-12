@@ -12,7 +12,7 @@
 
 	<groupId>CRM</groupId>
 	<artifactId>CRM</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<name>CRM</name>
@@ -168,9 +168,9 @@
 			</resource>
 			<resource>
 				<directory>src/main/config</directory>
-				<encludes>
-					<enclude>**/*</enclude>
-				</encludes>
+				<excludes>
+					<exclude>**/*</exclude>
+				</excludes>
 				<filtering>true</filtering>
 			</resource>
 
