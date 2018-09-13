@@ -2,6 +2,8 @@ package com.base.crm.users.entity;
 
 import java.util.Date;
 
+import com.base.common.util.PageTools;
+
 public class UserInfo {
     private Long uId;
 
@@ -19,6 +21,8 @@ public class UserInfo {
 
     private Date createDate;
 
+	private PageTools pageTools;
+	
     public Long getuId() {
         return uId;
     }
@@ -87,6 +91,14 @@ public class UserInfo {
 		return this.uLevel==0;
 	}
 	
+	public PageTools getPageTools() {
+		return pageTools;
+	}
+
+	public void setPageTools(PageTools pageTools) {
+		this.pageTools = pageTools;
+	}
+
 	@Override
 	public String toString() {
 		return String.format(

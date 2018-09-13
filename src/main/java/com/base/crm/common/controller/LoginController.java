@@ -1,4 +1,4 @@
-package com.base.crm.users.controller;
+package com.base.crm.common.controller;
 
 import java.util.HashMap;
 import java.util.Map;

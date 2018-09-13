@@ -76,58 +76,62 @@
 										</div>
 									</div>
 							</div>
-						</form>
-						<table class="table table-hover" >
-							<thead>
-								<tr>
-									<th th:if="${session.user.isAdmin()}">客服编号</th>
-									<th>粉丝编号</th>
-									<th width="10%">微信号</th>
-									<th>姓名</th>
-									<th>手机号</th>
-									<th>会员等级</th>
-									<th>会员余额</th>
-									<th>加粉时间</th>
-									<th>地址</th>
-									<th>备注</th>
-									<th width="12%">操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="obj : ${custInfoList}">
-									<td th:text="${obj.userId}" th:if="${session.user.isAdmin()}"></td>
-									<td th:text="${obj.custId}"></td>
-									<td th:text="${obj.custWechatNo}"></td>
-									<td th:text="${obj.custName}"></td>
-									<td th:text="${obj.custPhone}"></td>
-									<td th:text="${session.levelMap.get(obj.level)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.amt)}"></td>
-									<td th:text="${obj.addTime}"></td>
-									<td th:text="${obj.address}" class="textOverFlowHide"
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=@{${obj.address}}"></td>
-									<td th:text="${obj.remark}" class="textOverFlowHide"
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=@{${obj.remark}}"></td>
-									<td>
-										<!-- Single button -->
-										<div class="btn-group">
-											<a class="btn btn-default btn-sm " data-toggle="modal" data-target="#ModifyModal"
-												th:attr="href='/customer/primaryCustInfoModalView?modifyModel=custInfoEdit&id='+${obj.custId}" > 
-												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新
-												 <i class="icon-star"></i>
-											</a>
-											<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
-												th:attr="href='/customer/primaryCustInfoModalView?modifyModel=custInfoRecharge&id='+${obj.custId}"> 
-												 <span class="glyphicon glyphicon-jpy"></span>&nbsp;充值
-											</a>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						</form> 
+						<div class="panel-body table-responsive"> 
+							<table class="table table-hover" >
+								<thead>
+									<tr>
+										<th th:if="${session.user.isAdmin()}">客服编号</th>
+										<th>粉丝编号</th>
+										<th width="10%">微信号</th>
+										<th>姓名</th>
+										<th>手机号</th>
+										<th>会员等级</th>
+										<th>会员余额</th>
+										<th>加粉时间</th>
+										<th width="8%">地址</th>
+										<th>备注</th>
+										<th width="12%">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="obj : ${custInfoList}">
+										<td th:text="${obj.userId}" th:if="${session.user.isAdmin()}"></td>
+										<td th:text="${obj.custId}"></td>
+										<td th:text="${obj.custWechatNo}"></td>
+										<td th:text="${obj.custName}"></td>
+										<td th:text="${obj.custPhone}"></td>
+										<td th:text="${session.levelMap.get(obj.level)}"></td>
+										<td th:text="${#numbers.formatCurrency(obj.amt)}"></td>
+										<td th:text="${obj.addTime}"></td>
+										<td class="textOverFlowHide"
+											data-container="body" data-toggle="popover"
+											data-trigger="hover" data-placement="top"
+											th:attr="data-content=@{${obj.address}}">
+											<div th:text="${obj.address}" class="textOverFlowHide"></div>
+										</td>
+										<td data-container="body" data-toggle="popover"
+											data-trigger="hover" data-placement="top"
+											th:attr="data-content=@{${obj.remark}}">
+											<div th:text="${obj.remark}" class="textOverFlowHide"></div>
+										</td>
+										<td>
+											<div class="btn-group">
+												<a class="btn btn-default btn-sm " data-toggle="modal" data-target="#ModifyModal"
+													th:attr="href='/customer/primaryCustInfoModalView?modifyModel=custInfoEdit&id='+${obj.custId}" > 
+													 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新
+													 <i class="icon-star"></i>
+												</a>
+												<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
+													th:attr="href='/customer/primaryCustInfoModalView?modifyModel=custInfoRecharge&id='+${obj.custId}"> 
+													 <span class="glyphicon glyphicon-jpy"></span>&nbsp;充值
+												</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
 						<div class="panel-footer">
 							<ul class="pagination" >

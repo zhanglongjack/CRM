@@ -24,7 +24,7 @@
 					initTimePicker();
 				});
 			</script>
-			<h3 class="page-title">粉丝订单信息</h3>
+			<h3 class="page-title">粉丝消费信息</h3>
 			<div class="row">
 				<div class="col-md-12">
 					<!-- TABLE HOVER -->
@@ -32,7 +32,7 @@
 						<form class="form-inline" id="queryFrom">
 							<div class="panel-body"  style="border-bottom:solid #ddd 1px;">
 									<div class="form-group" th:if="${session.user.isAdmin()}">
-										<label>促消客服号</label> 
+										<label>促消客服</label> 
 										<input type="text" class="form-control"  placeholder="促消客服" name="userId" 
 											th:attr="value=${queryObject==null}?'':${queryObject.userId}">
 									</div>
@@ -81,12 +81,12 @@
 									</div>
 							</div>
 						</form>
-						<div class="panel-body">
+						<div class="panel-body table-responsive">
 							<table class="table table-hover">
 							<thead>
 								<tr>
 									<th>消费编号</th>
-									<th>微信号</th>
+									<th>粉丝微信</th>
 									<th th:if="${session.user.isAdmin()}">促消客服</th>
 									<th>消费金额</th>
 									<th>订单号</th>
@@ -106,10 +106,9 @@
 									<td th:text="${session.consumeTypeMap.get(obj.consumeType)}"></td>
 									<td th:text="${obj.consumeDate}"></td>
 									<td th:text="${#dates.format(obj.consumeTime, 'yyyy-MM-dd HH:mm:ss')}" ></td>
-									<td th:text="${obj.remark}" class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
+									<td data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top"
 										th:attr="data-content=${obj.remark}">
+										<div th:text="${obj.remark}" class="textOverFlowHide"></div>
 									</td>
 								</tr>
 							</tbody>

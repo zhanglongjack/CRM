@@ -1,6 +1,8 @@
 package com.base.crm.users.service.impl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,6 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int insert(UserInfo record) {
-		return userInfoMapper.insert(record);
-	}
-
-	@Override
 	public int insertSelective(UserInfo record) {
 		return userInfoMapper.insertSelective(record);
 	}
@@ -40,13 +37,18 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int updateByPrimaryKey(UserInfo record) {
-		return userInfoMapper.updateByPrimaryKey(record);
+	public UserInfo selectByUserPhone(Long phone) {
+		return userInfoMapper.selectByUserPhone(phone);
 	}
 
 	@Override
-	public UserInfo selectByUserPhone(Long phone) {
-		return userInfoMapper.selectByUserPhone(phone);
+	public Long selectPageTotalCount(UserInfo userInfo) {
+		return userInfoMapper.selectPageTotalCount(userInfo);
+	}
+
+	@Override
+	public List<UserInfo> selectPageByObjectForList(UserInfo userInfo) {
+		return userInfoMapper.selectPageByObjectForList(userInfo);
 	}
     
 

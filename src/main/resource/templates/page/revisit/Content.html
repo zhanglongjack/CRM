@@ -75,7 +75,7 @@
 									</div>
 							</div>
 						</form>
-						<div class="panel-body">
+						<div class="panel-body table-responsive">
 							<table class="table table-hover">
 							<thead>
 								<tr>
@@ -94,14 +94,14 @@
 									<td th:text="${obj.revisitId}"></td>
 									<td th:text="${obj.userId}" th:if="${session.user.isAdmin()}"></td>
 									<td th:text="${obj.wechatNo}"></td>
-									<td th:text="${obj.revisitResult}" class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.revisitResult}"></td>
-									<td th:text="${obj.revisitRecordInfo}" class="textOverFlowHide" 
-										data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="top"
-										th:attr="data-content=${obj.revisitRecordInfo}"></td>
+									<td data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top"
+										th:attr="data-content=${obj.revisitResult}">
+										<div th:text="${obj.revisitResult}" class="textOverFlowHide" ></div>	
+									</td>
+									<td data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top"
+										th:attr="data-content=${obj.revisitRecordInfo}">
+										<div th:text="${obj.revisitRecordInfo}" class="textOverFlowHide" ></div>	
+									</td>
 									<td th:text="${obj.revisitDate +' '+obj.revisitTime}"></td>
 									<td th:text="${#dates.format(obj.createDate, 'yyyy-MM-dd HH:mm:ss')}" ></td>
 									<td>

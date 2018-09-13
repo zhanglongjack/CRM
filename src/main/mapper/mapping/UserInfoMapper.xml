@@ -15,7 +15,16 @@
 		u_id, name, wechat_number, password, level, phone,
 		entry_date, create_date
 	</sql>
-
+	<sql id="dynamicWhere">
+		<where>
+			<if test="uId != null">u_id=#{uId}</if>
+			<if test="wechatNumber != null and wechatNumber.length()>0">and wechat_number=#{wechatNumber}</if>
+			<if test="name != null and name.length()>0">and name=#{name}</if>
+			<if test="uLevel != null">and level=#{uLevel}</if>
+			<if test="phone != null">and phone=#{phone}</if>
+		</where>
+	</sql>
+	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select
@@ -32,22 +41,29 @@
 		where phone = #{phone,jdbcType=BIGINT}
 	</select>
 
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.consume.entity.CustomerConsume"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+		<include refid="dynamicWhere" />
+		order by u_id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.consume.entity.CustomerConsume"
+		resultType="Long">
+		select
+			count(1)
+		from user_info
+		<include refid="dynamicWhere" />
+	</select>
+
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from
 		user_info
 		where u_id = #{uId,jdbcType=BIGINT}
 	</delete>
-	<insert id="insert" parameterType="com.base.crm.users.entity.UserInfo">
-		insert into user_info (u_id,
-		name, wechat_number,
-		password, level, phone,
-		entry_date)
-		values
-		(#{uId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},
-		#{wechatNumber,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR},
-		#{uLevel,jdbcType=INTEGER}, #{phone,jdbcType=BIGINT})
-	</insert>
 	<insert id="insertSelective" parameterType="com.base.crm.users.entity.UserInfo">
 		insert into user_info
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -126,19 +142,5 @@
 			</if>
 		</set>
 		where u_id = #{uId,jdbcType=BIGINT}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.base.crm.users.entity.UserInfo">
-		update user_info
-		set name = #{name,jdbcType=VARCHAR},
-		wechat_number =
-		#{wechatNumber,jdbcType=VARCHAR},
-		password =
-		#{password,jdbcType=VARCHAR},
-		level = #{uLevel,jdbcType=INTEGER},
-		phone =
-		#{phone,jdbcType=BIGINT},
-		entry_date = #{entryDate,jdbcType=VARCHAR}
-		where u_id =
-		#{uId,jdbcType=BIGINT}
 	</update>
 </mapper>
