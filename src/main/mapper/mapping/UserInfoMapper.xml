@@ -41,6 +41,13 @@
 		where phone = #{phone,jdbcType=BIGINT}
 	</select>
 
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_info
+		order by u_id
+	</select>
+  
 	<select id="selectPageByObjectForList" parameterType="com.base.crm.consume.entity.CustomerConsume"
 		resultMap="BaseResultMap">
 		select
@@ -128,8 +135,8 @@
 			<if test="wechatNumber != null">
 				wechat_number = #{wechatNumber,jdbcType=VARCHAR},
 			</if>
-			<if test="password != null">
-				password = #{password,jdbcType=VARCHAR},
+			<if test="newPwd != null">
+				password = #{newPwd,jdbcType=VARCHAR},
 			</if>
 			<if test="uLevel != null">
 				level = #{uLevel,jdbcType=INTEGER},
@@ -142,5 +149,6 @@
 			</if>
 		</set>
 		where u_id = #{uId,jdbcType=BIGINT}
+		<if test="password != null">and password=#{password}</if>
 	</update>
 </mapper>

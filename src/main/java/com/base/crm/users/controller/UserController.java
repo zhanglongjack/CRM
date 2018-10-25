@@ -1,6 +1,8 @@
 package com.base.crm.users.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.base.common.util.PageTools;
+import com.base.crm.consume.entity.CustomerConsume;
+import com.base.crm.consume.service.CustomerConsumeService;
 import com.base.crm.users.entity.UserInfo;
 import com.base.crm.users.service.UserService;
 
@@ -22,7 +27,7 @@ import com.base.crm.users.service.UserService;
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
 
 	@RequestMapping(value = "/primaryModalView")
 	public String primaryModalView(Long id, String modifyModel, Model model) throws Exception {
@@ -53,6 +58,7 @@ public class UserController {
 		ModelAndView mv = new ModelAndView("page/user/UserView");
 		userInfo.setPageTools(pageTools);
 		mv.addObject("pageTools", pageTools);
+		mv.addObject("pageTools", pageTools);
 		return mv;
 	}
 
@@ -77,6 +83,29 @@ public class UserController {
 		mv.addObject("queryObject", userInfo);
 
 		return mv;
+	}
+	
+	@RequestMapping(value="/userEdit")
+	@ResponseBody
+	public Map<String,Object> userEdit(UserInfo userInfo){
+		logger.info("userEdit request:{}",userInfo);
+		int num = userService.updateByPrimaryKeySelective(userInfo);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		map.put("editNumber", num);
+		return map;
+	}
+	
+	@RequestMapping(value="/checkPwd")
+	@ResponseBody
+	public Map<String,Object> checkPwd(Long id,String pwd){
+		logger.info("checkPwd request:uid={},pwd={}",id,pwd);
+		UserInfo user = userService.selectByPrimaryKey(id);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", user!=null&&user.getPassword().equals(pwd));
+		return map;
 	}
 	
 }

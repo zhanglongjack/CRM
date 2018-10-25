@@ -60,7 +60,6 @@ public class CustInfoController {
 	public Map<String,Object> custInfoEdit(CustInfo custInfo){
 		logger.info("custInfoEdit request");
 		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
-		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);
 		map.put("editNumber", num);

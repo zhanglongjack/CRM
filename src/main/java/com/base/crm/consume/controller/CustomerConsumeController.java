@@ -1,6 +1,9 @@
 package com.base.crm.consume.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.base.common.util.ExcelView;
 import com.base.common.util.PageTools;
+import com.base.crm.consume.constants.ConsumerExcelMappings;
 import com.base.crm.consume.entity.CustomerConsume;
 import com.base.crm.consume.service.CustomerConsumeService;
 import com.base.crm.users.entity.UserInfo;
@@ -23,7 +30,9 @@ public class CustomerConsumeController {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerConsumeController.class);
 	@Autowired
 	private CustomerConsumeService customerConsumeService;
-
+	@Autowired
+	private ConsumerExcelMappings consumerExcelMappings;
+	
 	@RequestMapping(value = "/primaryModalView")
 	public String primaryModalView(Long id, String modifyModel, Model model) throws Exception {
 		logger.info("primaryModalView request:" + id + ",model:" + model);
@@ -78,5 +87,20 @@ public class CustomerConsumeController {
 
 		return mv;
 	}
+	
+	@RequestMapping("/export")
+    public ModelAndView export(CustomerConsume queryParams){
+		logger.info("CustomerConsume request:"+queryParams);
+
+        List<CustomerConsume> data = customerConsumeService.selectByObjectForList(queryParams);
+        JSONArray jsonObj = JSON.parseArray(JSON.toJSONString(data));
+        logger.info("CustomerConsume========"+jsonObj);
+         
+        consumerExcelMappings.setOrderExcelMappings(jsonObj);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("ExcelMappings", consumerExcelMappings);
+
+        return new ModelAndView(new ExcelView(), map);
+    }
 	
 }

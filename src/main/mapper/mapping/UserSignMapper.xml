@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.sign.dao.UserSignMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.sign.entity.UserSign">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="sign_date" jdbcType="VARCHAR" property="signDate" />
+		<result column="sign_time" jdbcType="VARCHAR" property="signTime" />
+		<result column="sign_exit_time" jdbcType="VARCHAR" property="signExitTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, user_name, sign_date, sign_time, sign_exit_time
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="userId != null">user_id=#{userId}</if>
+			<if test="userName != null and userName.length()>0">and user_name=#{userName}</if>
+			<if test="signDate != null and signDate.length()>0">and sign_date=#{signDate}</if>
+			<if test="startDate != null and startDate.length()>0">and sign_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and sign_date  <![CDATA[<=]]> #{endDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectSimpleObjectBy" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_sign
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.sign.entity.UserSign"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_sign
+		<include refid="dynamicWhere" />
+		order by id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.sign.entity.UserSign"
+		resultType="Long">
+		select
+			count(1)
+		from user_sign
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from user_sign
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.sign.entity.UserSign">
+		insert into user_sign
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="signDate != null">
+				sign_date,
+			</if>
+			<if test="signTime != null">
+				sign_time,
+			</if>
+			<if test="signExitTime != null">
+				sign_exit_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="signDate != null">
+				#{signDate,jdbcType=VARCHAR},
+			</if>
+			<if test="signTime != null">
+				#{signTime,jdbcType=VARCHAR},
+			</if>
+			<if test="signExitTime != null">
+				#{signExitTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.sign.entity.UserSign">
+		update user_sign
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="signDate != null">
+				sign_date = #{signDate,jdbcType=VARCHAR},
+			</if>
+			<if test="signTime != null">
+				sign_time = #{signTime,jdbcType=VARCHAR},
+			</if>
+			<if test="signExitTime != null">
+				sign_exit_time = #{signExitTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+</mapper>

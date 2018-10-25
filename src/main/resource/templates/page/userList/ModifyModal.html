@@ -59,18 +59,11 @@ $(function(){
 			<div class="form-group">
 				<label class="col-sm-2 control-label">等级</label> 
 				<div class="col-sm-10"> 
-					<select class="form-control" name="uLevel" th:if="${modifyOrder!=null}">
-						<option th:selected="${modifyOrder!=null&&modifyOrder.uLevel == 3" value="3">普通客服</option>
-						<option th:selected="${modifyOrder!=null&&modifyOrder.uLevel == 2" value="2">客服领班</option>
-						<option th:selected="${modifyOrder!=null&&modifyOrder.uLevel == 1" value="1">客服主管</option>
-						<option th:selected="${modifyOrder!=null&&modifyOrder.uLevel == 0" value="0">超级管理员</option>
-					</select> 
-					<select class="form-control" name="uLevel" th:if="${modifyOrder==null}">
-						<option value="3">普通客服</option>
-						<option value="2">客服领班</option>
-						<option value="1">客服主管</option>
-						<option value="0">超级管理员</option>
-					</select> 
+					<select class="form-control" name="uLevel">
+						<option value="" >===客服等级===</option>
+						<option th:each="map:${session.staffLevelMap}" th:selected="${modifyInfo!=null&&modifyInfo.uLevel == map.key}" 
+								th:value="${map.key}" th:text="${map.value}"></option>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">

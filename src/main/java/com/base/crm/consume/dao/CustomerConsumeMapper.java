@@ -22,4 +22,6 @@ public interface CustomerConsumeMapper {
 
 	void updateByOrderNo(CustomerConsume consume);
 
+	List<CustomerConsume> selectByObjectForList(CustomerConsume queryParams);
+
 }

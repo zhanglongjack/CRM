@@ -6,6 +6,7 @@
 		<result column="user_id" jdbcType="BIGINT" property="userId" />
 		<result column="cust_name" jdbcType="VARCHAR" property="custName" />
 		<result column="cust_wechat_no" jdbcType="VARCHAR" property="custWechatNo" />
+		<result column="serve_wechat_no" jdbcType="VARCHAR" property="serveWechatNo" />
 		<result column="cust_phone" jdbcType="BIGINT" property="custPhone" />
 		<result column="level" jdbcType="INTEGER" property="level" />
 		<result column="amt" jdbcType="DECIMAL" property="amt" />
@@ -17,7 +18,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		cust_id,user_id, cust_name, cust_wechat_no, cust_phone, level,amt,
+		cust_id,user_id, cust_name, cust_wechat_no, cust_phone,serve_wechat_no, level,amt,
 		add_time, address,
 		remark
 	</sql>
@@ -27,8 +28,10 @@
 			<if test="userId != null">and user_id=#{userId}</if>
 			<if test="custName != null and custName.length()>0">and cust_name like  CONCAT(#{custName},'%')</if>
 			<if test="custWechatNo != null and custWechatNo.length()>0">and cust_wechat_no=#{custWechatNo}</if>
+			<if test="serveWechatNo != null and serveWechatNo.length()>0">and serve_wechat_no=#{serveWechatNo}</if>
 			<if test="custPhone != null">and cust_phone = #{custPhone}</if>
 			<if test="level != null">and level = #{level}</if>
+			<if test="addTime != null and addTime.length()>0">and add_time like CONCAT(#{addTime},'%')</if>
 		</where>
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
@@ -87,6 +90,9 @@
 			<if test="custPhone != null">
 				cust_phone,
 			</if>
+			<if test="serveWechatNo != null">
+				serve_wechat_no,
+			</if>
 			<if test="level != null">
 				level,
 			</if>
@@ -116,6 +122,9 @@
 			<if test="custPhone != null">
 				#{custPhone,jdbcType=BIGINT},
 			</if>
+			<if test="serveWechatNo != null">
+				#{serveWechatNo,jdbcType=VARCHAR},
+			</if>
 			<if test="level != null">
 				#{level,jdbcType=INTEGER},
 			</if>
@@ -141,6 +150,9 @@
 			</if>
 			<if test="custWechatNo != null">
 				cust_wechat_no = #{custWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="serveWechatNo != null">
+				serve_wechat_no = #{serveWechatNo,jdbcType=VARCHAR},
 			</if>
 			<if test="custPhone != null">
 				cust_phone = #{custPhone,jdbcType=BIGINT},

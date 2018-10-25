@@ -39,4 +39,7 @@ public class CustomerLevelContainer implements ApplicationListener<ContextRefres
 		
 	}
 
+	public String get(Integer key){
+		return levelMap.get(key);
+	}
 }

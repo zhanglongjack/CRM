@@ -15,20 +15,20 @@
 								<div class="profile-header">
 									<div class="overlay"></div>
 									<div class="profile-main">
-										<img th:src="@{~/crm_tempaltes/img/user-medium.png}" class="img-circle" alt="Avatar">
+										<img th:src="@{~/crm_tempaltes/img/user-medium.png}" class="img-circle" alt="Avatar" style="height:90px;width:90px;">
 										<h3 class="name" th:text="${session.user.name}"></h3>
 										<span class="online-status status-available">Available</span>
 									</div>
 									<div class="profile-stat">
 										<div class="row">
 											<div class="col-md-4 stat-item">
-												45 <span>粉丝数</span>
+												0 <span>粉丝数</span>
 											</div>
 											<div class="col-md-4 stat-item">
-												15 <span>业绩提成</span>
+												0 <span>业绩提成</span>
 											</div>
 											<div class="col-md-4 stat-item">
-												2174 <span>业绩</span>
+												0 <span>业绩</span>
 											</div>
 										</div>
 									</div>
@@ -44,57 +44,21 @@
 											<li>邮箱 <span>samuel@mydomain.com</span></li>
 										</ul>
 									</div>
+									<div class="text-center">
+										<a href="#" class="btn btn-primary" th:attr="href='/user/primaryModalView?modifyModel=userEdit&id='+${session.user.uId}" data-toggle="modal" data-target="#ModifyModal">修改密码</a>
+									</div>
 								</div>
 								<!-- END PROFILE DETAIL -->
 							</div>
 							<!-- END LEFT COLUMN -->
 							<!-- RIGHT COLUMN -->
 							<div class="profile-right">
-								<h4 class="heading">Samuel's Awards</h4>
-								<!-- AWARDS -->
-								<div class="awards">
-									<div class="row">
-										<div class="col-md-3 col-sm-6">
-											<div class="award-item">
-												<div class="hexagon">
-													<span class="lnr lnr-sun award-icon"></span>
-												</div>
-												<span>Most Bright Idea</span>
-											</div>
-										</div>
-										<div class="col-md-3 col-sm-6">
-											<div class="award-item">
-												<div class="hexagon">
-													<span class="lnr lnr-clock award-icon"></span>
-												</div>
-												<span>Most On-Time</span>
-											</div>
-										</div>
-										<div class="col-md-3 col-sm-6">
-											<div class="award-item">
-												<div class="hexagon">
-													<span class="lnr lnr-magic-wand award-icon"></span>
-												</div>
-												<span>Problem Solver</span>
-											</div>
-										</div>
-										<div class="col-md-3 col-sm-6">
-											<div class="award-item">
-												<div class="hexagon">
-													<span class="lnr lnr-heart award-icon"></span>
-												</div>
-												<span>Most Loved</span>
-											</div>
-										</div>
-									</div>
-									<div class="text-center"><a href="#" class="btn btn-default">See all awards</a></div>
-								</div>
-								<!-- END AWARDS -->
+
 								<!-- TABBED CONTENT -->
 								<div class="custom-tabs-line tabs-line-bottom left-aligned">
 									<ul class="nav" role="tablist">
-										<li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">Recent Activity</a></li>
-										<li><a href="#tab-bottom-left2" role="tab" data-toggle="tab">Projects <span class="badge">7</span></a></li>
+										<li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">最近活跃信息</a></li>
+										<!-- <li><a href="#tab-bottom-left2" role="tab" data-toggle="tab">最近 <span class="badge">7</span></a></li> -->
 									</ul>
 								</div>
 								<div class="tab-content">
@@ -102,23 +66,25 @@
 										<ul class="list-unstyled activity-timeline">
 											<li>
 												<i class="fa fa-comment activity-icon"></i>
-												<p>Commented on post <a href="#">Prototyping</a> <span class="timestamp">2 minutes ago</span></p>
+												<p>最新回访记录 <a href="#">张三</a> <span class="timestamp">2 分钟前</span></p>
 											</li>
 											<li>
-												<i class="fa fa-cloud-upload activity-icon"></i>
-												<p>Uploaded new file <a href="#">Proposal.docx</a> to project <a href="#">New Year Campaign</a> <span class="timestamp">7 hours ago</span></p>
+												<i class="lnr lnr-users activity-icon"></i>
+												<p>最新新增粉丝 <a href="#">李四</a>  <span class="timestamp">7 小时前</span></p>
 											</li>
 											<li>
 												<i class="fa fa-plus activity-icon"></i>
-												<p>Added <a href="#">Martin</a> and <a href="#">3 others colleagues</a> to project repository <span class="timestamp">Yesterday</span></p>
+												<p>最新促销订单 <a href="#">100001</a> <span class="timestamp">昨天</span></p>
 											</li>
 											<li>
 												<i class="fa fa-check activity-icon"></i>
-												<p>Finished 80% of all <a href="#">assigned tasks</a> <span class="timestamp">1 day ago</span></p>
+												<p>最新完成订单 <a href="#">100000</a> <span class="timestamp">1 天前</span></p>
 											</li>
 										</ul>
-										<div class="margin-top-30 text-center"><a href="#" class="btn btn-default">See all activity</a></div>
+										<!--  -->
+										<div class="margin-top-30 text-center"><a href="#" class="btn btn-default">查看所有活跃记录</a></div>
 									</div>
+									<!--  
 									<div class="tab-pane fade" id="tab-bottom-left2">
 										<div class="table-responsive">
 											<table class="table project-table">
@@ -140,7 +106,7 @@
 																</div>
 															</div>
 														</td>
-														<td><img src="assets/img/user2.png" alt="Avatar" class="avatar img-circle"> <a href="#">Michael</a></td>
+														<td><img th:src="@{~/crm_tempaltes/img/user2.png}" alt="Avatar" class="avatar img-circle"> <a href="#">Michael</a></td>
 														<td><span class="label label-success">ACTIVE</span></td>
 													</tr>
 													<tr>
@@ -152,7 +118,7 @@
 																</div>
 															</div>
 														</td>
-														<td><img src="assets/img/user1.png" alt="Avatar" class="avatar img-circle"> <a href="#">Antonius</a></td>
+														<td><img th:src="@{~/crm_tempaltes/img/user1.png}" alt="Avatar" class="avatar img-circle"> <a href="#">Antonius</a></td>
 														<td><span class="label label-warning">PENDING</span></td>
 													</tr>
 													<tr>
@@ -164,7 +130,7 @@
 																</div>
 															</div>
 														</td>
-														<td><img src="assets/img/user1.png" alt="Avatar" class="avatar img-circle"> <a href="#">Antonius</a></td>
+														<td><img th:src="@{~/crm_tempaltes/img/user1.png}" alt="Avatar" class="avatar img-circle"> <a href="#">Antonius</a></td>
 														<td><span class="label label-success">ACTIVE</span></td>
 													</tr>
 													<tr>
@@ -176,7 +142,7 @@
 																</div>
 															</div>
 														</td>
-														<td><img src="assets/img/user2.png" alt="Avatar" class="avatar img-circle"> <a href="#">Michael</a></td>
+														<td><img th:src="@{~/crm_tempaltes/img/user2.png}" alt="Avatar" class="avatar img-circle"> <a href="#">Michael</a></td>
 														<td><span class="label label-success">ACTIVE</span></td>
 													</tr>
 													<tr>
@@ -188,7 +154,7 @@
 																</div>
 															</div>
 														</td>
-														<td><img src="assets/img/user1.png" alt="Avatar" class="avatar img-circle" /> <a href="#">Antonius</a></td>
+														<td><img th:src="@{~/crm_tempaltes/img/user1.png}" alt="Avatar" class="avatar img-circle" /> <a href="#">Antonius</a></td>
 														<td><span class="label label-default">CLOSED</span></td>
 													</tr>
 													<tr>
@@ -200,13 +166,15 @@
 																</div>
 															</div>
 														</td>
-														<td><img src="assets/img/user5.png" alt="Avatar" class="avatar img-circle" /> <a href="#">Jason</a></td>
+														<td><img th:src="@{~/crm_tempaltes/img/user5.png}" alt="Avatar" class="avatar img-circle" /> <a href="#">Jason</a></td>
 														<td><span class="label label-default">CLOSED</span></td>
 													</tr>
 												</tbody>
 											</table>
 										</div>
 									</div>
+									 -->
+									
 								</div>
 								<!-- END TABBED CONTENT -->
 							</div>

@@ -2,7 +2,11 @@ package com.base.crm.consume.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 
+import org.thymeleaf.util.DateUtils;
+
+import com.base.common.util.DateFormateType;
 import com.base.common.util.PageTools;
 import com.base.crm.users.entity.UserInfo;
 
@@ -28,6 +32,9 @@ public class CustomerConsume {
 	private PageTools pageTools;
 	private UserInfo user;
 	
+	// query
+	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
+	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
 	
     public Long getConsumeId() {
         return consumeId;
@@ -115,6 +122,22 @@ public class CustomerConsume {
 
 	public void setUser(UserInfo user) {
 		this.user = user;
+	}
+	
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	@Override

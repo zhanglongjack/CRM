@@ -17,4 +17,6 @@ public interface CustomerConsumeService {
 	List<CustomerConsume> selectPageByObjectForList(CustomerConsume record);
 
 	void updateByOrderNo(CustomerConsume consume);
+
+	List<CustomerConsume> selectByObjectForList(CustomerConsume queryParams);
 }

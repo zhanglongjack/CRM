@@ -50,4 +50,9 @@ public class CustomerConsumeServiceImpl implements CustomerConsumeService {
 		customerConsumeMapper.updateByOrderNo(consume);
 	}
 
+	@Override
+	public List<CustomerConsume> selectByObjectForList(CustomerConsume queryParams) {
+		return customerConsumeMapper.selectByObjectForList(queryParams);
+	}
+
 }

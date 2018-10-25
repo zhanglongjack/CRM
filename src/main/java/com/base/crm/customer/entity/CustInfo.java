@@ -11,6 +11,8 @@ public class CustInfo {
     private String custName;
     
     private String custWechatNo;
+    
+    private String serveWechatNo;
 
     private Long custPhone;
 
@@ -67,7 +69,15 @@ public class CustInfo {
         this.custWechatNo = custWechatNo;
     }
 
-    public Long getCustPhone() {
+    public String getServeWechatNo() {
+		return serveWechatNo;
+	}
+
+	public void setServeWechatNo(String serveWechatNo) {
+		this.serveWechatNo = serveWechatNo;
+	}
+
+	public Long getCustPhone() {
         return custPhone;
     }
 

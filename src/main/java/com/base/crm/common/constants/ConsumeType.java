@@ -3,6 +3,9 @@ package com.base.crm.common.constants;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ConsumeType {
 	public static Map<Integer,String> consumeTypeMap = new HashMap<Integer,String>();
 	

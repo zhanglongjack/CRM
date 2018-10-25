@@ -33,7 +33,7 @@ $(function(){
 	<div class="modal-body">
 		<form id="modifyDataFrom" class="form-horizontal" role="form">
 			<input id="modifyId" name="revisitId" type="hidden" th:attr="value=${modifyInfo==null}?'':${modifyInfo.revisitId}">
-			<input id="userId" name="userId" type="hidden" th:attr="value=${session.user.uId}">
+			<input id="userId" name="userId" type="hidden" th:attr="value=${modifyInfo==null||modifyInfo.userId==null?session.user.uId:modifyInfo.userId}">
 			<input id="modifyModel" name="modifyModel" type="hidden" th:attr="value=${modifyModel==null}?'':${modifyModel}">
 			<div class="form-group">
 				<label class="col-sm-2 control-label">粉丝微信</label> 

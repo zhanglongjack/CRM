@@ -2,7 +2,7 @@ package com.base.common.util;
 
 public class PageTools {
 	private Integer index = 1;
-	private Integer pageSize = 10;
+	private Integer pageSize = 50;
 	private Integer rowIndex;
 	private Long total;
 	public Integer getIndex() {

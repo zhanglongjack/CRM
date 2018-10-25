@@ -9,6 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<!-- VENDOR CSS -->
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/bootstrap/css/bootstrap-grid.min.css}">
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/font-awesome/css/font-awesome.min.css}">
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/linearicons/style.css}">
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/chartist/css/chartist-custom.css}">
@@ -18,8 +19,8 @@
 	<!-- bootstrap validator CSS -->
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/vendor/bootstrap/css/bootstrapValidator.css}" />
 	    
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" th:href="@{~/crm_tempaltes/css/demo.css}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project
+	<link rel="stylesheet" th:href="@{~/crm_tempaltes/css/demo.css}"> -->
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<!-- ICONS -->
@@ -29,10 +30,7 @@
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/datepicker/css/bootstrap-datepicker.css}" >
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/datetimepicker/css/bootstrap-datetimepicker.css}" >
 
-
-
 	<link rel="stylesheet" th:href="@{~/crm_tempaltes/table/bootstrap-table.css}">
-	
 	
 	<!-- Javascript -->
 	<script th:src="@{~/crm_tempaltes/vendor/jquery/jquery.js}"></script>
@@ -118,7 +116,21 @@
 	.pagination{
 		display:table-row-group;
 	}
-	</style>
+	#queryFrom .form-group{
+		margin:5px 0;
+	}
+	#queryFrom .btn-group{
+		margin:5px;
+	}
+	#queryFrom .border-up-down{
+		border-bottom:solid #ddd 1px;
+		border-top:solid #ddd 1px;
+	}
+	#queryFrom .btn-right{
+		float:right;
+	}
+	
+	</style> 
 </head>
 
 <body>

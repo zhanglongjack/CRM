@@ -28,17 +28,30 @@
 					<div class="modal-body">
 						<form id="modifyDataFrom" class="form-horizontal" role="form">
 							<input id="modifyId" name="custId" type="hidden" th:attr="value=${custInfo==null}?'':${custInfo.custId}">
-							<input name="userId" type="hidden" th:attr="value=${session.user.uId}">
+							<input id="userId" name="userId" type="hidden" th:attr="value=${custInfo!=null&&custInfo.userId!=null}?${custInfo.userId}:${session.user.uId}">
 							<input id="modifyModel" name="modifyModel" type="hidden" th:attr="value=${modifyModel==null}?'':${modifyModel}">
 							<div class="form-group">
-								<label  class="col-sm-2 control-label">微信号</label>
+								<label  class="col-sm-2 control-label">服务微信</label>
+								<div class="col-sm-10">
+									<select class="form-control" name="serveWechatNo">
+										<option value="" >===服务微信===</option>
+										<option th:if="${!session.user.isAdmin()}" th:each="map:${@serveWechatContainer.userServeWechatMap.get(session.user.uId)}" th:selected="${custInfo!=null&&custInfo.serveWechatNo == map.value}" 
+												th:value="${map.value}" th:text="${map.value}"></option>
+												
+										<option th:if="${session.user.isAdmin()}" th:each="map:${@userContainer.userMap}" th:selected="${custInfo!=null&&custInfo.userId == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">粉丝微信</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name="custWechatNo" 
 										   placeholder="请输入微信号" th:attr="value=${custInfo==null}?'':${custInfo.custWechatNo},readonly=${custInfo!=null}">
 								</div>
 							</div>
 							<div class="form-group">
-								<label  class="col-sm-2 control-label">姓名</label>
+								<label  class="col-sm-2 control-label">粉丝姓名</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name="custName" id="edit-custName" 
 										   placeholder="请输入姓名" th:attr="value=${custInfo==null}?'':${custInfo.custName}">
@@ -58,14 +71,7 @@
 									<select class="form-control" name="level">
 										<option th:each="obj:${session.levelMap}" th:selected="${custInfo!=null&&custInfo.level == obj.key}" 
 												th:value="${obj.key}" th:text="${obj.value}"></option>
-									</select>
-										 <!-- 
-										<option value="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☆</option>
-										<option value="1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
-										<option value="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
-										<option value="3">&nbsp;&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
-										<option value="4">&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆&nbsp;&nbsp;☆</option>
-										-->
+									</select> 
 								</div>
 							</div>
 							<div class="form-group">
@@ -117,6 +123,7 @@
 		}); 
 	    $('#modifyDataFrom').bootstrapValidator({
 	        message: '输入无效,请重新输入',
+	        trigger: 'keyup focus',
 	        feedbackIcons: {
 	            valid: 'glyphicon glyphicon-ok',
 	            invalid: 'glyphicon glyphicon-remove',
@@ -132,7 +139,6 @@
 	                    callback: {
 	                        message: '客户微信号已存在',
 	                        callback:function(value, validator,$field){
-	                        	var id = Number($("#ModifyModal").find('.modal-body input[name="modifyId"]').val());
 	                        	if(modifyInfo && modifyInfo.custWechatNo.length>=0&&modifyInfo.custWechatNo==value){
 	                        		return true;
 	                        	}
@@ -149,7 +155,6 @@
 	                        		success: function(data) {
 	                        			oWechatNoExists = data!=null;
 	                        		},error:function(data){
-	                        			alert(data.responseJSON.message);
 	                        			oWechatNoExists = false;
 	                        			if(data.responseJSON){
 	                        				message = data.responseJSON.message;
@@ -180,8 +185,27 @@
 	                        message: '手机号格式不正确'
 	                    }
 	                }
+	            }, serveWechatNo: {
+	                message: '无效服务微信',
+	                validators: { 
+	                	notEmpty: {
+	                        message: '服务微信必选'
+	                    }
+	                }
 	            }
 	        }
+	    });
+	    
+	    var serveWechatNoElement = $("#ModifyModal").find('.modal-body select[name="serveWechatNo"]');
+	    serveWechatNoElement.click(function(){
+	    	var value = $("#ModifyModal").find('.modal-body select[name="serveWechatNo"] option:selected').val();
+	    	
+	    	var validator = $("#modifyDataFrom").data("bootstrapValidator");
+	    	if(value&&value.length>0){
+	    		validator.updateStatus('serveWechatNo', 'VALID');
+       		}else{
+       			validator.updateStatus('serveWechatNo', 'NOT_VALIDATED').validateField('serveWechatNo');
+       		}
 	    });
 	});
 </script>

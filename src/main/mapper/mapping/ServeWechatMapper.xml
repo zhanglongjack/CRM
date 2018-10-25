@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.serve.wechat.dao.ServeWechatMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.serve.wechat.entity.ServeWechat">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="serve_Wechat_No" jdbcType="VARCHAR" property="serveWechatNo" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, serve_Wechat_No, user_id
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="serveWechatNo != null and serveWechatNo.length()>0">and serve_Wechat_No=#{serveWechatNo}</if>
+			<if test="userId != null">and user_id=#{userId}</if>
+		</where>
+	</sql>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from serve_wechat
+		order by id
+	</select>
+	
+	<select id="selectByPrimaryWechatNo" parameterType="String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from serve_wechat
+		where serve_Wechat_No = #{serveWechatNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from serve_wechat
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.serve.wechat.entity.ServeWechat"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from serve_wechat
+		<include refid="dynamicWhere" />
+		order by id
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.serve.wechat.entity.ServeWechat"
+		resultType="Long">
+		select
+			count(1)
+		from serve_wechat
+		<include refid="dynamicWhere" />
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from serve_wechat
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insertSelective" parameterType="com.base.crm.serve.wechat.entity.ServeWechat">
+		insert into serve_wechat
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="serveWechatNo != null">
+				serve_Wechat_No,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="serveWechatNo != null">
+				#{serveWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.serve.wechat.entity.ServeWechat">
+		update serve_wechat
+		<set>
+			<if test="serveWechatNo != null">
+				serve_Wechat_No = #{serveWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+</mapper>

@@ -21,4 +21,7 @@ public interface UserInfoMapper {
 	Long selectPageTotalCount(UserInfo userInfo);
 
 	List<UserInfo> selectPageByObjectForList(UserInfo userInfo);
+
+	List<UserInfo> selectAll();
+
 }

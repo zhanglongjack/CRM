@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.base.crm.users.constants.UserContainer;
 import com.base.crm.users.dao.UserInfoMapper;
 import com.base.crm.users.entity.UserInfo;
 import com.base.crm.users.service.UserService;
@@ -13,6 +14,8 @@ import com.base.crm.users.service.UserService;
 @Service
 public class UserServiceImpl implements UserService{
 
+	@Autowired
+	private UserContainer userContainer;
     @Autowired
     private UserInfoMapper userInfoMapper;
 
@@ -23,7 +26,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int insertSelective(UserInfo record) {
-		return userInfoMapper.insertSelective(record);
+		int count = userInfoMapper.insertSelective(record);
+		userContainer.buildUserInfo();
+		return count;
 	}
 
 	@Override
@@ -33,7 +38,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int updateByPrimaryKeySelective(UserInfo record) {
-		return userInfoMapper.updateByPrimaryKeySelective(record);
+		int count =  userInfoMapper.updateByPrimaryKeySelective(record);
+		userContainer.buildUserInfo();
+		return count;
 	}
 
 	@Override
@@ -50,7 +57,10 @@ public class UserServiceImpl implements UserService{
 	public List<UserInfo> selectPageByObjectForList(UserInfo userInfo) {
 		return userInfoMapper.selectPageByObjectForList(userInfo);
 	}
-    
 
+	@Override
+	public List<UserInfo> selectAllForMap() {
+		return userInfoMapper.selectAll();
+	}
 
 }

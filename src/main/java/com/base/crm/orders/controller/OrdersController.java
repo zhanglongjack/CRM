@@ -52,6 +52,8 @@ public class OrdersController {
 	private CustInfoService custInfoService;
 	@Autowired
 	private CustomerConsumeService customerConsumeService;
+	@Autowired
+	private OrderExcelMappings orderExcelMappings;
 	
 	@RequestMapping(value="/ordersView")
 	public ModelAndView ordersView(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user){
@@ -75,12 +77,12 @@ public class OrdersController {
 	public Map<String,Object>  orderEdit(CustOrder order) throws Exception{
 		logger.info("ordersView request :"+order);
 		int num = custOrderService.updateByPrimaryKeySelective(order);
-		
+		CustOrder resultOrder = custOrderService.selectByPrimaryKey(order.getOrderNo());
 		CustomerConsume consume = new CustomerConsume();
 		consume.setUserId(order.getUserId());
 		consume.setWechatNo(order.getoWechatNo());
 		consume.setOrderNo(order.getOrderNo());
-		consume.setConsumeDate(new Dates(Locale.ROOT).format(new Date(), "yyyyMMdd"));
+		consume.setConsumeDate(resultOrder.getOrderDate());
 		
 		
 		if(order.getOrderStatus()==OrderStatus.WAITING.getKey()){
@@ -94,7 +96,6 @@ public class OrdersController {
 				consume.setAmount(new BigDecimal(order.getPayAmount()).negate());
 				consume.setRemark(String.format("微信号[%s]的余额消费:%s元,订单号[%s]",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			}
-			
 		}else if(order.getOrderStatus()==OrderStatus.SIGNED.getKey()){
 			if(order.getCashOnDeliveryAmt()!=null&&order.getCashOnDeliveryAmt()>0){
 				consume.setConsumeType(2);
@@ -107,8 +108,8 @@ public class OrdersController {
 			consume.setRemark(String.format("微信号[%s]的金额消费:%s元,订单号[%s]拒收",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			customerConsumeService.updateByOrderNo(consume);
 		}
-		
-		if(consume.getRemark()!=null && order.getPaymentMethod()!=3){
+		int paymentMethod = order.getPaymentMethod()==null?-1:order.getPaymentMethod();
+		if(consume.getRemark()!=null && paymentMethod!=3){
 			logger.info(consume.getRemark());
 			customerConsumeService.insertSelective(consume);
 		}
@@ -196,11 +197,11 @@ public class OrdersController {
         List<CustOrder> data = custOrderService.selectByObjectForList(order);
         JSONArray jsonObj = JSON.parseArray(JSON.toJSONString(data));
         logger.info("order========"+jsonObj);
-        
-        ExcelMappingsAbstract mapping = new OrderExcelMappings(jsonObj);
-        
+         
+//        ExcelMappingsAbstract mapping = new OrderExcelMappings(jsonObj);
+        orderExcelMappings.setOrderExcelMappings(jsonObj);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("ExcelMappings", mapping);
+        map.put("ExcelMappings", orderExcelMappings);
 
         return new ModelAndView(new ExcelView(), map);
     }

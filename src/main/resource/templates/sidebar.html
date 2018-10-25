@@ -7,14 +7,19 @@
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav"> 
-						<li><a href="/index" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
-						<li><a href="/customer/custInfoView" class=""><i class="lnr lnr-users"></i> <span>客户信息</span></a></li>
-						<li><a href="/revisit/revisitView" class=""><i class="lnr lnr-bubble"></i> <span>回访记录</span></a></li>
-						<li><a href="/orders/ordersView" class=""><i class="lnr lnr-license"></i> <span>订单信息</span></a></li>
-						<li><a href="/consume/consumeView" class=""><i class="glyphicon glyphicon-credit-card"></i> <span>会员消费</span></a></li>
-						<li><a href="#" class=""><i class="lnr lnr-chart-bars"></i> <span>我的业绩</span></a></li>
-						<li th:if="${session.user.isAdmin()}"><a href="/userList/userListView" class=""><i class="glyphicon glyphicon-headphones"></i> <span>客服管理</span></a></li>
+						<li><a href="/index" id="menu-1"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
+						<li><a href="/customer/custInfoView" id="menu-2"><i class="lnr lnr-users"></i> <span>客户信息</span></a></li>
+						<li><a href="/revisit/revisitView" id="menu-3"><i class="lnr lnr-bubble"></i> <span>回访记录</span></a></li>
+						<li><a href="/orders/ordersView" id="menu-4"><i class="lnr lnr-license"></i> <span>订单信息</span></a></li>
+						<li><a href="/consume/consumeView" id="menu-5"><i class="glyphicon glyphicon-credit-card"></i> <span>会员消费</span></a></li>
+						<li><a href="/sign/signView" id="menu-6"><i class="glyphicon glyphicon-heart"></i> <span>客服签到记录</span></a></li>
+						
+						<li th:if="${session.user.isAdmin()}" ><a href="/userList/userListView" id="menu-7"><i class="glyphicon glyphicon-headphones"></i> <span>客服管理</span></a></li>
+						<li th:if="${session.user.isAdmin()}"><a href="/serve/wechat/serveWechatView" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>服务微信管理</span></a></li>
 						<!-- 
+						<li><a href="#" id="menu-6"><i class="lnr lnr-chart-bars"></i> <span>我的业绩</span></a></li>
+						
+						
 						<li><a href="/home" class=""><i class="lnr lnr-chart-bars"></i> <span>test</span></a></li>
 						<li><a href="/page/charts.html" class=""><i class="lnr lnr-earth"></i> <span>客服信息</span></a></li>
 						<li><a href="/page/panels.html" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
@@ -40,4 +45,6 @@
 		</div>
 		<!-- END NAVBAR -->
     </body>
+</script>
+
 </html>

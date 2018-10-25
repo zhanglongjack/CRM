@@ -59,6 +59,7 @@ var initOrderCheck = function(){
         message: '输入无效,请重新输入',
         group:'.form-group',
         trigger: 'keyup focus',
+        excluded: [':disabled'],
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -152,7 +153,7 @@ var initOrderCheck = function(){
                         callback:function(value, validator,$field){
 							var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
 							
-							if(Number(orderStatus)==3){
+							if(Number(orderStatus)>=2){
 								return true;
 							}
 							
@@ -161,16 +162,19 @@ var initOrderCheck = function(){
                         		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(value);
                         	}
 							
-							if(userAmt==0&&(value<=0||value=='')){
+                        	var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+                        	
+							if(userAmt==0&&(value<=0||value=='') && paymentMethod!=3&&paymentMethod!=1){
+								
 								return  {
 			                        valid: false,
-			                        message: '会员余额为0时,定金必填,且不可为0'
+			                        message: '会员余额为0时,定金必填,且必须大于0'
 			                    };
 							}
 							
 							var cashOnDeliveryAmt = Number($("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val());
 							var afterDiscountAmt = Number($("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').val());
-							if(afterDiscountAmt>Number(value)+cashOnDeliveryAmt){
+							if(userAmt==0&&afterDiscountAmt>Number(value)+cashOnDeliveryAmt){
 								return  {
 			                        valid: false,
 			                        message: '会员余额为0,定金+到付金额不能小于折扣金额'
@@ -179,6 +183,13 @@ var initOrderCheck = function(){
 								validator.updateStatus('cashOnDeliveryAmt', 'VALID');
 							}
 							
+							var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+							if(userAmt==0&&(paymentMethod!=1&&paymentMethod!=3) && value<=0){
+								return  {
+			                        valid: false,
+			                        message: '会员余额为0,非货到付款/赠品,定金必须大于0'
+			                    };
+							}
 			            	
 							return true;
                         }
@@ -196,8 +207,8 @@ var initOrderCheck = function(){
 							var deposits = Number($("#ModifyModal").find('.modal-body input[name="deposits"]').val());
 							var value = Number(fieldValue);
 							var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
-							
-							if(Number(orderStatus)==3){
+
+							if(Number(orderStatus)>=2){
 								return true;
 							}
 							if(userAmt==0 && afterDiscountAmt>value+deposits){
@@ -215,7 +226,7 @@ var initOrderCheck = function(){
 							if(userAmt==0 && afterDiscountAmt==0 && value<=0 && paymentMethod!=3){
 								return  {
 			                        valid: false,
-			                        message: '会员余额为0时,到付金额必填,且不可为0'
+			                        message: '会员余额为0时,到付金额必填,且必须大于0'
 			                    };
 							}else if(userAmt>0 && (userAmt-afterDiscountAmt)<0){
 								//$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val(afterDiscountAmt - userAmt);
@@ -223,6 +234,11 @@ var initOrderCheck = function(){
 			                        valid: value >= afterDiscountAmt - userAmt - deposits,
 			                        message: '会员余额不足时,到付金额必填,且到付金额=折扣金额-会员余额'
 			                    };
+							}
+							
+							var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+							if(paymentMethod!=1 && deposits<=0){
+								validator.updateStatus('deposits', 'NOT_VALIDATED').validateField('deposits'); 
 							}
 							
 							return true;
@@ -240,6 +256,12 @@ var initOrderCheck = function(){
 							var afterDiscountAmt = $("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').val();
 							
 							validator.updateStatus('cashOnDeliveryAmt', 'NOT_VALIDATED').validateField('cashOnDeliveryAmt'); 
+							
+							var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
+							if(Number(orderStatus)==3){
+								return true;
+							}
+							
 							computePayAmount();
 							return true;
                         }
@@ -318,24 +340,24 @@ var initOrderCheck = function(){
 	}
 	
 	oWechatNoElement.keyup(checkWechatNo);
-	var oldValue = 0;
+	
 	$("#ModifyModal").find('.modal-body select[name="orderStatus"]').click(function(){
-		var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
-		var payAmountObj = $("#ModifyModal").find('.modal-body input[name="payAmount"]');
-		if(oldValue==0){
-			oldValue = Number(payAmountObj.val());
-		}
-		
-		if(Number(orderStatus)==3){
-			var cashOnDeliveryAmt = Number($("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val());
-			payAmountObj.val((oldValue + cashOnDeliveryAmt).toFixed(2));
-		}else{
-			payAmountObj.val(oldValue.toFixed(2));
-		}
+		upatePayAmount();
 	});
 	
 	$("#ModifyModal").find('.modal-body select[name="paymentMethod"]').click(function(){
 		var paymentMethod = $("#ModifyModal").find('.modal-body select[name="paymentMethod"] option:selected').val();
+		var validator = $("#modifyDataFrom").data("bootstrapValidator");
+		
+		$("#ModifyModal").find('.modal-body input[name="deposits"]').removeAttr("readonly");
+		$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').removeAttr("readonly");
+		$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').removeAttr("readonly");
+		$("#ModifyModal").find('.modal-body input[name="totalAmt"]').removeAttr("readonly");
+		
+		validator.updateStatus('cashOnDeliveryAmt', 'NOT_VALIDATED').validateField('cashOnDeliveryAmt'); 
+		validator.updateStatus('deposits', 'NOT_VALIDATED').validateField('deposits'); 
+		validator.updateStatus('totalAmt', 'NOT_VALIDATED').validateField('totalAmt'); 
+		validator.updateStatus('afterDiscountAmt', 'NOT_VALIDATED').validateField('afterDiscountAmt'); 
 		if(paymentMethod==3){
 			$("#ModifyModal").find('.modal-body input[name="deposits"]').val(0);
 			$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val(0);
@@ -346,20 +368,37 @@ var initOrderCheck = function(){
 			$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').attr("readonly","true");
 			$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').attr("readonly","true");
 			$("#ModifyModal").find('.modal-body input[name="totalAmt"]').attr("readonly","true");
+			
+			
+			
+		}else if(paymentMethod==1){
+			var afterDiscountAmt = Number($("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').val());
+			var deposits = Number($("#ModifyModal").find('.modal-body input[name="deposits"]').val());
+			var cashOnDeliveryAmt = Number($("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val());
+			
+			
+			if(deposits + cashOnDeliveryAmt < afterDiscountAmt){
+//				validator.updateStatus('cashOnDeliveryAmt', 'NOT_VALIDATED').validateField('cashOnDeliveryAmt'); 
+				//validator.updateStatus('deposits', 'NOT_VALIDATED').validateField('deposits'); 
+			}else{
+				validator.updateStatus('cashOnDeliveryAmt', 'VALID'); 
+				validator.updateStatus('deposits', 'VALID'); 
+			}
 		}else{
-			$("#ModifyModal").find('.modal-body input[name="deposits"]').removeAttr("readonly");
-			$("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').removeAttr("readonly");
-			$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').removeAttr("readonly");
-			$("#ModifyModal").find('.modal-body input[name="totalAmt"]').removeAttr("readonly");
+//			validator.updateStatus('cashOnDeliveryAmt', 'NOT_VALIDATED').validateField('cashOnDeliveryAmt'); 
+//			validator.updateStatus('deposits', 'NOT_VALIDATED').validateField('deposits'); 
 		}
+
+		upatePayAmount();
 		
-		
-		
-		
+	});
+	
+	var payAmountObj = $("#ModifyModal").find('.modal-body input[name="payAmount"]');
+	var oldValue = Number(payAmountObj.val());
+	
+	function upatePayAmount(){
+		var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
 		var payAmountObj = $("#ModifyModal").find('.modal-body input[name="payAmount"]');
-		if(oldValue==0){
-			oldValue = Number(payAmountObj.val());
-		}
 		
 		if(Number(orderStatus)==3){
 			var cashOnDeliveryAmt = Number($("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val());
@@ -367,6 +406,8 @@ var initOrderCheck = function(){
 		}else{
 			payAmountObj.val(oldValue.toFixed(2));
 		}
-	});
+	}
+	
+	
 	
 }

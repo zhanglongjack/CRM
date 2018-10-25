@@ -19,4 +19,7 @@ public interface UserService {
 	Long selectPageTotalCount(UserInfo userInfo);
 
 	List<UserInfo> selectPageByObjectForList(UserInfo userInfo);
+
+	List<UserInfo> selectAllForMap();
+
 }

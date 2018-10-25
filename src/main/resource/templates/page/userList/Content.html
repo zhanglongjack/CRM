@@ -52,31 +52,30 @@
 					<!-- TABLE HOVER -->
 					<div class="panel panel-info">
 						<form class="form-inline" id="queryFrom">
-							<div class="panel-body" style="border-bottom:solid #ddd 1px;">
-									<div class="form-group">
-										<label>客服编号</label> 
+							<div class="panel-body">
+									<div class="form-group col-sm-2">
+										<label>客服编号</label><br> 
 										<input type="text" class="form-control"  placeholder="客服编号" name="uId" 
 											th:attr="value=${queryObject==null}?'':${queryObject.uId}">
 									</div>
-									<div class="form-group">
-										<label>姓名</label> 
+									<div class="form-group col-sm-2">
+										<label>姓名</label><br> 
 										<input type="text" class="form-control"  placeholder="姓名" name="name" 
 											th:attr="value=${queryObject==null}?'':${queryObject.name}">
 									</div>
-									<div class="form-group">
-										<label>客服微信</label> 
+									<div class="form-group col-sm-2">
+										<label>客服微信</label><br> 
 										<input type="text" class="form-control"  placeholder="客服微信" name="wechatNumber" 
 											th:attr="value=${queryObject==null}?'':${queryObject.wechatNumber}">
 									</div>
-									<div class="form-group">
-										<label>联系电话</label> 
+									<div class="form-group col-sm-2">
+										<label>联系电话</label><br> 
 										<input type="text" class="form-control"  placeholder="联系电话" name="phone" 
 											th:attr="value=${queryObject==null}?'':${queryObject.phone}">
 									</div>
 							</div>
-		
-							<div class="panel-body"  style="border-bottom:solid #ddd 1px;">
-									<div style="float:right;" >
+							<div class="panel-body border-up-down">
+									<div class="btn-right"> 
 										<div class="btn-group">
 											<button id="queryBTN" type="button" class="btn btn-default">
 											<i class="fa fa-search"></i> 查询
@@ -113,7 +112,7 @@
 										<td th:text="${obj.phone}"></td>
 										<td th:text="${obj.wechatNumber}"></td>
 										<td th:text="${obj.password}"></td>
-										<td th:text="${obj.uLevel}"></td>
+										<td th:text="${@staffLevel.get(obj.uLevel)}"></td>
 										<td th:text="${obj.entryDate}"></td>
 										<td>
 											<div class="btn-group">

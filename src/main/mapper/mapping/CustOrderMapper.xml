@@ -65,6 +65,8 @@
 			<if test="contact != null and contact.length()>0">and contact like  CONCAT(#{contact},'%')</if>
 			<if test="address != null and address.length()>0">and address like  CONCAT(#{address},'%')</if>
 			<if test="orderDate != null and orderDate.length()>0">and order_date=#{orderDate}</if>
+			<if test="startDate != null and startDate.length()>0">and order_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and order_date <![CDATA[<=]]>#{endDate}</if>
 			<if test="oPhone != null">and o_phone = #{oPhone}</if>
 			<if test="deposits != null">and deposits = #{deposits}</if>
 			<if test="paymentMethod != null">and payment_method = #{paymentMethod}</if>

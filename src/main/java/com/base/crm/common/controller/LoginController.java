@@ -20,6 +20,7 @@ import com.base.crm.common.constants.ConsumeType;
 import com.base.crm.common.constants.CustomerLevelContainer;
 import com.base.crm.common.constants.OrderStatus;
 import com.base.crm.common.constants.PaymentMethodStatus;
+import com.base.crm.common.constants.StaffLevel;
 import com.base.crm.users.entity.UserInfo;
 import com.base.crm.users.service.UserService;
 
@@ -53,6 +54,7 @@ public class LoginController {
 		session.setAttribute("orderStatusMap", OrderStatus.getValues());
 		session.setAttribute("paymentMethodMap", PaymentMethodStatus.paymentMethodMap);
 		session.setAttribute("consumeTypeMap", ConsumeType.consumeTypeMap);
+		session.setAttribute("staffLevelMap", StaffLevel.staffLevelMap);
 		map.put("success", 1); 
 		return map;
 	}

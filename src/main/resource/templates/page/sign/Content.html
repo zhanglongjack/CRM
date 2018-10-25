@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+	<div th:fragment="container-fluid" class="container-fluid">
+		<script type="text/javascript">
+			$(function() {
+				pageQueryParams.index = '[[${pageTools.index}]]';
+				pageQueryParams.pageSize = '[[${pageTools.pageSize}]]';
+				pageQueryParams.total = '[[${pageTools.total}]]';
+
+				$("#queryBTN").click(function() {
+					var dataParams = $("#queryFrom").serialize();
+					pageQueryParams.fromQueryData = dataParams;
+					render(pageQueryParams); // 渲染页面函数
+				});
+
+				$("a[del-id]").click(function() {
+					var did = $(this).attr("del-id");
+					var targetUrl = "/sign/signDel";
+
+					$.ajax({
+						type : 'post',
+						url : targetUrl,
+						cache : false,
+						data : {
+							id : Number(did)
+						},
+						dataType : 'json',
+						success : function(data) {
+							toastr.success("删除成功");
+							render(pageQueryParams); // 渲染页面函数
+						},
+						error : function(data) {
+							if (data.responseJSON) {
+								toastr.error("删除失败:" + data.responseJSON.message);
+							}
+						}
+					})
+
+				});
+
+				$("[data-toggle='popover']").popover();
+
+				initTimePicker();
+
+			});
+		</script>
+		<h3 class="page-title">签到信息</h3>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- TABLE HOVER -->
+				<div class="panel panel-info">
+					<form class="form-inline" id="queryFrom">
+						<div class="panel-body">
+							<div class="form-group col-sm-2" th:if="${session.user.isAdmin()}">
+								<label>客服姓名</label>
+								<br>
+								<select class="form-control" name="userId">
+									<option value="">===选择客服===</option>
+									<option th:each="map:${@userContainer.userMap}"
+										th:selected="${queryObject!=null&&queryObject.userId == map.key}" th:value="${map.key}"
+										th:text="${map.value}"></option>
+								</select>
+							</div>
+							<div class="form-group col-sm-2">
+								<label>开始日期</label>
+								<br>
+								<span class="input-group input-append date" datepicker-flag="datepicker">
+									<input type="text" class="form-control" name="startDate" placeholder="yyyymmdd"
+										data-date-format="yyyymmdd" readonly
+										th:attr="value=${queryObject.startDate==null?#dates.format(#dates.createNow(), 'yyyyMM01'):queryObject.startDate}">
+									<span class="input-group-addon add-on">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+							<div class="form-group col-sm-2">
+								<label>结束日期</label>
+								<br>
+								<span class="input-group input-append date" datepicker-flag="datepicker">
+									<input type="text" class="form-control" name="endDate" placeholder="yyyymmdd"
+										data-date-format="yyyymmdd" readonly
+										th:attr="value=${queryObject.endDate==null?#dates.format(#dates.createNow(), 'yyyyMMdd'):queryObject.endDate}">
+									<span class="input-group-addon add-on">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>
+						<div class="panel-body border-up-down">
+							<div class="btn-right">
+								<div class="btn-group">
+									<button id="queryBTN" type="button" class="btn btn-default">
+										<i class="fa fa-search"></i>
+										查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="panel-body table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>服务客服</th>
+									<th>客服姓名</th>
+									<th>签到日期</th>
+									<th>签到时间</th>
+									<th>签退时间</th>
+									<th th:if="${session.user.isAdmin()}">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="obj : ${resultList}">
+									<td th:text="${obj.userId}"></td>
+									<td th:text="${obj.userName}"></td>
+									<td th:text="${obj.signDate}"></td>
+									<td th:text="${obj.signTime}"></td>
+									<td th:text="${obj.signExitTime}"></td>
+									<td th:if="${session.user.isAdmin()}">
+										<div class="btn-group">
+											<a class="btn btn-default btn-sm" th:attr="del-id=${obj.id}">
+												<span class="glyphicon glyphicon-trash"></span>
+												&nbsp;删除
+											</a>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="panel-footer">
+						<ul class="pagination">
+
+						</ul>
+					</div>
+				</div>
+				<!-- END TABLE HOVER -->
+			</div>
+		</div>
+	</div>
+</body>
+</html>

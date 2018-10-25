@@ -90,7 +90,6 @@ public class RevisitController {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Map<String, Object> revisitEdit(CustRevisitRecord revisit) throws Exception {
 		logger.info("revisitEdit request :" + revisit);
-		
 		setTimeForRevisit(revisit);
 		int num = custRevisitRecordService.updateByPrimaryKeySelective(revisit);
 		

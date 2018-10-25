@@ -12,6 +12,7 @@ public class UserInfo {
     private String wechatNumber;
 
     private String password;
+    private String newPwd;
 
     private Integer uLevel;
 
@@ -55,7 +56,15 @@ public class UserInfo {
         this.password = password;
     }
 
-    public Integer getuLevel() {
+    public String getNewPwd() {
+		return newPwd;
+	}
+
+	public void setNewPwd(String newPwd) {
+		this.newPwd = newPwd;
+	}
+
+	public Integer getuLevel() {
 		return uLevel;
 	}
 

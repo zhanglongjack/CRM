@@ -1,7 +1,11 @@
 package com.base.crm.orders.entity;
 
 import java.util.Date;
+import java.util.Locale;
 
+import org.thymeleaf.util.DateUtils;
+
+import com.base.common.util.DateFormateType;
 import com.base.common.util.PageTools;
 import com.base.crm.customer.entity.CustInfo;
 import com.base.crm.users.entity.UserInfo;
@@ -50,6 +54,10 @@ public class CustOrder {
 	private CustInfo custInfo;
 	
 	private Integer oldOrderStatus;
+	
+	// query
+	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
+	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
 	
 	public Long getOrderNo() {
 		return orderNo;
@@ -235,13 +243,31 @@ public class CustOrder {
 		this.remark = remark;
 	}
 
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
-				"CustOrder [orderNo=%s, userId=%s, oWechatNo=%s, orderStatus=%s, contact=%s, oPhone=%s, productList=%s, deposits=%s, afterDiscountAmt=%s, payAmount=%s, cashOnDeliveryAmt=%s, totalAmt=%s, paymentMethod=%s, expressNo=%s, orderDate=%s, pageTools=%s, user=%s, custInfo=%s]",
-				orderNo, userId, oWechatNo, orderStatus, contact, oPhone, productList, deposits, afterDiscountAmt,
-				payAmount, cashOnDeliveryAmt, totalAmt, paymentMethod, expressNo, orderDate, pageTools, user, custInfo);
+				"CustOrder [orderNo=%s, userId=%s, oWechatNo=%s, orderStatus=%s, contact=%s, oPhone=%s, deposits=%s, cashOnDeliveryAmt=%s, totalAmt=%s, afterDiscountAmt=%s, payAmount=%s, paymentMethod=%s, expressNo=%s, orderDate=%s, orderDatetime=%s, remark=%s, oldOrderStatus=%s, startDate=%s, endDate=%s]",
+				orderNo, userId, oWechatNo, orderStatus, contact, oPhone, deposits, cashOnDeliveryAmt, totalAmt,
+				afterDiscountAmt, payAmount, paymentMethod, expressNo, orderDate, orderDatetime, remark, oldOrderStatus,
+				startDate, endDate);
 	}
+
 
 
 

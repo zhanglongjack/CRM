@@ -107,7 +107,7 @@ public class UserListController {
 	@ResponseBody
 	public Map<String,Object> pwdReset(UserInfo userInfo) throws Exception{
 		logger.info("pwdReset request:{}",userInfo);
-		userInfo.setPassword("123");
+		userInfo.setNewPwd("123");
 		userService.updateByPrimaryKeySelective(userInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);

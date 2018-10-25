@@ -31,15 +31,26 @@
 			<if test="orderNo != null">and order_no=#{orderNo}</if>
 			<if test="consumeType != null">and consume_type=#{consumeType}</if>
 			<if test="consumeDate != null and consumeDate.length()>0">and consume_date=#{consumeDate}</if>
+			<if test="startDate != null and startDate.length()>0">and consume_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and consume_date <![CDATA[<=]]>#{endDate}</if>
 		</where>
 	</sql>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
-		select
+		select 
 		<include refid="Base_Column_List" />
 		from customer_consume
 		where consume_id = #{consumeId,jdbcType=BIGINT}
+	</select>
+			
+	<select id="selectByObjectForList" parameterType="com.base.crm.consume.entity.CustomerConsume"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from customer_consume
+		<include refid="dynamicWhere" />
+		order by consume_id desc
 	</select>
 	
 	<select id="selectPageByObjectForList" parameterType="com.base.crm.consume.entity.CustomerConsume"
@@ -59,7 +70,6 @@
 		from customer_consume
 		<include refid="dynamicWhere" />
 	</select>
-	
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from customer_consume
