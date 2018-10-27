@@ -15,10 +15,10 @@
 	<sql id="dynamicWhere">
 		<where>
 			<if test="userId != null">user_id=#{userId}</if>
-			<if test="userName != null and userName.length()>0">and user_name=#{userName}</if>
-			<if test="signDate != null and signDate.length()>0">and sign_date=#{signDate}</if>
-			<if test="startDate != null and startDate.length()>0">and sign_date>=#{startDate}</if>
-			<if test="endDate != null and endDate.length()>0">and sign_date  <![CDATA[<=]]> #{endDate}</if>
+			<if test="userName != null and userName.length()&gt;0">and user_name=#{userName}</if>
+			<if test="signDate != null and signDate.length()&gt;0">and sign_date=#{signDate}</if>
+			<if test="startDate != null and startDate.length()&gt;0">and sign_date&gt;=#{startDate}</if>
+			<if test="endDate != null and endDate.length()&gt;0">and sign_date  <![CDATA[<=]]> #{endDate}</if>
 		</where>
 	</sql>
 	
@@ -29,8 +29,7 @@
 		<include refid="dynamicWhere" />
 	</select>
 	
-	<select id="selectPageByObjectForList" parameterType="com.base.crm.sign.entity.UserSign"
-		resultMap="BaseResultMap">
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.sign.entity.UserSign" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from user_sign
@@ -39,8 +38,7 @@
 		limit #{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 	
-	<select id="selectPageTotalCount" parameterType="com.base.crm.sign.entity.UserSign"
-		resultType="Long">
+	<select id="selectPageTotalCount" parameterType="com.base.crm.sign.entity.UserSign" resultType="Long">
 		select
 			count(1)
 		from user_sign

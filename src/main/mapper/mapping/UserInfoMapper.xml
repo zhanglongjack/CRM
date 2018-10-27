@@ -48,7 +48,7 @@
 		order by u_id
 	</select>
   
-	<select id="selectPageByObjectForList" parameterType="com.base.crm.consume.entity.CustomerConsume"
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.users.entity.UserInfo"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
@@ -58,7 +58,7 @@
 		limit #{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 	
-	<select id="selectPageTotalCount" parameterType="com.base.crm.consume.entity.CustomerConsume"
+	<select id="selectPageTotalCount" parameterType="com.base.crm.users.entity.UserInfo"
 		resultType="Long">
 		select
 			count(1)
