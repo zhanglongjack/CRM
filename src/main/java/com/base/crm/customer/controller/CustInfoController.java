@@ -69,19 +69,21 @@ public class CustInfoController {
 	@RequestMapping(value="/custInfoRecharge")
 	@ResponseBody
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
-	public Map<String,Object> custInfoRecharge(CustInfo custInfo){
-		logger.info("custInfoRecharge request:{}",custInfo);
-		
-		CustomerConsume consume = new CustomerConsume();
-		consume.setConsumeType(1);
-		consume.setAmount(new BigDecimal(custInfo.getAmt()));
-		consume.setUserId(custInfo.getUserId());
-		consume.setWechatNo(custInfo.getCustWechatNo());
+	public Map<String,Object> custInfoRecharge(CustomerConsume consume){
+		logger.info("custInfoRecharge request:{}",consume);
+		 
 		consume.setConsumeDate(new Dates(Locale.ROOT).format(new Date(), "yyyyMMdd"));
-		consume.setRemark(String.format("微信号[%s]的会员充值:%s元",custInfo.getCustWechatNo(), custInfo.getAmt()));
+		if(consume.getConsumeType() == 1){
+			consume.setRemark(String.format("微信号[%s]的会员充值:%s元",consume.getWechatNo(), consume.getAmount()));
+		}else {
+			consume.setRemark(String.format("微信号[%s]的赠送余额:%s元",consume.getWechatNo(), consume.getAmount()));
+		}
 		logger.info(consume.getRemark());
 		customerConsumeService.insertSelective(consume);
 		
+		CustInfo custInfo = new CustInfo();
+		custInfo.setCustWechatNo(consume.getWechatNo());
+		custInfo.setAmt(consume.getAmount().doubleValue());
 		
 		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -89,6 +91,7 @@ public class CustInfoController {
 		map.put("editNumber", num);
 		return map;
 	}
+	
 	
 	@RequestMapping(value="/custInfoAdd")
 	@ResponseBody

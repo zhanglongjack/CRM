@@ -273,16 +273,16 @@ var initOrderCheck = function(){
                 validators: {
                     notEmpty: {
                         message: '手机号不能为空'
-                    },
-                    stringLength: {
-                        min: 11,
-                        max: 11,
-                        message: '手机号长度必须是由11位数字组成'
-                    },
-                    regexp: {
-                        regexp: /^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
-                        message: '手机号格式不正确'
                     }
+//                    stringLength: {
+//                        min: 11,
+//                        max: 11,
+//                        message: '手机号长度必须是由11位数字组成'
+//                    },
+//                    regexp: {
+//                        regexp: /^((1[3,5,7,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\d{8}$/,
+//                        message: '手机号格式不正确'
+//                    }
                 }
             }
         }

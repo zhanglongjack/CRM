@@ -38,8 +38,8 @@
 										<option th:if="${!session.user.isAdmin()}" th:each="map:${@serveWechatContainer.userServeWechatMap.get(session.user.uId)}" th:selected="${custInfo!=null&&custInfo.serveWechatNo == map.value}" 
 												th:value="${map.value}" th:text="${map.value}"></option>
 												
-										<option th:if="${session.user.isAdmin()}" th:each="map:${@userContainer.userMap}" th:selected="${custInfo!=null&&custInfo.userId == map.key}" 
-											th:value="${map.key}" th:text="${map.value}"></option>
+										<option th:if="${session.user.isAdmin()}" th:each="map:${@serveWechatContainer.serveWechatMap}" th:selected="${custInfo!=null&&custInfo.serveWechatNo == map.value}" 
+												th:value="${map.value}" th:text="${map.value}"></option>
 									</select>
 								</div>
 							</div>

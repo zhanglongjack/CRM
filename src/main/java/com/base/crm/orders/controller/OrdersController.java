@@ -57,7 +57,7 @@ public class OrdersController {
 	
 	@RequestMapping(value="/ordersView")
 	public ModelAndView ordersView(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user){
-		logger.info("ordersView request");
+		logger.info("ordersView request:"+order);
 		if(!user.isAdmin()){
 			order.setUserId(user.getuId());
 		}

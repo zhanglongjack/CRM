@@ -14,6 +14,7 @@ public class ConsumeType {
 		consumeTypeMap.put(2, "订单金额消费");
 		consumeTypeMap.put(3, "订单余额消费");
 		consumeTypeMap.put(4, "拒签");
+		consumeTypeMap.put(5, "赠送余额");
 	}
 	
 }
