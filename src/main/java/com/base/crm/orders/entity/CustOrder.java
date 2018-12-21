@@ -1,5 +1,6 @@
 package com.base.crm.orders.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
@@ -48,6 +49,8 @@ public class CustOrder {
 	private Date orderDatetime;
 
 	private String remark;
+	private String buyStatus;
+	private Double expressAmount;
 	
 	private PageTools pageTools;
 	private UserInfo user;
@@ -58,6 +61,10 @@ public class CustOrder {
 	// query
 	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
 	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
+	
+	public Double getCommission(){
+		return new BigDecimal(cashOnDeliveryAmt*0.03).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue();
+	}
 	
 	public Long getOrderNo() {
 		return orderNo;
@@ -257,6 +264,22 @@ public class CustOrder {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getBuyStatus() {
+		return buyStatus;
+	}
+
+	public void setBuyStatus(String buyStatus) {
+		this.buyStatus = buyStatus;
+	}
+
+	public Double getExpressAmount() {
+		return expressAmount;
+	}
+
+	public void setExpressAmount(Double expressAmount) {
+		this.expressAmount = expressAmount;
 	}
 
 	@Override

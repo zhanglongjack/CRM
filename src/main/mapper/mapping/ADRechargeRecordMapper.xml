@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.ad.dao.ADRechargeRecordMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.ad.entity.ADRechargeRecord">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="account_type" jdbcType="VARCHAR" property="accountType" />
+		<result column="recharge_amount" jdbcType="DECIMAL" property="rechargeAmount" />
+		<result column="real_amount" jdbcType="DECIMAL" property="realAmount" />
+		<result column="return_rate" jdbcType="DECIMAL" property="returnRate" />
+		<result column="recharge_date" jdbcType="VARCHAR" property="rechargeDate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, account_type, recharge_amount, real_amount,
+		return_rate,
+		recharge_date
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="accountType != null and accountType.length()>0">and account_type=#{accountType}</if>
+			<if test="rechargeDate != null and rechargeDate.length()>0">and recharge_date=#{rechargeDate}</if>
+			<if test="startDate != null and startDate.length()>0">and recharge_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and recharge_date <![CDATA[<=]]>#{endDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_recharge_record
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.ad.entity.ADRechargeRecord"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_recharge_record
+		<include refid="dynamicWhere" />
+		order by id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.ad.entity.ADRechargeRecord"
+		resultType="Long">
+		select
+			count(1)
+		from ad_recharge_record
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		ad_recharge_record
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.ad.entity.ADRechargeRecord">
+		insert into ad_recharge_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="accountType != null">
+				account_type,
+			</if>
+			<if test="rechargeAmount != null">
+				recharge_amount,
+			</if>
+			<if test="realAmount != null">
+				real_amount,
+			</if>
+			<if test="returnRate != null">
+				return_rate,
+			</if>
+			<if test="rechargeDate != null">
+				recharge_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="accountType != null">
+				#{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="rechargeAmount != null">
+				#{rechargeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="realAmount != null">
+				#{realAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="returnRate != null">
+				#{returnRate,jdbcType=DECIMAL},
+			</if>
+			<if test="rechargeDate != null">
+				#{rechargeDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.ad.entity.ADRechargeRecord">
+		update ad_recharge_record
+		<set>
+			<if test="accountType != null">
+				account_type = #{accountType,jdbcType=VARCHAR},
+			</if>
+			<if test="rechargeAmount != null">
+				recharge_amount = #{rechargeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="realAmount != null">
+				real_amount = #{realAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="returnRate != null">
+				return_rate = #{returnRate,jdbcType=DECIMAL},
+			</if>
+			<if test="rechargeDate != null">
+				recharge_date = #{rechargeDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

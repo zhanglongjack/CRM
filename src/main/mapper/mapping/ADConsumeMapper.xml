@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.ad.dao.ADConsumeMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.ad.entity.ADConsume">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="consume_account_type" jdbcType="VARCHAR" property="consumeAccountType" />
+		<result column="consume_amount" jdbcType="DECIMAL" property="consumeAmount" />
+		<result column="consume_date" jdbcType="VARCHAR" property="consumeDate" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, consume_account_type, consume_amount, consume_date
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="consumeAccountType != null and consumeAccountType.length()>0">and consume_account_type=#{consumeAccountType}</if>
+			<if test="consumeDate != null and consumeDate.length()>0">and consume_date=#{consumeDate}</if>
+			<if test="startDate != null and startDate.length()>0">and consume_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and consume_date <![CDATA[<=]]>#{endDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.ad.entity.ADConsume"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_consume
+		<include refid="dynamicWhere" />
+		order by id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.ad.entity.ADConsume"
+		resultType="Long">
+		select
+			count(1)
+		from ad_consume
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_consume
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ad_consume
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.ad.entity.ADConsume">
+		insert into ad_consume
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="consumeAccountType != null">
+				consume_account_type,
+			</if>
+			<if test="consumeAmount != null">
+				consume_amount,
+			</if>
+			<if test="consumeDate != null">
+				consume_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="consumeAccountType != null">
+				#{consumeAccountType,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeAmount != null">
+				#{consumeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="consumeDate != null">
+				#{consumeDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.ad.entity.ADConsume">
+		update ad_consume
+		<set>
+			<if test="consumeAccountType != null">
+				consume_account_type = #{consumeAccountType,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeAmount != null">
+				consume_amount = #{consumeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="consumeDate != null">
+				consume_date = #{consumeDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

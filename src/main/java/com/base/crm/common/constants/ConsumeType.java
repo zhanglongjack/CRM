@@ -16,5 +16,4 @@ public class ConsumeType {
 		consumeTypeMap.put(4, "拒签");
 		consumeTypeMap.put(5, "赠送余额");
 	}
-	
 }

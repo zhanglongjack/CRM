@@ -17,7 +17,7 @@ import com.base.crm.serve.wechat.service.ServeWechatService;
 @Component
 public class ServeWechatContainer  implements ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger logger = LoggerFactory.getLogger(ServeWechatContainer.class);
-	public Map<Long,String> serveWechatMap = new HashMap<Long,String>();
+	public Map<String,String> serveWechatMap = new HashMap<String,String>();
 	public Map<Long,Map<Long,String>> userServeWechatMap = new HashMap<Long,Map<Long,String>>();
 	@Autowired
 	private ServeWechatService serveWechatService;
@@ -35,7 +35,7 @@ public class ServeWechatContainer  implements ApplicationListener<ContextRefresh
 		logger.debug("serveWechatList:{}",serveWechatList);
 		for(ServeWechat serveWechat : serveWechatList){
 			
-			serveWechatMap.put(serveWechat.getId(), serveWechat.getServeWechatNo());
+			serveWechatMap.put(serveWechat.getServeWechatNo(), serveWechat.getServeWechatNo());
 			if(userServeWechatMap.containsKey(serveWechat.getUserId())){
 				userServeWechatMap.get(serveWechat.getUserId()).put(serveWechat.getId(), serveWechat.getServeWechatNo());
 			}else{
@@ -49,7 +49,7 @@ public class ServeWechatContainer  implements ApplicationListener<ContextRefresh
 		logger.debug("userServeWechatMap:{}",userServeWechatMap);
 	}
 	
-	public String get(Long key){
+	public String get(String key){
 		return serveWechatMap.get(key);
 	}
 	

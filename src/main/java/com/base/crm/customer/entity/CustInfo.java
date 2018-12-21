@@ -2,6 +2,7 @@ package com.base.crm.customer.entity;
 
 import com.base.common.util.PageTools;
 import com.base.crm.level.entity.Level;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CustInfo {
     private Long custId;
@@ -25,7 +26,9 @@ public class CustInfo {
     private String address;
 
     private String remark;
+    private String orderStatus;
     
+    @JsonIgnore
     private PageTools pageTools;
     private Level levelInfo;
 
@@ -125,6 +128,14 @@ public class CustInfo {
         this.remark = remark;
     }
 
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
 	public Level getLevelInfo() {
 		return levelInfo;
 	}
@@ -136,11 +147,9 @@ public class CustInfo {
 	@Override
 	public String toString() {
 		return String.format(
-				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, custPhone=%s, level=%s, addTime=%s, address=%s, remark=%s, pageTools=%s]",
-				custId, userId, custName, custWechatNo, custPhone, level, addTime, address, remark, pageTools);
+				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, pageTools=%s, levelInfo=%s]",
+				custId, userId, custName, custWechatNo, serveWechatNo, custPhone, level, amt, addTime, address, remark,
+				orderStatus, pageTools, levelInfo);
 	}
 
-
-    
-    
 }

@@ -28,7 +28,7 @@
 					<div class="modal-body">
 						<form id="modifyDataFrom" class="form-horizontal" role="form">
 							<input id="modifyId" name="custId" type="hidden" th:attr="value=${custInfo==null}?'':${custInfo.custId}">
-							<input id="userId" name="userId" type="hidden" th:attr="value=${custInfo!=null&&custInfo.userId!=null}?${custInfo.userId}:${session.user.uId}">
+							<input th:if="${!session.user.isAdmin()}" id="userId" name="userId" type="hidden" th:attr="value=${custInfo!=null&&custInfo.userId!=null}?${custInfo.userId}:${session.user.uId}">
 							<input id="modifyModel" name="modifyModel" type="hidden" th:attr="value=${modifyModel==null}?'':${modifyModel}">
 							<div class="form-group">
 								<label  class="col-sm-2 control-label">服务微信</label>
@@ -43,6 +43,18 @@
 									</select>
 								</div>
 							</div>
+							  
+							<div class="form-group" th:if="${session.user.isAdmin()}">
+								<label  class="col-sm-2 control-label">服务客服</label>
+								<div class="col-sm-10">
+									<select class="form-control" name="userId">
+										<option value="" >===服务客服===</option> 
+										<option th:each="map:${@userContainer.userMap}" th:selected="${custInfo!=null&&custInfo.userId == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+									</select>
+								</div>
+							</div>
+							
 							<div class="form-group">
 								<label  class="col-sm-2 control-label">粉丝微信</label>
 								<div class="col-sm-10">
@@ -65,6 +77,17 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label  class="col-sm-2 control-label">购买状态</label>
+								<div class="col-sm-10">
+									<select class="form-control" name="orderStatus">
+										<option th:each="map:${@commonConstants.custOrderStatusMap}" 
+												th:selected="${custInfo!=null&&custInfo.orderStatus == map.key}" 
+												th:value="${map.key}" th:text="${map.value}"></option>
+									</select> 
+								</div>
+							</div>
+							<!-- 
+							<div class="form-group">
 								<label  class="col-sm-2 control-label">会员等级</label>
 								<div class="col-sm-10">
 									
@@ -74,6 +97,7 @@
 									</select> 
 								</div>
 							</div>
+							 -->
 							<div class="form-group">
 								<label class="col-sm-2 control-label">加粉时间</label>
 								<div class="col-sm-10">

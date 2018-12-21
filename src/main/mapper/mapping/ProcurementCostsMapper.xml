@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.procurement.dao.ProcurementCostsMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.procurement.entity.ProcurementCosts">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="num" jdbcType="INTEGER" property="num" />
+		<result column="amount" jdbcType="VARCHAR" property="amount" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, product_name, num, amount, created_date
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="productName != null and productName.length()>0">and product_name=#{productName}</if>
+			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and created_date <![CDATA[<=]]>#{endDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from procurement_costs
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.procurement.entity.ProcurementCosts"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from procurement_costs
+		<include refid="dynamicWhere" />
+		order by id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.procurement.entity.ProcurementCosts"
+		resultType="Long">
+		select
+			count(1)
+		from procurement_costs
+		<include refid="dynamicWhere" />
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from procurement_costs
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.procurement.entity.ProcurementCosts">
+		insert into procurement_costs
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=INTEGER},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.procurement.entity.ProcurementCosts">
+		update procurement_costs
+		<set>
+			<if test="productName != null">
+				product_name = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=INTEGER},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	 
+</mapper>

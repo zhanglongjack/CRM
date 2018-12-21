@@ -195,11 +195,8 @@ public class OrdersController {
 		logger.info("orderExport request:"+order);
 
         List<CustOrder> data = custOrderService.selectByObjectForList(order);
-        JSONArray jsonObj = JSON.parseArray(JSON.toJSONString(data));
-        logger.info("order========"+jsonObj);
          
-//        ExcelMappingsAbstract mapping = new OrderExcelMappings(jsonObj);
-        orderExcelMappings.setOrderExcelMappings(jsonObj);
+        orderExcelMappings.setOrderExcelMappings(data);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("ExcelMappings", orderExcelMappings);
 

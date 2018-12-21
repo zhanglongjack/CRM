@@ -21,6 +21,8 @@
 		<result column="order_date" jdbcType="VARCHAR" property="orderDate" />
 		<result column="order_datetime" jdbcType="TIMESTAMP" property="orderDatetime" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="buy_status" jdbcType="VARCHAR" property="buyStatus" />
+		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
 	</resultMap>
 	
 	<resultMap id="pagCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
@@ -43,6 +45,8 @@
 		<result column="order_date" jdbcType="VARCHAR" property="orderDate" />
 		<result column="order_datetime" jdbcType="TIMESTAMP" property="orderDatetime" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="buy_status" jdbcType="VARCHAR" property="buyStatus" />
+		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
         <collection property="user" column="user_id" select="com.base.crm.users.dao.UserInfoMapper.selectByPrimaryKey">
         </collection>
         <collection property="custInfo" column="o_wechat_no" select="com.base.crm.customer.dao.CustInfoMapper.selectByPrimaryWechatNo">
@@ -54,7 +58,7 @@
 		product_list,
 		deposits, cash_on_delivery_amt, total_amt, after_Discount_Amt, pay_Amount,
 		payment_method,
-		express_company, express_no, order_date, order_datetime,remark
+		express_company, express_no, order_date, order_datetime,remark,buy_status,express_amount
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -72,6 +76,7 @@
 			<if test="paymentMethod != null">and payment_method = #{paymentMethod}</if>
 			<if test="expressCompany != null and expressCompany.length()>0">and express_company like  CONCAT(#{expressCompany},'%')</if>
 			<if test="expressNo != null and expressNo.length()>0">and express_no = #{expressNo}</if>
+			<if test="buyStatus != null and buyStatus.length()>0">and buy_status = #{buyStatus}</if>
 		</where>
 	</sql>
 	
@@ -177,6 +182,12 @@
 			<if test="remark != null">
 				remark,
 			</if>
+			<if test="buyStatus != null"> 
+				buy_status,
+			</if>
+			<if test="expressAmount != null"> 
+				express_amount,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderNo != null">
@@ -236,6 +247,12 @@
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
 			</if>
+			<if test="buyStatus != null">
+				#{buyStatus},
+			</if>
+			<if test="expressAmount != null"> 
+				#{expressAmount},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.orders.entity.CustOrder">
@@ -294,6 +311,12 @@
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="buyStatus != null">
+				buy_status = #{buyStatus},
+			</if>
+			<if test="expressAmount != null"> 
+				express_amount = #{expressAmount},
 			</if>
 		</set>
 		where order_no = #{orderNo,jdbcType=BIGINT}

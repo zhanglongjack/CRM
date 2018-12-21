@@ -58,8 +58,9 @@ public class ExcelView extends AbstractXlsxView {
 
 	private void responseContextBuild(HttpServletResponse response, ExcelMappingsAbstract mapping)
 			throws UnsupportedEncodingException {
+		String dateTime = DateUtils.getStringDateShort();
 		response.setHeader("content-disposition",
-				"attachment;filename=" + URLEncoder.encode(mapping.getSheetName() + ".xlsx", "utf-8"));
+				"attachment;filename=" + URLEncoder.encode(mapping.getSheetName()+"-"+ dateTime + ".xlsx", "utf-8"));
 		response.setContentType("application/ms-excel; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 	}

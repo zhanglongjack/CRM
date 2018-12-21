@@ -13,6 +13,7 @@
 		<result column="add_time" jdbcType="VARCHAR" property="addTime" />
 		<result column="address" jdbcType="VARCHAR" property="address" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
 		<collection property="levelInfo" column="level" select="com.base.crm.level.dao.LevelMapper.selectByPrimaryKey">
         </collection>
 	</resultMap>
@@ -20,7 +21,7 @@
 	<sql id="Base_Column_List">
 		cust_id,user_id, cust_name, cust_wechat_no, cust_phone,serve_wechat_no, level,amt,
 		add_time, address,
-		remark
+		remark,order_status
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -32,6 +33,7 @@
 			<if test="custPhone != null">and cust_phone = #{custPhone}</if>
 			<if test="level != null">and level = #{level}</if>
 			<if test="addTime != null and addTime.length()>0">and add_time like CONCAT(#{addTime},'%')</if>
+			<if test="orderStatus != null and orderStatus.length()>0">and order_status = #{orderStatus}</if>
 		</where>
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
@@ -105,6 +107,9 @@
 			<if test="remark != null">
 				remark,
 			</if>
+			<if test="orderStatus != null">
+				order_status,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="custId != null">
@@ -136,6 +141,9 @@
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -171,6 +179,9 @@
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="orderStatus != null">
+				order_status = #{orderStatus,jdbcType=VARCHAR},
 			</if>
 		</set>
 		<where>

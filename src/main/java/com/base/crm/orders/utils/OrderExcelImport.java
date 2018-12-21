@@ -14,6 +14,7 @@ public class OrderExcelImport extends ExcelImport<CustOrder> {
 		order.setOrderNo(Long.parseLong(conversCell(row.getCell(0))));
 		order.setExpressCompany(conversCell(row.getCell(1)));
 		order.setExpressNo(conversCell(row.getCell(2)));
+		order.setExpressAmount(new Double(conversCell(row.getCell(3))));
 		order.setOrderStatus(OrderStatus.DELIVERING.getKey());
 		order.setOldOrderStatus(OrderStatus.WAITING.getKey());
 		return order;
