@@ -40,14 +40,12 @@ $(function() {
 
 
 var initTimePicker =function(){
-	$('#datepickerMoth').datepicker({
+	$('[datepicker-moth-id]').datepicker({
 		format: "yyyymm",
 		language: "zh-CN",
 		minViewMode: 1,
 		maxViewMode: 1,
-		autoclose: true,
-		todayBtn: "linked",
-		todayHighlight: true
+		autoclose: true
 	});
 	
 	$('#datepicker').datepicker({

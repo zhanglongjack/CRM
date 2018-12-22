@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="commonLayout">
+<head>
+<title>粉丝回访记录</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+</head>
+
+<body>
+	<div layout:fragment="main-content" class="main-content" id="main-content">
+	</div>
+	
+	<div layout:fragment="dialog-content" id="DynamicDialogContentModal">
+		<div class="modal fade" id="ModifyModal" tabindex="-1" role="dialog" aria-labelledby="ModifyModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					
+				</div><!-- modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		
+		<script type="text/javascript">
+			$(function(){
+				pageQueryParams.preUrl= "/serverSalary/";
+				pageQueryParams.pageUrl = pageQueryParams.preUrl+'loadPage';
+				
+				render(pageQueryParams);  // 渲染页面函数
+				$("#sidebar-nav nav a").removeClass("active");
+				$("#menu-12").addClass("active");
+			});
+			
+		</script>
+			
+	</div>
+</body>
+
+</html>

@@ -8,7 +8,6 @@ import org.thymeleaf.util.DateUtils;
 
 import com.base.common.util.DateFormateType;
 import com.base.common.util.PageTools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ADConsume {
     private Integer id;
@@ -22,7 +21,7 @@ public class ADConsume {
 	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
 	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
 	
-    @JsonIgnore
+//    @JsonIgnore
     private PageTools pageTools;
     
     public String getStartDate() {

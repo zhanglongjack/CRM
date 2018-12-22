@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<title>test</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+</head>
+
+<body>
+	<div th:fragment="dialog-content">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var modifyInfo = /*[[${modifyInfo}]]*/;
+			/*]]>*/
+			$(function(){
+				initTimePicker();
+			})
+		</script>
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="ModifyModalTitle">填写薪水信息</h4>
+		</div>
+		<div class="modal-body">
+			<form id="modifyDataFrom" class="form-horizontal" role="form">
+				<input id="modifyId" name="id" type="hidden"
+					th:attr="value=${modifyInfo==null}?'':${modifyInfo.id}">
+				<input id="modifyModel" name="modifyModel" type="hidden"
+					th:attr="value=${modifyModel==null}?'':${modifyModel}">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">服务客服</label>
+					<div class="col-sm-10">
+						<select class="form-control" name="userId">
+							<option th:each="map:${@userContainer.userMap}"
+								th:selected="${modifyInfo!=null&&modifyInfo.userId == map.key}" th:value="${map.key}"
+								th:text="${map.value}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">底薪</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control number" placeholder="底薪" name="salary"
+							th:attr="value=${modifyInfo==null}?'':${modifyInfo.salary}">
+					</div>
+				</div>  
+				<div class="form-group">
+					<label class="col-sm-2 control-label">业绩提成</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control number" placeholder="业绩提成" name="salesPerformance"
+							th:attr="value=${modifyInfo==null}?'':${modifyInfo.salesPerformance}">
+					</div>
+				</div>  
+				<div class="form-group">
+					<label class="col-sm-2 control-label">薪水月份</label>
+					<div class="col-sm-10">
+						<span class="input-group input-append date" datepicker-moth-id="datepickerMoth">
+							<input readonly type="text" class="form-control" name="salaryMonth" placeholder="yyyymm"
+								data-date-format="yyyymm"
+								th:attr="value=${modifyInfo==null}?${#dates.format(#dates.createNow(), 'yyyyMM')}:${modifyInfo.salaryMonth}">
+							<span class="input-group-addon add-on">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</span>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			<button type="button" class="btn btn-primary" id="ModifyModalSubmit">提交</button>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$("#ModifyModal").on("hidden.bs.modal", function() {
+			$(this).removeData("bs.modal");
+		});
+
+		$('#modifyDataFrom').bootstrapValidator({
+			message : '输入无效,请重新输入',
+			group : '.form-group',
+			trigger : 'keyup focus',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : { 
+				salary: {
+	                message: '底薪输入不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '底薪不能为空'
+	                    },
+		                regexp: {
+	                        regexp: /^(([1-9]\d*)(\.\d{1,2})?)$|^(0\.0?([1-9]\d?))$/,
+	                        message: '底薪不正确'
+	                    }
+	                }
+
+	            }, 
+	            salesPerformance: {
+	                message: '销售业绩提成输入不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '销售业绩提成不能为空'
+	                    },
+		                regexp: {
+	                        regexp: /^(([1-9]\d*)(\.\d{1,2})?)$|^(0\.0?([1-9]\d?))$/,
+	                        message: '销售业绩提成不正确'
+	                    }
+	                }
+
+	            }, 
+			}
+		});
+	});
+</script>
+</html>

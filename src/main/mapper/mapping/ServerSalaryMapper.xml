@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.salary.dao.ServerSalaryMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.salary.entity.ServerSalary">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="DECIMAL" property="userId" />
+		<result column="salary" jdbcType="DECIMAL" property="salary" />
+		<result column="sales_performance" jdbcType="DECIMAL" property="salesPerformance" />
+		<result column="salary_month" jdbcType="VARCHAR" property="salaryMonth" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,user_id, salary, sales_performance, salary_month
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="userId != null">user_id=#{userId}</if>
+			<if test="salaryMonth != null and salaryMonth.length()>0">and salary_month=#{salaryMonth}</if> 
+		</where>
+	</sql>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.salary.entity.ServerSalary"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from server_salary
+		<include refid="dynamicWhere" />
+		order by salary_month desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.salary.entity.ServerSalary"
+		resultType="Long">
+		select
+			count(1)
+		from server_salary
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from server_salary
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from server_salary
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insertSelective" parameterType="com.base.crm.salary.entity.ServerSalary">
+		insert into server_salary
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="salary != null">
+				salary,
+			</if>
+			<if test="salesPerformance != null">
+				sales_performance,
+			</if>
+			<if test="salaryMonth != null">
+				salary_month,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="salary != null">
+				#{salary,jdbcType=DECIMAL},
+			</if>
+			<if test="salesPerformance != null">
+				#{salesPerformance,jdbcType=DECIMAL},
+			</if>
+			<if test="salaryMonth != null">
+				#{salaryMonth,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.salary.entity.ServerSalary">
+		update server_salary
+		<set>
+			<if test="userId != null">
+				user_id=#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="salary != null">
+				salary = #{salary,jdbcType=DECIMAL},
+			</if>
+			<if test="salesPerformance != null">
+				sales_performance = #{salesPerformance,jdbcType=DECIMAL},
+			</if>
+			<if test="salaryMonth != null">
+				salary_month = #{salaryMonth,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>
