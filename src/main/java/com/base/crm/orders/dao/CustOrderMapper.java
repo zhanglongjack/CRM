@@ -1,5 +1,6 @@
 package com.base.crm.orders.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -24,4 +25,6 @@ public interface CustOrderMapper {
 	Long selectPageTotalCount(CustOrder order);
 
 	List<CustOrder> selectPageByObjectForList(CustOrder order);
+
+	BigDecimal querySumAmountByMonth(String month);
 }

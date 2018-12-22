@@ -29,7 +29,42 @@
 		from procurement_costs
 		where id = #{id,jdbcType=INTEGER}
 	</select>
+	
+	<select id="queryMonthBy" parameterType="Map"
+		resultType="String">
+		select * from 
+		(
+			select substr(consume_date,1,6) month from ad_consume
+			group by substr(consume_date,1,6)
+			union
+			select substr(created_date,1,6) month from procurement_costs
+			group by substr(created_date,1,6)
+			union
+			select substr(order_date,1,6) month from cust_orders
+			group by substr(order_date,1,6)
+		) t
+		where 1=1
+		<if test="month != null and month.length()>0">
+			and month = #{month}
+		</if>
+	</select>
 
+	<select id="querySumAmountByMonth" parameterType="String"
+		resultType="BigDecimal">
+		select
+		sum(amount) amount
+		from procurement_costs
+		where substr(created_date,1,6) = #{month} 
+	</select>
+	
+	<select id="selectBySelective" parameterType="com.base.crm.procurement.entity.ProcurementCosts"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from procurement_costs
+		<include refid="dynamicWhere" />
+	</select>
+	
 	<select id="selectPageByObjectForList" parameterType="com.base.crm.procurement.entity.ProcurementCosts"
 		resultMap="BaseResultMap">
 		select

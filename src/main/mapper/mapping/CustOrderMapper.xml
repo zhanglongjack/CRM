@@ -80,9 +80,14 @@
 		</where>
 	</sql>
 	
+	<select id="querySumAmountByMonth" parameterType="String" resultType="BigDecimal">
+		SELECT sum((case when order_status = 4 then (deposits-express_amount*2) else total_amt end )) amount
+		FROM cust_orders
+		where substr(order_date,1,6) = #{month}  
+		and order_status between 1 and 4
+	</select>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
-		resultMap="pagCustOrderMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="pagCustOrderMap">
 		select
 		<include refid="Base_Column_List" />
 		from cust_orders

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.base.crm.common.constants.ConsumeType;
 import com.base.crm.common.constants.OrderStatus;
 import com.base.crm.common.constants.PaymentMethodStatus;
@@ -22,6 +23,8 @@ public abstract class ExcelMappingsAbstract {
 	private UserContainer userContainer;
 	
 	protected JSONArray data;
+	
+	protected JSONObject collectData;
 	
 	public static Map<String,Map<Integer,String>> dictionaries = new HashMap<String, Map<Integer,String>>();
 	
@@ -62,6 +65,16 @@ public abstract class ExcelMappingsAbstract {
 		this.data = data;
 	}
 
+	public JSONObject getCollectData() {
+		return collectData;
+	}
+
+	public void setCollectData(JSONObject collectData) {
+		this.collectData = collectData;
+	}
+
+	
+	
 //	public abstract String getColumnsMappingValue(String dictionaries, String key);
 	
 	

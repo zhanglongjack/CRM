@@ -26,7 +26,7 @@
 
 			});
 		</script>
-		<h3 class="page-title">客服薪水记录</h3>
+		<h3 class="page-title">销售业绩报表</h3>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- TABLE HOVER -->
@@ -34,21 +34,11 @@
 					<form class="form-inline" id="queryFrom">
 						<div class="panel-body">
 							<div class="form-group col-sm-2">
-								<label>销售客服</label>
-								<br> 
-								<select class="form-control" name="consumeAccountType">
-									<option value="" >===销售客服===</option>
-									<option th:each="map:${@userContainer.userMap}"
-											th:selected="${modifyInfo!=null&&modifyInfo.userId == map.key}" th:value="${map.key}"
-											th:text="${map.value}"></option>
-								</select>
-							</div> 
-							<div class="form-group col-sm-2">
-								<label>薪资月份</label><br>
+								<label>业绩月份</label><br>
 								<span class="input-group input-append date" datepicker-moth-id="datepickerMoth">
-									<input type="text" class="form-control" name="salaryMonth"
-                                           placeholder="yyyymm" data-date-format="yyyymm" readonly
-                                           th:attr="value=${queryObject.salaryMonth==null?'':queryObject.salaryMonth}">
+									<input type="text" class="form-control" name="month"
+                                           placeholder="yyyymm" data-date-format="yyyymm"
+                                           th:attr="value=${queryObject.month==null?'':queryObject.month}">
                                         <span class="input-group-addon add-on">
                                            <i class="glyphicon glyphicon-calendar"></i>
                                         </span>
@@ -62,13 +52,10 @@
 										<i class="fa fa-search"></i>
 										查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询
 									</button>
-								</div>
-								<div class="btn-group" style="margin: 0px 5px;">
-									<a class="btn btn-default"
-										th:attr="href='/serverSalary/primaryModalView?modifyModel=serverSalaryAdd&id='"
-										data-toggle="modal" data-target="#ModifyModal">
-										<span class="fa fa-plus-square"></span>
-										&nbsp;添加信息
+								</div> 
+								<div class="btn-group" th:if="${session.user.isAdmin()}">
+									<a id="exportBTN" class="btn btn-default"> 
+										 <span class="glyphicon glyphicon-save"></span>&nbsp;订单导出
 									</a>
 								</div>
 							</div>
@@ -78,31 +65,22 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>编号</th>
-									<th>销售客服</th>
-									<th>底薪</th>
-									<th>业绩提成</th>
-									<th>薪水月份</th>
-									<th>操作</th>
+									<th>业绩月份</th>
+									<th>销售总额</th>
+									<th>采购成本</th>
+									<th>广告消耗</th>
+									<th>实发薪资</th>
+									<th>实际利润</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="obj : ${resultList}">
-									<td th:text="${obj.id}"></td>
-									<td th:text="${@userContainer.userMap.get(obj.userId)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.salary)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.salesPerformance)}"></td>
-									<td th:text="${obj.salaryMonth}"></td>
-									<td>
-										<div class="btn-group">
-											<a class="btn btn-default btn-sm " data-toggle="modal" data-target="#ModifyModal"
-												th:attr="href='/serverSalary/primaryModalView?modifyModel=serverSalaryEdit&id='+${obj.id}">
-												<span class="glyphicon glyphicon-edit"></span>
-												&nbsp;更新
-												<i class="icon-star"></i>
-											</a>
-										</div>
-									</td>
+									<td th:text="${obj.month}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.saleTotalAmount)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.procurementCosts)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.consumeAD)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.realSalary)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.realProfit)}"></td>
 								</tr>
 							</tbody>
 						</table>

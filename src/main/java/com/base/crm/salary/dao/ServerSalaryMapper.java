@@ -1,5 +1,6 @@
 package com.base.crm.salary.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -19,5 +20,7 @@ public interface ServerSalaryMapper {
 	Long selectPageTotalCount(ServerSalary queryObject);
 
 	List<ServerSalary> selectPageByObjectForList(ServerSalary queryObject);
+
+	BigDecimal querySumAmountByMonth(String month);
 
 }

@@ -37,6 +37,11 @@
 		from server_salary
 		<include refid="dynamicWhere" />
 	</select>
+
+	<select id="querySumAmountByMonth" parameterType="String" resultType="BigDecimal">
+		select sum(salary+sales_performance) from server_salary
+		where substr(salary_month,1,6) = #{month}  
+	</select>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">

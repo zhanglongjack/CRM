@@ -40,6 +40,22 @@
 		<include refid="dynamicWhere" />
 	</select>
 	
+	<select id="querySummaryConsumeAmount" parameterType="String"
+		resultType="java.math.BigDecimal">
+		select
+		sum(consume_amount) amount
+		from ad_consume
+		where substr(consume_date,1,6) = #{month} 
+	</select>
+	
+	<select id="selectBySelective" parameterType="com.base.crm.ad.entity.ADConsume"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_consume
+		<include refid="dynamicWhere" />
+	</select>
+	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select

@@ -1,6 +1,9 @@
 package com.base.crm.procurement.service.impl;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,10 @@ public class ProcurementCostServiceImpl implements ProcurementCostService {
 	public int updateByPrimaryKeySelective(ProcurementCosts record) {
 		return procurementCostsMapper.updateByPrimaryKeySelective(record);
 	}
+	@Override
+	public List<ProcurementCosts> selectBySelective(ProcurementCosts queryObject) {
+		return procurementCostsMapper.selectBySelective(queryObject);
+	}
 
 	@Override
 	public Long selectPageTotalCount(ProcurementCosts queryObject) {
@@ -43,6 +50,18 @@ public class ProcurementCostServiceImpl implements ProcurementCostService {
 	@Override
 	public List<ProcurementCosts> selectPageByObjectForList(ProcurementCosts queryObject) {
 		return procurementCostsMapper.selectPageByObjectForList(queryObject);
+	}
+
+	@Override
+	public List<String> queryMonthBy(String month) {
+		Map<String,String> map = new HashMap<>();
+		map.put("month", month);
+		return procurementCostsMapper.queryMonthBy(map);
+	}
+
+	@Override
+	public BigDecimal querySumAmountByMonth(String month) {
+		return procurementCostsMapper.querySumAmountByMonth(month);
 	}
  
 

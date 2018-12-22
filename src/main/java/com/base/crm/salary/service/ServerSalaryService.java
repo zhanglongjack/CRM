@@ -1,5 +1,6 @@
 package com.base.crm.salary.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.base.crm.salary.entity.ServerSalary;
@@ -16,4 +17,6 @@ public interface ServerSalaryService {
 	Long selectPageTotalCount(ServerSalary queryObject);
 
 	List<ServerSalary> selectPageByObjectForList(ServerSalary queryObject);
+
+	BigDecimal querySumAmountByMonth(String month);
 }

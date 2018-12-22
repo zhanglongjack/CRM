@@ -1,5 +1,6 @@
 package com.base.crm.ad.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.base.crm.ad.entity.ADConsume;
@@ -18,4 +19,8 @@ public interface ADConsumeService {
 	List<ADConsume> selectPageByObjectForList(ADConsume queryObject);
 
 	void batchInsert(List<ADConsume> data);
+
+	List<ADConsume> selectBySelective(ADConsume queryObject);
+
+	BigDecimal querySummaryConsumeAmount(String month);
 }

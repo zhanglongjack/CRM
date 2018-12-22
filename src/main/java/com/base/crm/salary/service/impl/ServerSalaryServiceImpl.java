@@ -1,5 +1,6 @@
 package com.base.crm.salary.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class ServerSalaryServiceImpl implements ServerSalaryService {
 	@Override
 	public List<ServerSalary> selectPageByObjectForList(ServerSalary queryObject) {
 		return serverSalaryMapper.selectPageByObjectForList(queryObject);
+	}
+
+	@Override
+	public BigDecimal querySumAmountByMonth(String month) {
+		return serverSalaryMapper.querySumAmountByMonth(month);
 	}
 
 }

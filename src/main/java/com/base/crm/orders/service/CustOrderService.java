@@ -1,8 +1,7 @@
 package com.base.crm.orders.service;
 
+import java.math.BigDecimal;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 
 import com.base.crm.orders.entity.CustOrder;
 
@@ -26,4 +25,6 @@ public interface CustOrderService {
 	List<CustOrder> selectPageByObjectForList(CustOrder order);
 
 	void batchUpdateOrders(List<CustOrder> orderList);
+
+	BigDecimal querySumAmountByMonth(String month);
 }

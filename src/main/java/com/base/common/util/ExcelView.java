@@ -47,6 +47,8 @@ public class ExcelView extends AbstractXlsxView {
 		buildHeaderColumns(mapping, sheet.createRow(0), headerStyle);
 
 		buildRowColumns(mapping, sheet,rowStyle);
+		
+		buildRowColumns(mapping, sheet,rowStyle);
 	}
 
 	private CellStyle buildRowStyle(Workbook workbook, Sheet sheet) {
@@ -87,18 +89,35 @@ public class ExcelView extends AbstractXlsxView {
 		   
 		   
 		for (int i = 0; i < jsonObj.size(); i++) {
-			Row userRow = sheet.createRow(i + 1);
+			Row row = sheet.createRow(i + 1);
 			JSONObject info = (JSONObject) jsonObj.get(i);
-			for (int j = 0; j < columnsMapping.size(); j++) {
-				String value = mapping.getColumnsMappingValue(columnsMapping.get(j),info.get(columnsMapping.get(j))+"");
-				Cell cell = userRow.createCell(j);
-				cell.setCellType(Cell.CELL_TYPE_STRING);
-				cell.setCellStyle(style);
-				cell.setCellValue(value);
-			}
+			buildRowInfo(style, mapping, columnsMapping, row,  info);
+//			for (int j = 0; j < columnsMapping.size(); j++) {
+//				String value = mapping.getColumnsMappingValue(columnsMapping.get(j),info.get(columnsMapping.get(j))+"");
+//				Cell cell = userRow.createCell(j);
+//				cell.setCellType(Cell.CELL_TYPE_STRING);
+//				cell.setCellStyle(style);
+//				cell.setCellValue(value);
+//			}
+		}
+		
+		if(mapping.getCollectData()!=null){
+			Row userRow = sheet.createRow(jsonObj.size());
+			buildRowInfo(style, mapping, columnsMapping, userRow,  mapping.getCollectData());
 		}
 	}
 
+	private void buildRowInfo(CellStyle style,ExcelMappingsAbstract mapping,List<String> columnsMapping,Row row,JSONObject info){
+		for (int j = 0; j < columnsMapping.size(); j++) {
+			String value = mapping.getColumnsMappingValue(columnsMapping.get(j),info.get(columnsMapping.get(j))+"");
+			Cell cell = row.createCell(j);
+			cell.setCellType(Cell.CELL_TYPE_STRING);
+			cell.setCellStyle(style);
+			cell.setCellValue(value);
+		}
+	}
+	
+	
 	private void buildHeaderColumns(ExcelMappingsAbstract mapping, Row header, CellStyle style) {
 		List<String> headerList = mapping.getHeaderList();
 		logger.info("build header:" + headerList);

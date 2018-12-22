@@ -1,7 +1,7 @@
 package com.base.crm.ad.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,12 +41,22 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 	public Long selectPageTotalCount(ADConsume queryObject) {
 		return consumeMapper.selectPageTotalCount(queryObject);
 	}
+	
+	@Override
+	public List<ADConsume> selectBySelective(ADConsume queryObject) {
+		return consumeMapper.selectBySelective(queryObject);
+	}
 
 	@Override
 	public List<ADConsume> selectPageByObjectForList(ADConsume queryObject) {
 		return consumeMapper.selectPageByObjectForList(queryObject);
 	}
-
+	
+	@Override
+	public BigDecimal querySummaryConsumeAmount(String month) {
+		return consumeMapper.querySummaryConsumeAmount(month);
+	}
+ 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void batchInsert(List<ADConsume> list) {

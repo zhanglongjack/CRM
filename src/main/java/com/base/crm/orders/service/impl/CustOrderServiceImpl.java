@@ -1,5 +1,6 @@
 package com.base.crm.orders.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,11 @@ public class CustOrderServiceImpl implements CustOrderService {
         for(CustOrder record : orderList){
         	custOrderMapper.updateByPrimaryKeySelective(record);
         }
+	}
+
+	@Override
+	public BigDecimal querySumAmountByMonth(String month) {
+		return custOrderMapper.querySumAmountByMonth(month);
 	}
 
 }
