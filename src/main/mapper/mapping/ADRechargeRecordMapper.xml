@@ -38,7 +38,7 @@
 		<include refid="Base_Column_List" />
 		from ad_recharge_record
 		<include refid="dynamicWhere" />
-		order by id desc
+		order by recharge_date desc
 		limit #{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 	

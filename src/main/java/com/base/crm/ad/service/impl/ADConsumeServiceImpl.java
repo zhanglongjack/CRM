@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.base.crm.ad.dao.ADConsumeMapper;
 import com.base.crm.ad.entity.ADConsume;
@@ -43,5 +45,13 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 	@Override
 	public List<ADConsume> selectPageByObjectForList(ADConsume queryObject) {
 		return consumeMapper.selectPageByObjectForList(queryObject);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void batchInsert(List<ADConsume> list) {
+		for(ADConsume consume : list){
+			insertSelective(consume);
+		}
 	} 
 }

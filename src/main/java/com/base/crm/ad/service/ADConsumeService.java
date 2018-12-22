@@ -16,4 +16,6 @@ public interface ADConsumeService {
 	Long selectPageTotalCount(ADConsume queryObject);
 
 	List<ADConsume> selectPageByObjectForList(ADConsume queryObject);
+
+	void batchInsert(List<ADConsume> data);
 }

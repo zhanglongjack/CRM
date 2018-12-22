@@ -28,7 +28,7 @@
 		<include refid="Base_Column_List" />
 		from ad_consume
 		<include refid="dynamicWhere" />
-		order by id desc
+		order by consume_date desc
 		limit #{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 	
