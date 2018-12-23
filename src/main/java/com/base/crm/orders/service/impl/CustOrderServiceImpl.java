@@ -1,6 +1,5 @@
 package com.base.crm.orders.service.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.base.crm.orders.dao.CustOrderMapper;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
+import com.base.crm.report.entity.SummaryReport;
 @Service
 public class CustOrderServiceImpl implements CustOrderService {
 
@@ -70,7 +70,7 @@ public class CustOrderServiceImpl implements CustOrderService {
 	}
 
 	@Override
-	public BigDecimal querySumAmountByMonth(String month) {
+	public SummaryReport querySumAmountByMonth(String month) {
 		return custOrderMapper.querySumAmountByMonth(month);
 	}
 

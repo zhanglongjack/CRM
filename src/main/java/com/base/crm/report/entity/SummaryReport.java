@@ -5,10 +5,14 @@ import java.math.BigDecimal;
 public class SummaryReport {
 	private String month;
 	private BigDecimal saleTotalAmount = new BigDecimal("0.00");
+	private BigDecimal realncomeTotalAmount = new BigDecimal("0.00");
 	private BigDecimal procurementCosts = new BigDecimal("0.00");
 	private BigDecimal consumeAD = new BigDecimal("0.00");
+	private BigDecimal realConsumeAD = new BigDecimal("0.00");
 	private BigDecimal realSalary = new BigDecimal("0.00");
 	private BigDecimal realProfit = new BigDecimal("0.00");
+	private BigDecimal profit = new BigDecimal("0.00");
+	private BigDecimal expressTotalFee = new BigDecimal("0.00");
 
 	public String getMonth() {
 		return month;
@@ -24,6 +28,14 @@ public class SummaryReport {
 
 	public void setSaleTotalAmount(BigDecimal saleTotalAmount) {
 		this.saleTotalAmount = saleTotalAmount;
+	}
+
+	public BigDecimal getRealncomeTotalAmount() {
+		return realncomeTotalAmount;
+	}
+
+	public void setRealncomeTotalAmount(BigDecimal realncomeTotalAmount) {
+		this.realncomeTotalAmount = realncomeTotalAmount;
 	}
 
 	public BigDecimal getProcurementCosts() {
@@ -42,6 +54,14 @@ public class SummaryReport {
 		this.consumeAD = consumeAD;
 	}
 
+	public BigDecimal getRealConsumeAD() {
+		return realConsumeAD;
+	}
+
+	public void setRealConsumeAD(BigDecimal realConsumeAD) {
+		this.realConsumeAD = realConsumeAD;
+	}
+
 	public BigDecimal getRealSalary() {
 		return realSalary;
 	}
@@ -56,6 +76,22 @@ public class SummaryReport {
 
 	public void setRealProfit(BigDecimal realProfit) {
 		this.realProfit = realProfit;
+	}
+
+	public BigDecimal getExpressTotalFee() {
+		return expressTotalFee;
+	}
+
+	public void setExpressTotalFee(BigDecimal expressTotalFee) {
+		this.expressTotalFee = expressTotalFee;
+	}
+ 
+	public BigDecimal getProfit() {
+		return profit;
+	}
+
+	public void setProfit(BigDecimal profit) {
+		this.profit = profit;
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package com.base.crm.orders.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.base.crm.orders.entity.CustOrder;
+import com.base.crm.report.entity.SummaryReport;
 
 public interface CustOrderService {
     int deleteByPrimaryKey(Long orderNo);
@@ -26,5 +26,5 @@ public interface CustOrderService {
 
 	void batchUpdateOrders(List<CustOrder> orderList);
 
-	BigDecimal querySumAmountByMonth(String month);
+	SummaryReport querySumAmountByMonth(String month);
 }

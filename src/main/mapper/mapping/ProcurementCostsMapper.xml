@@ -47,6 +47,7 @@
 		<if test="month != null and month.length()>0">
 			and month = #{month}
 		</if>
+		order by month desc
 	</select>
 
 	<select id="querySumAmountByMonth" parameterType="String"

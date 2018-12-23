@@ -150,7 +150,7 @@
 						<select class="form-control" name="buyStatus">
 							<option th:each="map:${@commonConstants.custOrderStatusMap}" 
 									th:if="${!#strings.equals(map.key,'none')}"
-									th:selected="${custInfo!=null&&custInfo.orderStatus == map.key}" 
+									th:selected="${modifyOrder!=null&&modifyOrder.buyStatus == map.key}" 
 									th:value="${map.key}" th:text="${map.value}"></option>
 						</select> 
 					</div>

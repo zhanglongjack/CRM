@@ -1,7 +1,7 @@
 package com.base.crm.ad.service.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -53,7 +53,7 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 	}
 	
 	@Override
-	public BigDecimal querySummaryConsumeAmount(String month) {
+	public List<ADConsume> querySummaryConsumeAmount(String month) {
 		return consumeMapper.querySummaryConsumeAmount(month);
 	}
  

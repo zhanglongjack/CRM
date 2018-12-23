@@ -20,6 +20,15 @@
 					render(pageQueryParams); // 渲染页面函数
 				});
 
+				$("#exportBTN").click(function(){
+					var dataParams = $("#queryFrom").serialize(); 
+					pageQueryParams.fromQueryData=dataParams;
+
+					var url = '/report/saleSummaryReportExport?'+buildParams();
+					window.location.href=url;
+
+				});
+				
 				$("[data-toggle='popover']").popover();
 
 				initTimePicker();
@@ -55,7 +64,7 @@
 								</div> 
 								<div class="btn-group" th:if="${session.user.isAdmin()}">
 									<a id="exportBTN" class="btn btn-default"> 
-										 <span class="glyphicon glyphicon-save"></span>&nbsp;订单导出
+										 <span class="glyphicon glyphicon-save"></span>&nbsp;报表导出
 									</a>
 								</div>
 							</div>
@@ -67,9 +76,13 @@
 								<tr>
 									<th>业绩月份</th>
 									<th>销售总额</th>
+									<th>实收总额</th>
 									<th>采购成本</th>
 									<th>广告消耗</th>
+									<th>实际广告费</th>
 									<th>实发薪资</th>
+									<th>快递总额</th>
+									<th>预计利润</th>
 									<th>实际利润</th>
 								</tr>
 							</thead>
@@ -77,9 +90,13 @@
 								<tr th:each="obj : ${resultList}">
 									<td th:text="${obj.month}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.saleTotalAmount)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.realncomeTotalAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.procurementCosts)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.consumeAD)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.realConsumeAD)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realSalary)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.expressTotalFee)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.profit)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realProfit)}"></td>
 								</tr>
 							</tbody>

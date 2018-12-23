@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.base.common.util.ExcelMappingsAbstract;
+import com.base.crm.ad.entity.ADConsume;
 import com.base.crm.ad.service.ADConsumeService;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.procurement.service.ProcurementCostService;
@@ -24,10 +25,10 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 	private static String sheetName ="销售报表汇总";
 	
 	private static List<String> headerList = Arrays.asList( 
-			"月份","销售总额","采购成本","广告实际消耗","实际毛利润");
+			"月份","销售总额","实收总额","采购成本","广告消耗","广告实际消耗","快递费总额","毛利润","实际毛利润");
 	
 	public static List<String> columnsMappings = Arrays.asList(
-			"month"," saleTotalAmount"," procurementCosts"," consumeAD"," realProfit");
+			"month","saleTotalAmount","realncomeTotalAmount","procurementCosts","consumeAD","realConsumeAD","expressTotalFee","profit","realProfit");
 	
 	public void setExcelMappings(List<SummaryReport> data,SummaryReport summeryData) {
 		this.data = JSON.parseArray(JSON.toJSONString(data));
@@ -70,31 +71,55 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 		reportResult = new ArrayList<SummaryReport>();
 		SummaryReport sumReport = new SummaryReport();
 		sumReport.setMonth("总计");
+		BigDecimal zore = new BigDecimal("0.00");
 		for(String month : monthList){
 			logger.info("开始统计{}月销售业绩 ",month);
-			SummaryReport report = new SummaryReport();
-			report.setMonth(month);
-			BigDecimal consumeAmount = consumeADService.querySummaryConsumeAmount(month);
+//			SummaryReport report = new SummaryReport();
+			SummaryReport orderReport = custOrderService.querySumAmountByMonth(month);
+			SummaryReport report = orderReport==null?new SummaryReport():orderReport;
+			
+			List<ADConsume> consumeList = consumeADService.querySummaryConsumeAmount(month);
 			BigDecimal procurementAmount = procurementCostService.querySumAmountByMonth(month);
-			BigDecimal orderAmount =custOrderService.querySumAmountByMonth(month);
 			BigDecimal salaryAmount = serverSalaryService.querySumAmountByMonth(month);
-			BigDecimal zore = new BigDecimal("0.00");
-			report.setConsumeAD(consumeAmount==null?zore:consumeAmount);
+			if(consumeList.size()>0){
+				// 各帐号广告费
+				for(ADConsume consume : consumeList){
+					report.setConsumeAD(report.getConsumeAD().add(consume.getConsumeAmount()));
+					if(consume.getConsumeAccountType().equals("normal_account")){
+						report.setRealConsumeAD(report.getRealConsumeAD().add(consume.getConsumeAmount().divide(new BigDecimal("1.3"),2,BigDecimal.ROUND_HALF_EVEN)));
+					}else{
+						report.setRealConsumeAD(report.getRealConsumeAD().add(consume.getConsumeAmount().divide(new BigDecimal("1.25"),2,BigDecimal.ROUND_HALF_EVEN)));
+					}
+				}
+			}
+			report.setMonth(month);
+			
 			report.setProcurementCosts(procurementAmount==null?zore:procurementAmount);
-			report.setSaleTotalAmount(orderAmount==null?zore:orderAmount);
+//			report.setSaleTotalAmount(orderAmount==null?zore:orderAmount);
 			report.setRealSalary(salaryAmount==null?zore:salaryAmount);
 			
 			sumReport.setConsumeAD(sumReport.getConsumeAD().add(report.getConsumeAD()));
+			sumReport.setRealConsumeAD(sumReport.getRealConsumeAD().add(report.getRealConsumeAD()));
 			sumReport.setProcurementCosts(sumReport.getProcurementCosts().add(report.getProcurementCosts()));
 			sumReport.setSaleTotalAmount(sumReport.getSaleTotalAmount().add(report.getSaleTotalAmount()));
 			sumReport.setRealSalary(sumReport.getRealSalary().add(report.getRealSalary()));
+			sumReport.setRealncomeTotalAmount(sumReport.getRealncomeTotalAmount().add(report.getRealncomeTotalAmount()));
+			sumReport.setExpressTotalFee(sumReport.getExpressTotalFee().add(report.getExpressTotalFee()));
 			
 			BigDecimal sum = new BigDecimal("0.00");
-			sum = sum.add(report.getConsumeAD());
+			sum = sum.add(report.getRealConsumeAD());
 			sum = sum.add(report.getProcurementCosts());
 			sum = sum.add(report.getRealSalary());
-			report.setRealProfit(sumReport.getSaleTotalAmount().subtract(sum));
+			sum = sum.add(report.getExpressTotalFee());
+			// 实际利润
+			report.setRealProfit(report.getRealncomeTotalAmount().subtract(sum));
+			// 预计利润
+			report.setProfit(report.getSaleTotalAmount().subtract(sum));
+			
+			// 总计实际利润
 			sumReport.setRealProfit(sumReport.getRealProfit().add(report.getRealProfit()));
+			// 总计利润
+			sumReport.setProfit(sumReport.getProfit().add(report.getProfit()));
 			
 			reportResult.add(report);
 			logger.info("结束统计{}月销售业绩:{} ",month,report);

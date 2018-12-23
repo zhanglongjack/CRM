@@ -1,11 +1,11 @@
 package com.base.crm.orders.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.base.crm.orders.entity.CustOrder;
+import com.base.crm.report.entity.SummaryReport;
 @Mapper
 public interface CustOrderMapper {
     int deleteByPrimaryKey(Long orderNo);
@@ -26,5 +26,5 @@ public interface CustOrderMapper {
 
 	List<CustOrder> selectPageByObjectForList(CustOrder order);
 
-	BigDecimal querySumAmountByMonth(String month);
+	SummaryReport querySumAmountByMonth(String month);
 }
