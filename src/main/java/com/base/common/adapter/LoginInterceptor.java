@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.base.crm.users.entity.UserInfo;
@@ -40,8 +39,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		String basePath = request.getContextPath();
 		String path = request.getRequestURI();
-		logger.info("basePath:"+basePath+" -------  path:"+path);
-
+		String menuId = request.getParameter("menuId");
+		logger.info(menuId+"basePath:"+basePath+" -------  path:"+path);
+		
 		if (!doLoginInterceptor(path, basePath)) {// 是否进行登陆拦截
 			return true;
 		}
@@ -60,9 +60,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //				}
 //			}
 			
-		// 如果登录了，会把用户信息存进session
+		// 如果登录了，会把用户信息存进session 
 		HttpSession session = request.getSession();
 		UserInfo user = (UserInfo) session.getAttribute("user");
+		
+//		if(menuId!=null){
+//			logger.info("menuId===="+menuId);
+//			session.setAttribute("menuId", menuId);
+//		}
 		/*
 		 * User userInfo = new User(); userInfo.setId(users.get(0).getId());
 		 * userInfo.setName(users.get(0).getName());

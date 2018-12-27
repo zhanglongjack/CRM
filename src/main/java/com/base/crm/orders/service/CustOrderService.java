@@ -1,6 +1,7 @@
 package com.base.crm.orders.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.report.entity.SummaryReport;
@@ -27,4 +28,7 @@ public interface CustOrderService {
 	void batchUpdateOrders(List<CustOrder> orderList);
 
 	SummaryReport querySumAmountByMonth(String month);
+
+	Map<String, Integer> selectOrderCountByMonth(String month);
+
 }

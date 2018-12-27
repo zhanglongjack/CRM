@@ -42,8 +42,9 @@ public class ServeWechatController {
 		return "page/serve/wechat/ModifyModal";
 	}
 
-	@RequestMapping(value = "/serveWechatView")
-	public ModelAndView serveWechatView(ServeWechat serveWechat, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> serveWechatView(ServeWechat serveWechat, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("serveWechatView request : " +serveWechat);
 		
@@ -52,10 +53,9 @@ public class ServeWechatController {
 		}
 		Long size = serveWechatService.selectPageTotalCount(serveWechat);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/serve/wechat/ServeWechatView");
-		serveWechat.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")

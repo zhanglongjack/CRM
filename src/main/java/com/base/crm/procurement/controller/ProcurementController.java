@@ -44,8 +44,9 @@ public class ProcurementController {
 		return "page/procurement/ModifyModal";
 	}
 
-	@RequestMapping(value = "/procurementView")
-	public ModelAndView view(ProcurementCosts queryObject, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> view(ProcurementCosts queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("procurementView request : " +queryObject);
 		
@@ -53,9 +54,9 @@ public class ProcurementController {
 		
 		Long size = procurementCostService.selectPageTotalCount(queryObject);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/procurement/ProcurementView");
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")

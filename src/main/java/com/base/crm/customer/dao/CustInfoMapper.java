@@ -1,6 +1,7 @@
 package com.base.crm.customer.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,4 +22,6 @@ public interface CustInfoMapper {
 	Long selectPageTotalCount(CustInfo ci);
 
 	CustInfo selectByPrimaryWechatNo(String checkWechatNo);
+
+	Map<String, Integer> selectCustCountByMonth(String month);
 }

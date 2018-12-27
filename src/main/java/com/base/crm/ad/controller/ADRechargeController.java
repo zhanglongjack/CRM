@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.base.common.util.PageTools;
 import com.base.crm.ad.entity.ADRechargeRecord;
 import com.base.crm.ad.service.ADRechargeRecordService;
+import com.base.crm.common.constants.CommonConstants;
 import com.base.crm.users.entity.UserInfo;
 
 
@@ -44,8 +45,9 @@ public class ADRechargeController {
 		return "page/ad/adRecharge/ModifyModal";
 	}
 
-	@RequestMapping(value = "/adRechargeView")
-	public ModelAndView view(ADRechargeRecord queryObject, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> pageView(ADRechargeRecord queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("adRechargeView request : " +queryObject);
 		
@@ -53,9 +55,9 @@ public class ADRechargeController {
 		
 		Long size = rechargeService.selectPageTotalCount(queryObject);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/ad/adRecharge/ADRechargeView");
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")

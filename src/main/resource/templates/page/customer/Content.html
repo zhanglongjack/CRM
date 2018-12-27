@@ -5,9 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+	
 	<div th:fragment="cust-info-content" class="container-fluid">
 		<script type="text/javascript">
+			
 			$(function() {
+				
 				pageQueryParams.index = '[[${pageTools.index}]]';
 				pageQueryParams.pageSize = '[[${pageTools.pageSize}]]';
 				pageQueryParams.total = '[[${pageTools.total}]]';

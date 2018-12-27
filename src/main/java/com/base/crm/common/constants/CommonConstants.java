@@ -16,6 +16,7 @@ import com.base.common.dictionary.service.DictionaryService;
 
 @Component
 public class CommonConstants implements ApplicationListener<ContextRefreshedEvent> {
+	public static final String COMMON_LAYOUT = "commonLayout";
 	public static Map<String, String> custOrderStatusMap;
 	public static Map<String, String> buyStatusMap;
 	public static Map<String, String> adAccountTypeMap;

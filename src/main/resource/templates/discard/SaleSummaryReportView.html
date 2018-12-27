@@ -25,13 +25,14 @@
 		
 		<script type="text/javascript">
 			$(function(){
-				pageQueryParams.preUrl= "/serverSalary/";
-				pageQueryParams.pageUrl = pageQueryParams.preUrl+'loadPage';
+				pageQueryParams.preUrl= "/report/";
+				pageQueryParams.pageUrl = pageQueryParams.preUrl+'loadPageSummaryReport';
 				
 				render(pageQueryParams);  // 渲染页面函数
 				$("#sidebar-nav nav a").removeClass("active");
-				$("#menu-12").addClass("active");
-				$("#menu-13").addClass("active");
+				$("#menu-sub-3").addClass("active");
+				$("#menu-14").addClass("active");
+				$("#reportPage").addClass("in");
 			});
 			
 		</script>

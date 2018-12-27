@@ -1,6 +1,7 @@
 package com.base.crm.orders.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,4 +28,6 @@ public interface CustOrderMapper {
 	List<CustOrder> selectPageByObjectForList(CustOrder order);
 
 	SummaryReport querySumAmountByMonth(String month);
+
+	Map<String, Integer> selectOrderCountByMonth(String month);
 }

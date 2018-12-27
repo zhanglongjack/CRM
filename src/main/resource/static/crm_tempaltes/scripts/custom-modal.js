@@ -1,4 +1,9 @@
 $(function() {
+	modifyModal();
+});
+
+function modifyModal(){
+	console.log("初始化模态框")
 	$("#ModifyModal").on("shown.bs.modal", function() {  
 		$("#ModifyModalSubmit").click(function(){
 			var bootstrapValidator = $("#modifyDataFrom").data("bootstrapValidator");
@@ -6,7 +11,7 @@ $(function() {
 			bootstrapValidator.validate();
 			if(bootstrapValidator.isValid()){
 				$(this).attr("disabled","true");
-				var targetUrl = pageQueryParams.preUrl+$("#modifyDataFrom #modifyModel").val();
+				var targetUrl = pageQueryParams.preUrl+"/"+$("#modifyDataFrom #modifyModel").val();
 				var id = $("#modifyDataFrom #modifyId").val();
 				var dataParams = $("#modifyDataFrom").serialize();     
 				$.ajax({ 
@@ -36,7 +41,9 @@ $(function() {
 			}
 		});
 	}); 
-});
+
+}
+
 
 
 var initTimePicker =function(){

@@ -1,6 +1,5 @@
 package com.base.crm.customer.controller;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.expression.Dates;
 
+import com.base.common.util.DateUtils;
 import com.base.common.util.PageTools;
 import com.base.crm.consume.entity.CustomerConsume;
 import com.base.crm.consume.service.CustomerConsumeService;
@@ -38,21 +38,23 @@ public class CustInfoController {
 	@Autowired
 	private CustomerConsumeService customerConsumeService;
 	
-	@RequestMapping(value="/custInfoView")
-	public ModelAndView custInfoView(CustInfo ci,PageTools pageTools,@ModelAttribute("user") UserInfo user){
-		logger.info("custInfoView request");
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String,Object> pageView(CustInfo ci,PageTools pageTools,@ModelAttribute("user") UserInfo user){
+		logger.info("pageView request");
 		if(!user.isAdmin()){
 			ci.setUserId(user.getuId());
 		}
+		if(ci.getAddTime()==null){
+			ci.setAddTime(DateUtils.getStringDateShort());
+		}
+		
 		ci.setPageTools(pageTools);
 		Long size = custInfoService.selectPageTotalCount(ci);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/customer/CustInfoView");
-		List<CustInfo> ciList = custInfoService.selectByObjectForList(ci);
-		mv.addObject("custInfoList", ciList);
-		mv.addObject("pageTools", pageTools);
-		
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 	
 	@RequestMapping(value="/custInfoEdit")
@@ -104,13 +106,17 @@ public class CustInfoController {
 		return map;
 	}
 	
-	@RequestMapping(value="/loadPageCustInfo")
-	public ModelAndView loadPageCustInfo(CustInfo ci,PageTools pageTools,@ModelAttribute("user") UserInfo user) throws Exception{
-		logger.info("loadPageCustInfo request:"+ci +" page info ==="+pageTools);
-		logger.info("loadPageCustInfo request: user =="+user);
+	@RequestMapping(value="/loadPage")
+	public ModelAndView loadPage(CustInfo ci,PageTools pageTools,@ModelAttribute("user") UserInfo user) throws Exception{
+		logger.info("loadPage request:"+ci +" page info ==="+pageTools);
+		logger.info("loadPage request: user =="+user);
 		if(!user.isAdmin()){
 			ci.setUserId(user.getuId());
 		}
+		if(ci.getAddTime()==null ){
+			ci.setAddTime(DateUtils.getStringDateShort());
+		}
+		
 		ci.setPageTools(pageTools);
 		ModelAndView mv = new ModelAndView("page/customer/Content :: cust-info-content");
 		Long size = custInfoService.selectPageTotalCount(ci);

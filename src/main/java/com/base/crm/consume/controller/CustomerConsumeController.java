@@ -1,35 +1,27 @@
 package com.base.crm.consume.controller;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.expression.Dates;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.base.common.util.ExcelView;
 import com.base.common.util.PageTools;
+import com.base.crm.common.constants.CommonConstants;
 import com.base.crm.consume.constants.ConsumerExcelMappings;
 import com.base.crm.consume.entity.CustomerConsume;
 import com.base.crm.consume.service.CustomerConsumeService;
-import com.base.crm.customer.entity.CustInfo;
-import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.users.entity.UserInfo;
 
 @Controller
@@ -58,8 +50,9 @@ public class CustomerConsumeController {
 		return "page/consume/ModifyModal";
 	}
 
-	@RequestMapping(value = "/consumeView")
-	public ModelAndView CustomerConsumeView(CustomerConsume consume, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> CustomerConsumeView(CustomerConsume consume, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.info("consumeView request : " +consume);
 		
@@ -68,10 +61,9 @@ public class CustomerConsumeController {
 		}
 		Long size = customerConsumeService.selectPageTotalCount(consume);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/consume/CustomerConsumeView");
-		consume.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")

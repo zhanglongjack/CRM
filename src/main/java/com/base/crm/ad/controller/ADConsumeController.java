@@ -23,6 +23,8 @@ import com.base.common.util.PageTools;
 import com.base.crm.ad.entity.ADConsume;
 import com.base.crm.ad.service.ADConsumeService;
 import com.base.crm.ad.utils.ADConsumeExcelImport;
+import com.base.crm.common.constants.CommonConstants;
+import com.base.crm.customer.entity.CustInfo;
 import com.base.crm.users.entity.UserInfo;
 
 @Controller
@@ -47,8 +49,9 @@ public class ADConsumeController {
 		return "page/ad/adConsume/ModifyModal";
 	}
 
-	@RequestMapping(value = "/adConsumeView")
-	public ModelAndView view(ADConsume queryObject, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> pageView(ADConsume queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("adConsumetView request : " +queryObject);
 		
@@ -56,12 +59,15 @@ public class ADConsumeController {
 		
 		Long size = adConsumeService.selectPageTotalCount(queryObject);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/ad/adConsume/AdConsumeView");
-		queryObject.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
-
+	
+ 
+	
+	
+	
 	@RequestMapping(value = "/loadPage")
 	public ModelAndView loadPage(ADConsume queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) throws Exception {

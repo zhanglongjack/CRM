@@ -1,6 +1,7 @@
 package com.base.crm.customer.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.base.crm.customer.entity.CustInfo;
 
@@ -18,4 +19,7 @@ public interface CustInfoService {
 	Long selectPageTotalCount(CustInfo ci);
 
 	CustInfo selectByPrimaryWechatNo(String checkWechatNo);
+
+	Map<String, Integer> selectCustCountByMonth(String month);
+
 }

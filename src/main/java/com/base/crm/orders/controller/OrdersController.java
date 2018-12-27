@@ -55,20 +55,18 @@ public class OrdersController {
 	@Autowired
 	private OrderExcelMappings orderExcelMappings;
 	
-	@RequestMapping(value="/ordersView")
-	public ModelAndView ordersView(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user){
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> ordersView(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user){
 		logger.info("ordersView request:"+order);
 		if(!user.isAdmin()){
 			order.setUserId(user.getuId());
 		}
 		Long size = custOrderService.selectPageTotalCount(order);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/orders/OrdersView");
-		order.setPageTools(pageTools);
-//		List<CustOrder> ciList = custOrderService.selectPageByObjectForList(order);
-//		mv.addObject("orderList", ciList);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 	
 	@RequestMapping(value="/orderEdit")
@@ -139,10 +137,10 @@ public class OrdersController {
 		return map;
 	}
 
-	@RequestMapping(value="/loadPageOrders")
-	public ModelAndView loadPageOrders(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user) throws Exception{
-		logger.info("loadPageOrders request:"+order +" page info ==="+pageTools);
-		logger.info("loadPageOrders request user info =====:"+user);
+	@RequestMapping(value="/loadPage")
+	public ModelAndView loadPage(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user) throws Exception{
+		logger.info("loadPage request:"+order +" page info ==="+pageTools);
+		logger.info("loadPage request user info =====:"+user);
 		if(!user.isAdmin()){
 			order.setUserId(user.getuId());
 		}
@@ -152,7 +150,7 @@ public class OrdersController {
 		Long size = custOrderService.selectPageTotalCount(order);
 		pageTools.setTotal(size);
 		List<CustOrder> ciList = custOrderService.selectPageByObjectForList(order);
-		logger.info("loadPageOrders request list info =====:"+ciList);
+		logger.info("loadPage request list info =====:"+ciList);
 		mv.addObject("orderList", ciList);
 		mv.addObject("pageTools", pageTools);
 		mv.addObject("queryOrder", order);

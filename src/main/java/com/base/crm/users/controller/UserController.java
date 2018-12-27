@@ -56,8 +56,6 @@ public class UserController {
 		Long size = userService.selectPageTotalCount(userInfo);
 		pageTools.setTotal(size);
 		ModelAndView mv = new ModelAndView("page/user/UserView");
-		userInfo.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
 		mv.addObject("pageTools", pageTools);
 		return mv;
 	}

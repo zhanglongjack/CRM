@@ -32,10 +32,19 @@
 			<if test="serveWechatNo != null and serveWechatNo.length()>0">and serve_wechat_no=#{serveWechatNo}</if>
 			<if test="custPhone != null">and cust_phone = #{custPhone}</if>
 			<if test="level != null">and level = #{level}</if>
-			<if test="addTime != null and addTime.length()>0">and add_time like CONCAT(#{addTime},'%')</if>
+			<if test="addTime != null and addTime.length()>0">and substr( add_time,1,10) = #{addTime}</if>
 			<if test="orderStatus != null and orderStatus.length()>0">and order_status = #{orderStatus}</if>
 		</where>
 	</sql>
+	<select id="selectCustCountByMonth" parameterType="String"
+		resultType="java.util.HashMap">
+		SELECT  
+		    count(1) monthCustCount,
+			ifnull(sum((case when substr( add_time,1,10) = date_format(now(), '%Y-%m-%d')  then 1 else 0 end )),0) currentCount
+		FROM  cust_info
+		where substr( add_time,1,7) = #{month}
+	</select>
+	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select

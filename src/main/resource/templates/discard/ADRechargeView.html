@@ -11,8 +11,7 @@
 </head>
 
 <body>
-	<div layout:fragment="main-content" class="main-content" id="main-content">
-	</div>
+
 	
 	<div layout:fragment="dialog-content" id="DynamicDialogContentModal">
 		<div class="modal fade" id="ModifyModal" tabindex="-1" role="dialog" aria-labelledby="ModifyModalLabel" aria-hidden="true">
@@ -25,13 +24,14 @@
 		
 		<script type="text/javascript">
 			$(function(){
-				pageQueryParams.preUrl= "/procurement/";
+				pageQueryParams.preUrl= "/adRecharge/";
 				pageQueryParams.pageUrl = pageQueryParams.preUrl+'loadPage';
 				
 				render(pageQueryParams);  // 渲染页面函数
 				$("#sidebar-nav nav a").removeClass("active");
-				$("#menu-9").addClass("active");
+				$("#menu-10").addClass("active");
 				$("#menu-13").addClass("active");
+				$("#costPage").addClass("in");
 			});
 			
 		</script>

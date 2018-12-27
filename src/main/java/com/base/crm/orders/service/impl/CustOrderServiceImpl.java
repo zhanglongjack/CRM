@@ -1,6 +1,7 @@
 package com.base.crm.orders.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,11 @@ public class CustOrderServiceImpl implements CustOrderService {
 	@Override
 	public SummaryReport querySumAmountByMonth(String month) {
 		return custOrderMapper.querySumAmountByMonth(month);
+	}
+
+	@Override
+	public Map<String, Integer> selectOrderCountByMonth(String month) {
+		return custOrderMapper.selectOrderCountByMonth(month);
 	}
 
 }

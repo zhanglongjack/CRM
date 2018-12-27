@@ -46,8 +46,9 @@ public class RevisitController {
 		return "page/revisit/ModifyModal";
 	}
 
-	@RequestMapping(value = "/revisitView")
-	public ModelAndView revisitView(CustRevisitRecord revisit, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> revisitView(CustRevisitRecord revisit, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.info("revisitView request : " +revisit);
 		
@@ -56,16 +57,15 @@ public class RevisitController {
 		}
 		Long size = custRevisitRecordService.selectPageTotalCount(revisit);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/revisit/RevisitView");
-		revisit.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
-	@RequestMapping(value = "/loadPageRevisit")
-	public ModelAndView loadPageRevisit(CustRevisitRecord revisit, PageTools pageTools,
+	@RequestMapping(value = "/loadPage")
+	public ModelAndView loadPage(CustRevisitRecord revisit, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) throws Exception {
-		logger.info("loadPageRevisit request:" + revisit + " page info ===" + pageTools);
+		logger.info("loadPage request:" + revisit + " page info ===" + pageTools);
 		
 		if (!user.isAdmin()) {
 			revisit.setUserId(user.getuId());

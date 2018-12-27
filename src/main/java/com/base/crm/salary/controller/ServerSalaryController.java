@@ -42,8 +42,9 @@ public class ServerSalaryController {
 		return "page/serverSalary/ModifyModal";
 	}
 
-	@RequestMapping(value = "/serverSalaryView")
-	public ModelAndView view(ServerSalary queryObject, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> view(ServerSalary queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("serverSalarytView request : " +queryObject);
 		
@@ -53,10 +54,9 @@ public class ServerSalaryController {
 		
 		Long size = serverSalaryService.selectPageTotalCount(queryObject);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/serverSalary/ServerSalaryView");
-		queryObject.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")

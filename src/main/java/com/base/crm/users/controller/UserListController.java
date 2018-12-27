@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import com.base.common.util.PageTools;
+import com.base.crm.common.constants.CommonConstants;
 import com.base.crm.users.entity.UserInfo;
 import com.base.crm.users.service.UserService;
 
@@ -40,8 +41,9 @@ public class UserListController {
 		return "page/userList/ModifyModal";
 	}
 
-	@RequestMapping(value = "/userListView")
-	public ModelAndView userListView(UserInfo userInfo, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> pageView(UserInfo userInfo, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("userListView request : " +user);
 		
@@ -50,10 +52,9 @@ public class UserListController {
 		}
 		Long size = userService.selectPageTotalCount(userInfo);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/userList/UserListView");
-		userInfo.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")

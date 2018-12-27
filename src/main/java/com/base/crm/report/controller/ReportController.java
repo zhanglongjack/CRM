@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,21 +43,20 @@ public class ReportController {
         return new ModelAndView(new ExcelView(), map);
     }
 	
-	@RequestMapping("/saleSummaryReportView")
-	public ModelAndView saleSummaryReportView(SummaryReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
+	@RequestMapping(value = "/saleSummary/pageView")
+	@ResponseBody
+	public Map<String, Object> saleSummaryReportView(SummaryReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
 		logger.info("saleSummaryReportExport request:"+queryObject);
 		List<String> monthList = procurementCostService.queryMonthBy(queryObject.getMonth());
 		
 		pageTools.setTotal((long) monthList.size());
-		ModelAndView mv = new ModelAndView("page/report/saleSummary/SaleSummaryReportView");
-//		mv.addObject("monthData", mapping.getData());
-//		mv.addObject("sumData", mapping.getCollectData());
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 	
-	@RequestMapping("/loadPageSummaryReport")
-	public ModelAndView loadPageSummaryReport(SummaryReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
+	@RequestMapping("/saleSummary/loadPage")
+	public ModelAndView loadPage(SummaryReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
 		logger.info("saleSummaryReportExport request:"+queryObject);
 		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
 		

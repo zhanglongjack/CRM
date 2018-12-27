@@ -25,13 +25,14 @@
 		
 		<script type="text/javascript">
 			$(function(){
-				pageQueryParams.preUrl= "/report/";
-				pageQueryParams.pageUrl = pageQueryParams.preUrl+'loadPageSummaryReport';
+				pageQueryParams.preUrl= "/procurement/";
+				pageQueryParams.pageUrl = pageQueryParams.preUrl+'loadPage';
 				
 				render(pageQueryParams);  // 渲染页面函数
 				$("#sidebar-nav nav a").removeClass("active");
-				$("#menu-sub-3").addClass("active");
-				$("#menu-14").addClass("active");
+				$("#menu-9").addClass("active");
+				$("#menu-13").addClass("active");
+				$("#costPage").addClass("in");
 			});
 			
 		</script>

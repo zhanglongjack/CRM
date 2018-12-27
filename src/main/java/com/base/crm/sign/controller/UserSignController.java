@@ -46,8 +46,9 @@ public class UserSignController {
 
 	}
 
-	@RequestMapping(value = "/signView")
-	public ModelAndView signView(UserSign paramObj, PageTools pageTools,
+	@RequestMapping(value = "/pageView")
+	@ResponseBody
+	public Map<String, Object> signView(UserSign paramObj, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("signView request : " +paramObj);
 		
@@ -56,10 +57,9 @@ public class UserSignController {
 		}
 		Long size = userSignService.selectPageTotalCount(paramObj);
 		pageTools.setTotal(size);
-		ModelAndView mv = new ModelAndView("page/sign/SignView");
-		paramObj.setPageTools(pageTools);
-		mv.addObject("pageTools", pageTools);
-		return mv;
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
 	}
 
 	@RequestMapping(value = "/loadPage")
