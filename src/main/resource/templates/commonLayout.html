@@ -61,7 +61,7 @@
 	<script th:src="@{~/crm_tempaltes/table/locale/bootstrap-table-zh-CN.js}"></script>
 	
 	<script th:src="@{~/crm_tempaltes/scripts/file-upload.js}" type="text/javascript"></script>
-	
+	<script th:src="@{~/crm_tempaltes/scripts/order-check.js}"></script>
 <script type="text/javascript" >
 	$(function(){
 		
@@ -116,6 +116,12 @@
 					
 					render(pageQueryParams);  // 渲染页面函数
 					//$('#loadingModal').modal('hide');
+				},
+				error:function(rep,errMsg,exception){
+					if(rep.responseText=="LoginTimeout"){
+						location.href="/login.html";
+					}
+					console.log(JSON.stringify(rep));
 				}
 			});
 			

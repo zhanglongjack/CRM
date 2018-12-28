@@ -73,7 +73,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		 * userInfo.setName(users.get(0).getName());
 		 * userInfo.setPassword(users.get(0).getPassword());
 		 */
-		// 开发环节的设置，不登录的情况下自动登录
+		// 开发环节的设置，不登录的情况下自动登录 
 		/*
 		 * if(userInfo==null && IGNORE_LOGIN){ userInfo =
 		 * sysUserService.getUserInfoByUserID(2);
@@ -91,7 +91,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				response.setHeader("sessionstatus", "timeout");
 				// response.setHeader("basePath",request.getContextPath());
 				response.getWriter().print("LoginTimeout");
-				return false;
+				
 			} else {
 				logger.info("尚未登录，跳转到登录界面");
 				response.sendRedirect("/login.html");

@@ -291,6 +291,7 @@ var initOrderCheck = function(){
    });
     
    var checkWechatNo = function(){
+	   var checkWechatNoURL = "/customer/checkWechatNo";
     	var params = {oWechatNo:oWechatNoElement.val()};
     	$.ajax({
     		url: checkWechatNoURL,
