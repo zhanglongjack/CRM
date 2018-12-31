@@ -83,7 +83,7 @@
 	<select id="querySumAmountByMonth" parameterType="String" resultType="com.base.crm.report.entity.SummaryReport">
 		SELECT 
 			sum(pay_Amount) realncomeTotalAmount,
-			sum((case when order_status = 4 then (deposits) else total_amt end )) saleTotalAmount,
+			sum((case when order_status = 4 then (pay_Amount) else total_amt end )) saleTotalAmount,
 			sum((case when order_status = 4 then (express_amount*2) else  express_amount+ROUND((cash_on_delivery_amt*0.03) ,2) end )) expressTotalFee
 		FROM cust_orders
 		where substr(order_date,1,6) = #{month}  

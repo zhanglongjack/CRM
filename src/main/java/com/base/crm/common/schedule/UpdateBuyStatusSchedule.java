@@ -14,7 +14,7 @@ public class UpdateBuyStatusSchedule {
 	
 	@Autowired
 	private CustOrderService custOrderService;
-	@Scheduled(cron="0 0/1 * * * ?")
+	@Scheduled(cron="0 0 1 * * ?")
     public void transferBackJob() {
 		logger.info("开始更新客户购买状态以及订单订复购状态");
 		try {

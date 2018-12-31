@@ -178,8 +178,8 @@
 									<th>总金额</th>
 									<!-- 
 									<th>折后金额</th>
-									<th>实付金额</th>
 									 -->
+									<th>实收金额</th>
 									<th>订复购</th>
 									<th>下单日期</th>
 									<th>订单状态</th>
@@ -203,8 +203,8 @@
 									<td th:text="${#numbers.formatCurrency(obj.totalAmt)}"></td>
 									<!-- 
 									<td th:text="${#numbers.formatCurrency(obj.afterDiscountAmt)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.payAmount)}"></td>
 									 -->
+									<td th:text="${#numbers.formatCurrency(obj.payAmount)}"></td>
 									<td th:text="${@commonConstants.custOrderStatusMap.get(obj.buyStatus)}"></td>
 									<td th:text="${obj.orderDate}"></td> 
 									<td>

@@ -82,7 +82,6 @@ public class OrdersController {
 		consume.setOrderNo(order.getOrderNo());
 		consume.setConsumeDate(resultOrder.getOrderDate());
 		
-		
 		if(order.getOrderStatus()==OrderStatus.WAITING.getKey()){
 			if(order.getDeposits()!=null&&order.getDeposits()>0){
 				consume.setConsumeType(2);
