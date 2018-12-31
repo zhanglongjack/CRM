@@ -45,7 +45,8 @@ public class CustInfoController {
 		if(!user.isAdmin()){
 			ci.setUserId(user.getuId());
 		}
-		if(ci.getAddTime()==null){
+		
+		if(ci.getAddTime()==null&&user.isAdmin()){
 			ci.setAddTime(DateUtils.getStringDateShort());
 		}
 		
@@ -113,7 +114,7 @@ public class CustInfoController {
 		if(!user.isAdmin()){
 			ci.setUserId(user.getuId());
 		}
-		if(ci.getAddTime()==null ){
+		if(ci.getAddTime()==null&&user.isAdmin()){
 			ci.setAddTime(DateUtils.getStringDateShort());
 		}
 		
