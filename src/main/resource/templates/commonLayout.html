@@ -93,6 +93,8 @@
 			if(!preUrl){
 				return;
 			}
+			$("#modalDailog").addClass("modal-lg");
+			
 			var reqURL=preUrl+"/pageView";
 			//$("#loading").show();
 			$('#main-content').empty();
@@ -104,18 +106,15 @@
 				data: '',
 				dataType: 'json',
 				success: function(response) {
-					
-					//$('#main-content').empty();
-					//$('#main-content').html(response);
 					console.log(JSON.stringify(response));
 					pageQueryParams.total = response.pageTools.total;
+					pageQueryParams.index = 1;
 					pageQueryParams.pageSize = response.pageTools.pageSize;
 					pageQueryParams.fromQueryData = null;
 					pageQueryParams.preUrl= preUrl; 
 					pageQueryParams.pageUrl = preUrl+"/loadPage";
 					
 					render(pageQueryParams);  // 渲染页面函数
-					//$('#loadingModal').modal('hide');
 				},
 				error:function(rep,errMsg,exception){
 					if(rep.responseText=="LoginTimeout"){

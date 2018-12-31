@@ -22,4 +22,5 @@ public interface CustInfoService {
 
 	Map<String, Integer> selectCustCountByMonth(String month);
 
+	int updateCustOrderStatus();
 }

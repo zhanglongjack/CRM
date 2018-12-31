@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
@@ -13,6 +14,7 @@ import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
  *
  */
 @SpringBootApplication
+@EnableScheduling
 public class StartCRMApp 
 {
     public static void main( String[] args )

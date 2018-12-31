@@ -9,7 +9,8 @@ public enum OrderStatus {
 	DELIVERING(2, "派送中"),
 	SIGNED(3, "已签收"),
 	REFUSED(4, "已拒签"),
-	INVALIDATED(5, "已作废");
+	INVALIDATED(5, "已作废"),
+	REFUSED_CACH(6, "退款");
 	
 	public static final Map<Integer,String> orderStatusMap = new HashMap<Integer,String>();
 	

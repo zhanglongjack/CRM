@@ -198,5 +198,16 @@
 			<if test="custWechatNo != null and custWechatNo.length()>0">and cust_wechat_no=#{custWechatNo}</if>
 		</where>
 	</update>
+	
+	<update id="updateCustOrderStatus" >
+		update cust_info set order_status='reordered'
+		where cust_wechat_no = (
+			SELECT o_wechat_no FROM  cust_orders o
+			 where o.o_wechat_no = cust_wechat_no
+			group by o_wechat_no
+			having  count(1)>1
+		)
+		and order_status not in ( 'reordered')
+	</update>
 
 </mapper>

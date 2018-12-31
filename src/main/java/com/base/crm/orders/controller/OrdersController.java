@@ -102,9 +102,12 @@ public class OrdersController {
 			}
 		}else if(order.getOrderStatus()==OrderStatus.REFUSED.getKey()){
 			consume.setConsumeType(4);
-			consume.setAmount(new BigDecimal(0));
-			consume.setRemark(String.format("微信号[%s]的金额消费:%s元,订单号[%s]拒收",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			customerConsumeService.updateByOrderNo(consume);
+			
+			BigDecimal amount = new BigDecimal(order.getDeposits() - order.getPayAmount());
+			consume.setConsumeType(6);
+			consume.setAmount(amount.negate());
+			consume.setRemark(String.format("微信号[%s]的退款:%s元,订单号[%s]元,拒收或退款",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 		}
 		int paymentMethod = order.getPaymentMethod()==null?-1:order.getPaymentMethod();
 		if(consume.getRemark()!=null && paymentMethod!=3){

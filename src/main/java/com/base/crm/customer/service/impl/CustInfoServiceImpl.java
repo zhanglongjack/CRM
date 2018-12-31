@@ -54,5 +54,10 @@ public class CustInfoServiceImpl implements CustInfoService {
 	public Map<String, Integer> selectCustCountByMonth(String month) {
 		return custInfoMapper.selectCustCountByMonth(month);
 	}
+
+	@Override
+	public int updateCustOrderStatus() {
+		return custInfoMapper.updateCustOrderStatus();
+	}
  
 }

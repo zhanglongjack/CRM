@@ -15,15 +15,16 @@ var initOrderCheck = function(){
 		if(discount && discount!=null&&value){
         	var afterDiscountAmt = value * discount;
         	$("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').val(afterDiscountAmt);
-        	var userAmt = Number($("#ModifyModal").find('.modal-body input[name="userAmt"]').val());
-        	var deposits = Number($("#ModifyModal").find('.modal-body input[name="deposits"]').val());
-        	if(userAmt>0 && userAmt - afterDiscountAmt>=0){
-        		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(afterDiscountAmt);
-        	}else if(userAmt>0 && userAmt - afterDiscountAmt<0){
-        		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(userAmt);
-        	}else if(userAmt==0){
-        		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(deposits);
-        	}
+//        	var userAmt = Number($("#ModifyModal").find('.modal-body input[name="userAmt"]').val());
+//        	var deposits = Number($("#ModifyModal").find('.modal-body input[name="deposits"]').val());
+//        	if(userAmt>0 && userAmt - afterDiscountAmt>=0){
+//        		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(afterDiscountAmt);
+//        	}else if(userAmt>0 && userAmt - afterDiscountAmt<0){
+//        		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(userAmt);
+//        	}else if(userAmt==0){
+//        		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(deposits);
+//        	}
+        	computePayAmount();
         	
     	}
 	}
@@ -39,7 +40,7 @@ var initOrderCheck = function(){
 	 
 	
 	var computePayAmount = function(){
-		
+		var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
 		var afterDiscountAmt = Number($("#ModifyModal").find('.modal-body input[name="afterDiscountAmt"]').val());
     	var userAmt = Number($("#ModifyModal").find('.modal-body input[name="userAmt"]').val());
     	var deposits = Number($("#ModifyModal").find('.modal-body input[name="deposits"]').val());
@@ -47,7 +48,7 @@ var initOrderCheck = function(){
     		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(afterDiscountAmt);
     	}else if(userAmt>0 && userAmt - afterDiscountAmt<0){
     		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(userAmt);
-    	}else if(userAmt==0){
+    	}else if(userAmt==0 && Number(orderStatus)!=4){
     		$("#ModifyModal").find('.modal-body input[name="payAmount"]').val(deposits);
     	}
 	}
@@ -291,8 +292,9 @@ var initOrderCheck = function(){
    });
     
    var checkWechatNo = function(){
-	   var checkWechatNoURL = "/customer/checkWechatNo";
+	    var checkWechatNoURL = "/customer/checkWechatNo";
     	var params = {oWechatNo:oWechatNoElement.val()};
+    	console.log(JSON.stringify(params));
     	$.ajax({
     		url: checkWechatNoURL,
     		data:params,
@@ -400,13 +402,17 @@ var initOrderCheck = function(){
 	function upatePayAmount(){
 		var orderStatus = $("#ModifyModal").find('.modal-body select[name="orderStatus"] option:selected').val();
 		var payAmountObj = $("#ModifyModal").find('.modal-body input[name="payAmount"]');
-		
+		$("#ModifyModal").find('.modal-body input[name="payAmount"]').attr("readonly","readonly");
 		if(Number(orderStatus)==3){
 			var cashOnDeliveryAmt = Number($("#ModifyModal").find('.modal-body input[name="cashOnDeliveryAmt"]').val());
 			payAmountObj.val((oldValue + cashOnDeliveryAmt).toFixed(2));
+		}else if(Number(orderStatus)==4){
+			$("#ModifyModal").find('.modal-body input[name="payAmount"]').removeAttr("readonly");
 		}else{
 			payAmountObj.val(oldValue.toFixed(2));
 		}
+		
+		
 	}
 	
 	

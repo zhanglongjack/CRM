@@ -25,7 +25,7 @@
 		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
 	</resultMap>
 	
-	<resultMap id="pagCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
+	<resultMap id="pageCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
 		<id column="order_no" jdbcType="BIGINT" property="orderNo" />
 		<result column="user_id" jdbcType="BIGINT" property="userId" />
 		<result column="o_wechat_no" jdbcType="VARCHAR" property="oWechatNo" />
@@ -101,7 +101,7 @@
 		and  order_status between 1 and 3
 	</select>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="pagCustOrderMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="pageCustOrderMap">
 		select
 		<include refid="Base_Column_List" />
 		from cust_orders
@@ -118,7 +118,7 @@
 	</select>
 	
 	<select id="selectPageByObjectForList" parameterType="com.base.crm.orders.entity.CustOrder"
-		resultMap="pagCustOrderMap">
+		resultMap="pageCustOrderMap">
 		select
 		<include refid="Base_Column_List" />
 		from cust_orders
@@ -342,6 +342,18 @@
 		<if test="oldOrderStatus != null">
 			and order_status = #{oldOrderStatus,jdbcType=INTEGER}
 		</if>
+	</update>
+	
+	<update id="updateBuyStatusByErrBuyStatus" >
+		update cust_orders s , (
+			SELECT  min(o.order_no) order_no,o_wechat_no  FROM  cust_orders o  
+			group by o_wechat_no
+			having  count(1)>1
+		) t
+		set buy_status='reordered'
+		where t.o_wechat_no= s.o_wechat_no
+		and s.order_no > t.order_no
+		and s.buy_status not in ( 'reordered')
 	</update>
 	
 </mapper>

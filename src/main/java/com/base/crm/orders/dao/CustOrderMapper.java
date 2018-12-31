@@ -30,4 +30,7 @@ public interface CustOrderMapper {
 	SummaryReport querySumAmountByMonth(String month);
 
 	Map<String, Integer> selectOrderCountByMonth(String month);
+
+	void updateBuyStatusByErrBuyStatus();
+
 }

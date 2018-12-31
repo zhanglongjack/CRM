@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.orders.dao.CustOrderMapper;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
@@ -17,6 +18,9 @@ public class CustOrderServiceImpl implements CustOrderService {
 
 	@Autowired
 	private CustOrderMapper custOrderMapper;
+	@Autowired 
+	private CustInfoService custInfoService;
+	
 	@Override
 	public int deleteByPrimaryKey(Long orderNo) {
 		return custOrderMapper.deleteByPrimaryKey(orderNo);
@@ -78,6 +82,13 @@ public class CustOrderServiceImpl implements CustOrderService {
 	@Override
 	public Map<String, Integer> selectOrderCountByMonth(String month) {
 		return custOrderMapper.selectOrderCountByMonth(month);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void doUpdateBuyStatus() {
+		custOrderMapper.updateBuyStatusByErrBuyStatus();
+		custInfoService.updateCustOrderStatus();
 	}
 
 }

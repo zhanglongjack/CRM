@@ -31,4 +31,6 @@ public interface CustOrderService {
 
 	Map<String, Integer> selectOrderCountByMonth(String month);
 
+	void doUpdateBuyStatus();
+
 }
