@@ -23,4 +23,6 @@ public interface CustInfoService {
 	Map<String, Integer> selectCustCountByMonth(String month);
 
 	int updateCustOrderStatus();
+
+	List<Map<String, Object>> queryAddCustCountBy(String month, String serveWechatNo);
 }

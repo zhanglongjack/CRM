@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,28 +75,16 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 		BigDecimal zore = new BigDecimal("0.00");
 		for(String month : monthList){
 			logger.info("开始统计{}月销售业绩 ",month);
-//			SummaryReport report = new SummaryReport();
 			SummaryReport orderReport = custOrderService.querySumAmountByMonth(month);
 			SummaryReport report = orderReport==null?new SummaryReport():orderReport;
 			
-			List<ADConsume> consumeList = consumeADService.querySummaryConsumeAmount(month);
+			Map<String, BigDecimal> realConsumeAD = consumeADService.queryRealConsumeAd(month);
 			BigDecimal procurementAmount = procurementCostService.querySumAmountByMonth(month);
 			BigDecimal salaryAmount = serverSalaryService.querySumAmountByMonth(month);
-			if(consumeList.size()>0){
-				// 各帐号广告费
-				for(ADConsume consume : consumeList){
-					report.setConsumeAD(report.getConsumeAD().add(consume.getConsumeAmount()));
-					if(consume.getConsumeAccountType().equals("normal_account")){
-						report.setRealConsumeAD(report.getRealConsumeAD().add(consume.getConsumeAmount().divide(new BigDecimal("1.3"),2,BigDecimal.ROUND_HALF_EVEN)));
-					}else{
-						report.setRealConsumeAD(report.getRealConsumeAD().add(consume.getConsumeAmount().divide(new BigDecimal("1.25"),2,BigDecimal.ROUND_HALF_EVEN)));
-					}
-				}
-			}
-			report.setMonth(month);
 			
+			report.setRealConsumeAD(realConsumeAD.get("normal_account").add(realConsumeAD.get("hospital_account")));
+			report.setMonth(month);
 			report.setProcurementCosts(procurementAmount==null?zore:procurementAmount);
-//			report.setSaleTotalAmount(orderAmount==null?zore:orderAmount);
 			report.setRealSalary(salaryAmount==null?zore:salaryAmount);
 			
 			sumReport.setConsumeAD(sumReport.getConsumeAD().add(report.getConsumeAD()));

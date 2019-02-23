@@ -161,13 +161,15 @@ public class OrdersController {
 	}
 	
 	@RequestMapping(value="/primaryModalView")
-	public String primaryModalView(Long id,String modifyModel,Model model) throws Exception{
+	public String primaryModalView(Long id,String modifyModel,Model model,@ModelAttribute("user") UserInfo user) throws Exception{
 		logger.info("primaryModalView request:"+id+",model:"+model);
 		Map<Integer,String> orderStatusMap = new HashMap<Integer,String>();
 		if(id!=null){
 			CustOrder order = custOrderService.selectByPrimaryKey(id);
 			model.addAttribute("modifyOrder", order);
-			if(order.getOrderStatus()==OrderStatus.NON_DELIVERY.getKey()){
+			if(user.isAdmin()){
+				orderStatusMap = OrderStatus.orderStatusMap;
+			}else if(order.getOrderStatus()==OrderStatus.NON_DELIVERY.getKey()){
 				orderStatusMap.put(OrderStatus.NON_DELIVERY.getKey(), OrderStatus.NON_DELIVERY.toString());
 				orderStatusMap.put(OrderStatus.WAITING.getKey(), OrderStatus.WAITING.toString());
 				orderStatusMap.put(OrderStatus.INVALIDATED.getKey(),  OrderStatus.INVALIDATED.toString());

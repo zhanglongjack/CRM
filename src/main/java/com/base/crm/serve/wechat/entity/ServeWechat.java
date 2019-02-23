@@ -6,6 +6,7 @@ public class ServeWechat {
 	private Long id;
 	private String serveWechatNo;
 	private Long userId;
+	private String consumeAcctType;
 
 	private PageTools pageTools;
 
@@ -31,6 +32,14 @@ public class ServeWechat {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getConsumeAcctType() {
+		return consumeAcctType;
+	}
+
+	public void setConsumeAcctType(String consumeAcctType) {
+		this.consumeAcctType = consumeAcctType;
 	}
 
 	public PageTools getPageTools() {

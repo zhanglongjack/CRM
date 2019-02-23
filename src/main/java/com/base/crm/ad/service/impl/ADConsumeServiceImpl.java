@@ -1,6 +1,9 @@
 package com.base.crm.ad.service.impl;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,5 +66,27 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 		for(ADConsume consume : list){
 			insertSelective(consume);
 		}
+	}
+
+	@Override
+	public Map<String,BigDecimal> queryRealConsumeAd(String month) {
+		List<ADConsume> consumeList = querySummaryConsumeAmount(month);
+		BigDecimal normalConsumeAD = new BigDecimal(0);
+		BigDecimal hospitalConsumeAD = new BigDecimal(0);
+		if(consumeList.size()>0){
+			// 各帐号广告费统计
+			for(ADConsume consume : consumeList){
+				if(consume.getConsumeAccountType().equals("normal_account")){
+					normalConsumeAD = normalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.3"),2,BigDecimal.ROUND_HALF_EVEN));
+				}else{
+					hospitalConsumeAD = hospitalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.25"),2,BigDecimal.ROUND_HALF_EVEN));
+				}
+			}
+		}
+		
+		Map<String,BigDecimal> result = new HashMap<String,BigDecimal>();
+		result.put("normal_account", normalConsumeAD);
+		result.put("hospital_account", hospitalConsumeAD);
+		return result;
 	} 
 }

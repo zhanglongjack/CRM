@@ -26,7 +26,7 @@
 									<i class="glyphicon glyphicon-user"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${currentDayCount}"></span>
+									<span class="number" th:text="${#strings.defaultString(currentDayCount,0)}"></span>
 									<span class="title">当日加粉总数</span>
 								</p>
 							</div>
@@ -37,7 +37,7 @@
 									<i class="glyphicon glyphicon-signal"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${currentOrderCount}"></span>
+									<span class="number" th:text="${#strings.defaultString(currentOrderCount,0)}"></span>
 									<span class="title">当日出单数</span>
 									
 								</p>
@@ -49,7 +49,7 @@
 									<i class="glyphicon glyphicon-usd"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${#numbers.formatCurrency(currentAmount)}"></span>
+									<span class="number" th:text="${#strings.defaultString(#numbers.formatCurrency(currentAmount),'0')}"></span>
 									<span class="title">当日业绩总额</span>
 								</p>
 							</div>
@@ -60,7 +60,7 @@
 									<i class="fas fa-user-friends"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${monthCustCount}"></span>
+									<span class="number" th:text="${#strings.defaultString(monthCustCount,0)}"></span>
 									<span class="title">当月加粉数</span>
 								</p>
 							</div>
@@ -71,7 +71,7 @@
 									<i class="glyphicon glyphicon-list-alt"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${sumOrders}"></span>
+									<span class="number" th:text="${#strings.defaultString(sumOrders,0)}"></span>
 									<span class="title">当月出单数</span>
 								</p>
 							</div>
@@ -82,7 +82,7 @@
 									<i class="fas fa-yen-sign"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${#numbers.formatCurrency(sumAmount)}"></span>
+									<span class="number" th:text="${#strings.defaultString(#numbers.formatCurrency(sumAmount),0)}"></span>
 									<span class="title">当月业绩总额</span>
 								</p>
 							</div>
@@ -249,7 +249,7 @@
 						<div class="panel-body">
 							<ul class="list-unstyled activity-list">
 								<li>
-									<img src="crm_tempaltes/img/user1.png" alt="Avatar" class="img-circle pull-left avatar">
+									<img src="framework/img/user1.png" alt="Avatar" class="img-circle pull-left avatar">
 									<p>
 										<a href="#">Michael</a>
 										has achieved 80% of his completed tasks
@@ -257,7 +257,7 @@
 									</p>
 								</li>
 								<li>
-									<img src="crm_tempaltes/img/user2.png" alt="Avatar" class="img-circle pull-left avatar">
+									<img src="framework/img/user2.png" alt="Avatar" class="img-circle pull-left avatar">
 									<p>
 										<a href="#">Daniel</a>
 										has been added as a team member to project
@@ -266,7 +266,7 @@
 									</p>
 								</li>
 								<li>
-									<img src="crm_tempaltes/img/user3.png" alt="Avatar" class="img-circle pull-left avatar">
+									<img src="framework/img/user3.png" alt="Avatar" class="img-circle pull-left avatar">
 									<p>
 										<a href="#">Martha</a>
 										created a new heatmap view
@@ -275,7 +275,7 @@
 									</p>
 								</li>
 								<li>
-									<img src="crm_tempaltes/img/user4.png" alt="Avatar" class="img-circle pull-left avatar">
+									<img src="framework/img/user4.png" alt="Avatar" class="img-circle pull-left avatar">
 									<p>
 										<a href="#">Jane</a>
 										has completed all of the tasks
@@ -283,7 +283,7 @@
 									</p>
 								</li>
 								<li>
-									<img src="crm_tempaltes/img/user5.png" alt="Avatar" class="img-circle pull-left avatar">
+									<img src="framework/img/user5.png" alt="Avatar" class="img-circle pull-left avatar">
 									<p>
 										<a href="#">Jason</a>
 										started a discussion about

@@ -50,8 +50,9 @@ var initTimePicker =function(){
 	$('[datepicker-moth-id]').datepicker({
 		format: "yyyymm",
 		language: "zh-CN",
+		startView: 2,
 		minViewMode: 1,
-		maxViewMode: 1,
+		maxViewMode: 2,
 		autoclose: true
 	});
 	

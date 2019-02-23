@@ -45,6 +45,18 @@
 		where substr( add_time,1,7) = #{month}
 	</select>
 	
+	<select id="queryAddCustCountBy" parameterType="Map"
+		resultType="java.util.HashMap">
+		SELECT 
+			count(1) num ,
+			ifnull(sum(case when c.order_status <![CDATA[<>]]> 'none' then 1 else 0 end),0) ordered,
+			ifnull(sum(case when c.order_status = 'reordered' then 1 else 0 end),0) reordered
+		
+		FROM cust_info c 
+		where  date_format(str_to_date(add_time, '%Y-%m-%d %H'),'%Y%m') = #{month}
+		and c.serve_wechat_no = #{serveWechatNo}
+	</select>
+	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select

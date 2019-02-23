@@ -48,7 +48,7 @@ public class ExcelView extends AbstractXlsxView {
 
 		buildRowColumns(mapping, sheet,rowStyle);
 		
-		buildRowColumns(mapping, sheet,rowStyle);
+//		buildRowColumns(mapping, sheet,rowStyle);
 	}
 
 	private CellStyle buildRowStyle(Workbook workbook, Sheet sheet) {

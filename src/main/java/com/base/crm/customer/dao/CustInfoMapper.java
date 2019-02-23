@@ -26,4 +26,6 @@ public interface CustInfoMapper {
 	Map<String, Integer> selectCustCountByMonth(String month);
 
 	int updateCustOrderStatus();
+
+	List<Map<String, Object>> queryAddCustCountBy(Map<String, String> params);
 }

@@ -225,12 +225,18 @@
 									-->
 									<td>
 										<!-- Single button -->
-										<div class="btn-group">
+										<div class="btn-group" th:if="${!session.user.isAdmin()}">
 											<a th:if="${obj.orderStatus>=3 || obj.orderStatus==1}" class="btn btn-default btn-sm disabled" data-toggle="modal" data-target="#ModifyModal"
 												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
 												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>
 											</a>
 											<a th:if="${obj.orderStatus<3&&obj.orderStatus!=1}" class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
+												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
+												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>
+											</a>
+										</div>
+										<div class="btn-group" th:if="${session.user.isAdmin()}"> 
+											<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
 												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
 												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>
 											</a>

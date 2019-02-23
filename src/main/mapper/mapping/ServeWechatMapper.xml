@@ -5,10 +5,11 @@
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="serve_Wechat_No" jdbcType="VARCHAR" property="serveWechatNo" />
 		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="ad_consume_account_type" jdbcType="BIGINT" property="consumeAcctType" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		id, serve_Wechat_No, user_id
+		id, serve_Wechat_No, user_id,ad_consume_account_type
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -48,7 +49,10 @@
 		from serve_wechat
 		<include refid="dynamicWhere" />
 		order by id
+		<if test="pageTools != null">
 		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
+		
 	</select>
 	
 	<select id="selectPageTotalCount" parameterType="com.base.crm.serve.wechat.entity.ServeWechat"
@@ -76,6 +80,9 @@
 			<if test="userId != null">
 				user_id,
 			</if>
+			<if test="consumeAcctType != null">
+				ad_consume_account_type,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -86,6 +93,9 @@
 			</if>
 			<if test="userId != null">
 				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="consumeAcctType != null">
+				#{consumeAcctType},
 			</if>
 		</trim>
 	</insert>
@@ -98,6 +108,9 @@
 			</if>
 			<if test="userId != null">
 				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="consumeAcctType != null">
+				ad_consume_account_type = #{consumeAcctType},
 			</if>
 		</set>
 		where id = #{id,jdbcType=BIGINT}

@@ -1,6 +1,8 @@
 package com.base.crm.ad.service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.base.crm.ad.entity.ADConsume;
 
@@ -22,4 +24,6 @@ public interface ADConsumeService {
 	List<ADConsume> selectBySelective(ADConsume queryObject);
 
 	List<ADConsume> querySummaryConsumeAmount(String month);
+
+	Map<String, BigDecimal> queryRealConsumeAd(String month);
 }

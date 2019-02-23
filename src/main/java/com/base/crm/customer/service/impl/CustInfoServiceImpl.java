@@ -1,5 +1,6 @@
 package com.base.crm.customer.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,14 @@ public class CustInfoServiceImpl implements CustInfoService {
 	@Override
 	public int updateCustOrderStatus() {
 		return custInfoMapper.updateCustOrderStatus();
+	}
+
+	@Override
+	public List<Map<String, Object>> queryAddCustCountBy(String month, String serveWechatNo) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("month", month);
+		params.put("serveWechatNo", serveWechatNo);
+		return custInfoMapper.queryAddCustCountBy(params);
 	}
  
 }
