@@ -7,14 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.base.common.util.DateUtils;
 import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.orders.service.CustOrderService;
+import com.base.crm.users.entity.UserInfo;
 
 @Controller
+@SessionAttributes("user")
 public class IndexController {
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
@@ -24,12 +28,12 @@ public class IndexController {
 	private CustOrderService orderService;
 	
 	@RequestMapping(value="/index")
-	public ModelAndView index(){
+	public ModelAndView index(@ModelAttribute("user") UserInfo user){
 		logger.info("index request");
 		String yearMonthShort = DateUtils.dateToTightStr(new Date()).substring(0, 6);
 		String yearMonthLong = DateUtils.dateToStr(new Date()).substring(0, 7);
-		Map<String,Integer> daysCountMap = custInfoService.selectCustCountByMonth(yearMonthLong);
-		Map<String,Integer> orderList = orderService.selectOrderCountByMonth(yearMonthShort);
+		Map<String,Integer> daysCountMap = custInfoService.selectCustCountByMonth(yearMonthLong,user.isAdmin()?null:user.getuId());
+		Map<String,Integer> orderList = orderService.selectOrderCountByMonth(yearMonthShort,user.isAdmin()?null:user.getuId());
 		
 		ModelAndView mv = new ModelAndView("page/index");
 		mv.addObject("date", new Date());

@@ -98,6 +98,7 @@
 			sum((case when order_date = date_format(now(), '%Y%m%d')  then total_amt else 0 end )) currentAmount
 		FROM cust_orders
 		where substr(order_date,1,6) = #{month}  
+		<if test="userId != null">and user_id=#{userId}</if>
 		and  order_status between 1 and 3
 	</select>
 	

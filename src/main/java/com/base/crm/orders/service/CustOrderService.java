@@ -29,7 +29,7 @@ public interface CustOrderService {
 
 	SummaryReport querySumAmountByMonth(String month);
 
-	Map<String, Integer> selectOrderCountByMonth(String month);
+	Map<String, Integer> selectOrderCountByMonth(String month, Long userId);
 
 	void doUpdateBuyStatus();
 

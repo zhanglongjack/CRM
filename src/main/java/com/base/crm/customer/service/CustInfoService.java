@@ -1,5 +1,6 @@
 package com.base.crm.customer.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +21,11 @@ public interface CustInfoService {
 
 	CustInfo selectByPrimaryWechatNo(String checkWechatNo);
 
-	Map<String, Integer> selectCustCountByMonth(String month);
+	Map<String, Integer> selectCustCountByMonth(String month,Long userId);
 
 	int updateCustOrderStatus();
 
 	List<Map<String, Object>> queryAddCustCountBy(String month, String serveWechatNo);
+
+	BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo);
 }

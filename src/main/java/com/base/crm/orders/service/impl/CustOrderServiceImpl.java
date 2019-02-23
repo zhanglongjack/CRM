@@ -1,5 +1,6 @@
 package com.base.crm.orders.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,8 +81,11 @@ public class CustOrderServiceImpl implements CustOrderService {
 	}
 
 	@Override
-	public Map<String, Integer> selectOrderCountByMonth(String month) {
-		return custOrderMapper.selectOrderCountByMonth(month);
+	public Map<String, Integer> selectOrderCountByMonth(String month,Long userId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("month", month);
+		params.put("userId", userId);
+		return custOrderMapper.selectOrderCountByMonth(params);
 	}
 
 	@Override

@@ -36,13 +36,14 @@
 			<if test="orderStatus != null and orderStatus.length()>0">and order_status = #{orderStatus}</if>
 		</where>
 	</sql>
-	<select id="selectCustCountByMonth" parameterType="String"
+	<select id="selectCustCountByMonth" parameterType="Map"
 		resultType="java.util.HashMap">
 		SELECT  
 		    count(1) monthCustCount,
 			ifnull(sum((case when substr( add_time,1,10) = date_format(now(), '%Y-%m-%d')  then 1 else 0 end )),0) currentCount
 		FROM  cust_info
 		where substr( add_time,1,7) = #{month}
+		<if test="userId != null">and user_id=#{userId}</if>
 	</select>
 	
 	<select id="queryAddCustCountBy" parameterType="Map"
@@ -54,6 +55,18 @@
 		
 		FROM cust_info c 
 		where  date_format(str_to_date(add_time, '%Y-%m-%d %H'),'%Y%m') = #{month}
+		and c.serve_wechat_no = #{serveWechatNo}
+	</select>
+	
+	<select id="queryServerSalePerformanBy" parameterType="Map"
+		resultType="java.math.BigDecimal">
+		select 
+			ifnull(sum(pay_amount) ,0) salePerforman
+		from cust_info c
+		inner join serve_wechat s on s.serve_wechat_no = c.serve_wechat_no
+		inner join cust_orders o on o.o_wechat_no = c.cust_wechat_no
+		where o.order_status = 3 
+		and substr(o.order_date,1,6) = #{month}
 		and c.serve_wechat_no = #{serveWechatNo}
 	</select>
 	

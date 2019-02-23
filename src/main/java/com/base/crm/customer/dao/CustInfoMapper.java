@@ -1,5 +1,6 @@
 package com.base.crm.customer.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +24,11 @@ public interface CustInfoMapper {
 
 	CustInfo selectByPrimaryWechatNo(String checkWechatNo);
 
-	Map<String, Integer> selectCustCountByMonth(String month);
+	Map<String, Integer> selectCustCountByMonth(Map<String, Object> params);
 
 	int updateCustOrderStatus();
 
 	List<Map<String, Object>> queryAddCustCountBy(Map<String, String> params);
+	
+	BigDecimal queryServerSalePerformanBy(Map<String, String> params);
 }

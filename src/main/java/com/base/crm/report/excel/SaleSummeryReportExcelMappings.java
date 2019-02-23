@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.base.common.util.ExcelMappingsAbstract;
-import com.base.crm.ad.entity.ADConsume;
 import com.base.crm.ad.service.ADConsumeService;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.procurement.service.ProcurementCostService;

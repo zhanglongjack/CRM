@@ -1,5 +1,6 @@
 package com.base.crm.customer.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,11 @@ public class CustInfoServiceImpl implements CustInfoService {
 	}
 
 	@Override
-	public Map<String, Integer> selectCustCountByMonth(String month) {
-		return custInfoMapper.selectCustCountByMonth(month);
+	public Map<String, Integer> selectCustCountByMonth(String month,Long userId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("month", month);
+		params.put("userId", userId);
+		return custInfoMapper.selectCustCountByMonth(params);
 	}
 
 	@Override
@@ -67,6 +71,14 @@ public class CustInfoServiceImpl implements CustInfoService {
 		params.put("month", month);
 		params.put("serveWechatNo", serveWechatNo);
 		return custInfoMapper.queryAddCustCountBy(params);
+	}
+
+	@Override
+	public BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("month", month);
+		params.put("serveWechatNo", serveWechatNo);
+		return custInfoMapper.queryServerSalePerformanBy(params);
 	}
  
 }
