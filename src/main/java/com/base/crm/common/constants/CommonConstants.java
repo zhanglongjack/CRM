@@ -18,8 +18,8 @@ import com.base.common.dictionary.service.DictionaryService;
 public class CommonConstants implements ApplicationListener<ContextRefreshedEvent> {
 	public static final String COMMON_LAYOUT = "commonLayout";
 	public static Map<String, String> custOrderStatusMap;
-	public static Map<String, String> buyStatusMap;
-	public static Map<String, String> adAccountTypeMap;
+//	public static Map<String, String> buyStatusMap;
+//	public static Map<String, String> adAccountTypeMap;
 	public static final Map<String, Map<String, String>> dictionaryMap = new HashMap<String, Map<String, String>>();
 	static {
 		custOrderStatusMap = CustOrderStatus.getValues();

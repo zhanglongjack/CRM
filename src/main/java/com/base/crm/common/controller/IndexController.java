@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.base.common.util.DateUtils;
 import com.base.crm.customer.service.CustInfoService;
+import com.base.crm.extension.check.ExtensionStatusCheckData;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.users.entity.UserInfo;
 
@@ -26,6 +27,8 @@ public class IndexController {
 	private CustInfoService custInfoService;
 	@Autowired
 	private CustOrderService orderService;
+	@Autowired
+	private ExtensionStatusCheckData data;
 	
 	@RequestMapping(value="/index")
 	public ModelAndView index(@ModelAttribute("user") UserInfo user){
@@ -43,6 +46,7 @@ public class IndexController {
 		mv.addObject("sumOrders", orderList.get("sumOrders"));
 		mv.addObject("currentOrderCount", orderList.get("currentCount"));
 		mv.addObject("currentAmount", orderList.get("currentAmount"));
+		mv.addObject("netWorkCheckList", data.getData());
 		logger.info("index response order count ==="+daysCountMap);
 		logger.info("index response==="+mv);
 		return mv;

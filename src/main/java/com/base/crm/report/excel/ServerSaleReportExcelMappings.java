@@ -99,6 +99,9 @@ public class ServerSaleReportExcelMappings extends ExcelMappingsAbstract {
 				List<Map<String,Object>> custCountList = custInfoService.queryAddCustCountBy(month,serverWechat.getServeWechatNo());
 				BigDecimal salePerforman= custInfoService.queryServerSalePerformanBy(month,serverWechat.getServeWechatNo());
 				BigDecimal sumConsumeAmount = realConsumeADMap.get(serverWechat.getConsumeAcctType());
+				if(sumConsumeAmount == null){
+					sumConsumeAmount = new BigDecimal(0);
+				}
 				sumServerSaleReportResult.setAdConsumeSum(sumServerSaleReportResult.getAdConsumeSum().add(sumConsumeAmount));
 				sumReportResult.setAdConsumeSum(sumReportResult.getAdConsumeSum().add(sumConsumeAmount));
 				

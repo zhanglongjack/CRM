@@ -16,7 +16,12 @@
 			<div class="panel panel-headline">
 				<div class="panel-heading">
 					<h3 class="panel-title">业绩报表</h3>
-					<p class="panel-subtitle"><span th:text="${#dates.year(date)}"></span>年<span th:text="${#dates.month(date)}"></span>月业绩报表</p>
+					<p class="panel-subtitle">
+						<span th:text="${#dates.year(date)}"></span>
+						年
+						<span th:text="${#dates.month(date)}"></span>
+						月业绩报表
+					</p>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -39,7 +44,7 @@
 								<p>
 									<span class="number" th:text="${#strings.defaultString(currentOrderCount,0)}"></span>
 									<span class="title">当日出单数</span>
-									
+
 								</p>
 							</div>
 						</div>
@@ -49,7 +54,8 @@
 									<i class="glyphicon glyphicon-usd"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${#strings.defaultString(#numbers.formatCurrency(currentAmount),'0')}"></span>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentAmount),'0')}"></span>
 									<span class="title">当日业绩总额</span>
 								</p>
 							</div>
@@ -82,12 +88,14 @@
 									<i class="fas fa-yen-sign"></i>
 								</span>
 								<p>
-									<span class="number" th:text="${#strings.defaultString(#numbers.formatCurrency(sumAmount),0)}"></span>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(sumAmount),0)}"></span>
 									<span class="title">当月业绩总额</span>
 								</p>
 							</div>
 						</div>
 					</div>
+					<!-- 
 					<div class="row">
 						<div class="col-md-10">
 							<div id="headline-chart" class="ct-chart"></div>
@@ -128,10 +136,118 @@
 							</div>
 						</div>
 					</div>
+				 -->
 				</div>
 			</div>
 			<!-- END OVERVIEW -->
 			<div class="row">
+				<div class="col-md-6">
+					<!-- TIMELINE -->
+					<div class="panel panel-scrolling">
+						<div class="panel-heading">
+							<h3 class="panel-title">最新开单公布</h3>
+							<div class="right">
+								<button type="button" class="btn-toggle-collapse">
+									<i class="lnr lnr-chevron-up"></i>
+								</button>
+								<button type="button" class="btn-remove">
+									<i class="lnr lnr-cross"></i>
+								</button>
+							</div>
+						</div>
+						<div class="panel-body">
+							<ul class="list-unstyled activity-list">
+								<li>
+									<img src="crm_tempaltes/img/user1.png" alt="Avatar" class="img-circle pull-left avatar">
+									<p>
+										<a href="#">Michael</a>
+										has achieved 80% of his completed tasks
+										<span class="timestamp">20 minutes ago</span>
+									</p>
+								</li>
+								<li>
+									<img src="crm_tempaltes/img/user2.png" alt="Avatar" class="img-circle pull-left avatar">
+									<p>
+										<a href="#">Daniel</a>
+										has been added as a team member to project
+										<a href="#">System Update</a>
+										<span class="timestamp">Yesterday</span>
+									</p>
+								</li>
+								<li>
+									<img src="crm_tempaltes/img/user3.png" alt="Avatar" class="img-circle pull-left avatar">
+									<p>
+										<a href="#">Martha</a>
+										created a new heatmap view
+										<a href="#">Landing Page</a>
+										<span class="timestamp">2 days ago</span>
+									</p>
+								</li>
+							</ul>
+							<button type="button" class="btn btn-primary btn-bottom center-block">Load More</button>
+						</div>
+					</div>
+					<!-- END TIMELINE -->
+				</div>
+
+				<div class="col-md-6"  th:if="${session.user.isAdmin()&&netWorkCheckList.size()>0}">
+					<!-- RECENT PURCHASES -->
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title">网络检查信息</h3>
+							<div class="right">
+								<button type="button" class="btn-toggle-collapse">
+									<i class="lnr lnr-chevron-up"></i>
+								</button>
+								<button type="button" class="btn-remove">
+									<i class="lnr lnr-cross"></i>
+								</button>
+							</div>
+						</div>
+						<div class="panel-body no-padding">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>时间</th>
+										<th>服务号</th>
+										<th>状态</th>
+										<th>网络地址</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="obj : ${netWorkCheckList}">
+										<td th:text="${obj.dateTime}"></td>
+										<td th:text="${obj.number}"></td>
+										<td>
+											<span class="label label-danger" th:if="${obj.status==1}">异常</span>
+											<span class="label label-success" th:if="${obj.status==0}">已处理</span>
+										</td>
+										<td th:text="${obj.netWork}"></td>
+										<td>
+											
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="panel-footer">
+							<div class="row">
+								<div class="col-md-6">
+									<span class="panel-note">
+										<i class="fa fa-clock-o"></i>
+										Last 24 hours
+									</span>
+								</div>
+								<div class="col-md-6 text-right">
+									<a href="#" class="btn btn-primary">View All Purchases</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END RECENT PURCHASES -->
+				</div>
+
 				<div class="col-md-6">
 					<!-- RECENT PURCHASES -->
 					<div class="panel">
@@ -232,71 +348,6 @@
 					</div>
 					<!-- END RECENT PURCHASES -->
 				</div>
-				<div class="col-md-6">
-					<!-- TIMELINE -->
-					<div class="panel panel-scrolling">
-						<div class="panel-heading">
-							<h3 class="panel-title">最新开单提示</h3>
-							<div class="right">
-								<button type="button" class="btn-toggle-collapse">
-									<i class="lnr lnr-chevron-up"></i>
-								</button>
-								<button type="button" class="btn-remove">
-									<i class="lnr lnr-cross"></i>
-								</button>
-							</div>
-						</div>
-						<div class="panel-body">
-							<ul class="list-unstyled activity-list">
-								<li>
-									<img src="framework/img/user1.png" alt="Avatar" class="img-circle pull-left avatar">
-									<p>
-										<a href="#">Michael</a>
-										has achieved 80% of his completed tasks
-										<span class="timestamp">20 minutes ago</span>
-									</p>
-								</li>
-								<li>
-									<img src="framework/img/user2.png" alt="Avatar" class="img-circle pull-left avatar">
-									<p>
-										<a href="#">Daniel</a>
-										has been added as a team member to project
-										<a href="#">System Update</a>
-										<span class="timestamp">Yesterday</span>
-									</p>
-								</li>
-								<li>
-									<img src="framework/img/user3.png" alt="Avatar" class="img-circle pull-left avatar">
-									<p>
-										<a href="#">Martha</a>
-										created a new heatmap view
-										<a href="#">Landing Page</a>
-										<span class="timestamp">2 days ago</span>
-									</p>
-								</li>
-								<li>
-									<img src="framework/img/user4.png" alt="Avatar" class="img-circle pull-left avatar">
-									<p>
-										<a href="#">Jane</a>
-										has completed all of the tasks
-										<span class="timestamp">2 days ago</span>
-									</p>
-								</li>
-								<li>
-									<img src="framework/img/user5.png" alt="Avatar" class="img-circle pull-left avatar">
-									<p>
-										<a href="#">Jason</a>
-										started a discussion about
-										<a href="#">Weekly Meeting</a>
-										<span class="timestamp">3 days ago</span>
-									</p>
-								</li>
-							</ul>
-							<button type="button" class="btn btn-primary btn-bottom center-block">Load More</button>
-						</div>
-					</div>
-					<!-- END TIMELINE -->
-				</div>
 			</div>
 		</div>
 	</div>
@@ -311,13 +362,7 @@
 		// headline charts
 		data = {
 			labels : [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun' ],
-			series : [ [ 23, 29, 24, 40, 25, 24, 43 ], 
-			           [ ], 
-			           [ ], 
-			           [ ], 
-			           [ ], 
-			           [ 14, 25, 18, 34, 29, 38, 44 ]
-			           ]
+			series : [ [ 23, 29, 24, 40, 25, 24, 43 ], [], [], [], [], [ 14, 25, 18, 34, 29, 38, 44 ] ]
 		};
 
 		options = {
@@ -333,31 +378,31 @@
 			lineSmooth : true,
 		};
 
-		new Chartist.Line('#headline-chart', data, options);
-/**
- * 
+		//new Chartist.Line('#headline-chart', data, options);
+		/**
+		 * 
 
-		var data1 = {
-			labels : [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-			series : [ [ 5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8 ], 
-			           [ 3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4 ] ]
-		};
+		 var data1 = {
+		 labels : [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+		 series : [ [ 5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8 ], 
+		 [ 3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4 ] ]
+		 };
 
-		var options1 = {
-			seriesBarDistance : 10
-		};
+		 var options1 = {
+		 seriesBarDistance : 10
+		 };
 
-		var responsiveOptions = [ [ 'screen and (max-width: 640px)', {
-			seriesBarDistance : 5,
-			axisX : {
-				labelInterpolationFnc : function(value) {
-					return value[0];
-				}
-			}
-		} ] ];
+		 var responsiveOptions = [ [ 'screen and (max-width: 640px)', {
+		 seriesBarDistance : 5,
+		 axisX : {
+		 labelInterpolationFnc : function(value) {
+		 return value[0];
+		 }
+		 }
+		 } ] ];
 
-		new Chartist.Bar('#headline-chart1', data1, options1, responsiveOptions);
-*/
+		 new Chartist.Bar('#headline-chart1', data1, options1, responsiveOptions);
+		 */
 
 	});
 </script>

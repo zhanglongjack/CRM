@@ -58,10 +58,6 @@ public class DateUtils {
 	}
 
 	/**
-	 * --------------------- 作者：姚勇龙 来源：CSDN
-	 * 原文：https://blog.csdn.net/u011293064/article/details/79566420?utm_source=
-	 * copy 版权声明：本文为博主原创文章，转载请附上博文链接！ /** 获取现在时间
-	 * 
 	 * @return返回短时间格式 yyyy-MM-dd
 	 */
 	public static Date getNowDateShort() {

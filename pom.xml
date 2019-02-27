@@ -112,7 +112,12 @@
 		  <artifactId>alipay-sdk-java</artifactId>
 		  <version>3.3.87.ALL</version>
 		</dependency>
-		
+		<!-- 腾讯sms -->
+		<dependency>
+			<groupId>com.github.qcloudsms</groupId>
+			<artifactId>qcloudsms</artifactId>
+			<version>1.0.5</version>
+		</dependency>
 		
 	</dependencies>
 

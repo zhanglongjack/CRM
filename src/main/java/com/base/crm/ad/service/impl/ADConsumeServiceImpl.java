@@ -73,13 +73,17 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 		List<ADConsume> consumeList = querySummaryConsumeAmount(month);
 		BigDecimal normalConsumeAD = new BigDecimal(0);
 		BigDecimal hospitalConsumeAD = new BigDecimal(0);
+		BigDecimal normalConsumeAD_fact = new BigDecimal(0);
+		BigDecimal hospitalConsumeAD_fact = new BigDecimal(0);
 		if(consumeList.size()>0){
 			// 各帐号广告费统计
 			for(ADConsume consume : consumeList){
 				if(consume.getConsumeAccountType().equals("normal_account")){
 					normalConsumeAD = normalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.3"),2,BigDecimal.ROUND_HALF_EVEN));
+					normalConsumeAD_fact = normalConsumeAD_fact.add(consume.getConsumeAmount());
 				}else{
 					hospitalConsumeAD = hospitalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.25"),2,BigDecimal.ROUND_HALF_EVEN));
+					hospitalConsumeAD_fact = hospitalConsumeAD_fact.add(consume.getConsumeAmount());
 				}
 			}
 		}
@@ -87,6 +91,8 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 		Map<String,BigDecimal> result = new HashMap<String,BigDecimal>();
 		result.put("normal_account", normalConsumeAD);
 		result.put("hospital_account", hospitalConsumeAD);
+		result.put("normalConsumeAD_fact", normalConsumeAD_fact);
+		result.put("hospitalConsumeAD_fact", hospitalConsumeAD_fact);
 		return result;
 	} 
 }

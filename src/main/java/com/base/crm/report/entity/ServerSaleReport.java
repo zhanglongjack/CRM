@@ -124,9 +124,10 @@ public class ServerSaleReport {
 	@Override
 	public String toString() {
 		return String.format(
-				"ServerSaleReport [month=%s, name=%s, wechatNumber=%s, custAddSumNum=%s, orderNumber=%s, orderRate=%s, reorderNumber=%s, reorderRate=%s, addCustPrice=%s, orderAdPrice=%s]",
-				month, name, wechatNumber, custAddSumNum, orderNumber, orderRate, reorderNumber, reorderRate,
-				addCustPrice, orderAdPrice);
+				"ServerSaleReport [userId=%s, month=%s, name=%s, wechatNumber=%s, custAddSumNum=%s, orderNumber=%s, orderRate=%s, reorderNumber=%s, reorderRate=%s, addCustPrice=%s, orderAdPrice=%s, adConsumeSum=%s, salePerforman=%s]",
+				userId, month, name, wechatNumber, custAddSumNum, orderNumber, orderRate, reorderNumber, reorderRate,
+				addCustPrice, orderAdPrice, adConsumeSum, salePerforman);
 	}
+
 
 }
