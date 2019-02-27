@@ -91,8 +91,8 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 		Map<String,BigDecimal> result = new HashMap<String,BigDecimal>();
 		result.put("normal_account", normalConsumeAD);
 		result.put("hospital_account", hospitalConsumeAD);
-		result.put("normalConsumeAD_fact", normalConsumeAD_fact);
-		result.put("hospitalConsumeAD_fact", hospitalConsumeAD_fact);
+		result.put("normal_account_fact", normalConsumeAD_fact);
+		result.put("hospital_account_fact", hospitalConsumeAD_fact);
 		return result;
 	} 
 }
