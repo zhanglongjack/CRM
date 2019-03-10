@@ -6,6 +6,7 @@
 		<result column="consume_account_type" jdbcType="VARCHAR" property="consumeAccountType" />
 		<result column="consume_amount" jdbcType="DECIMAL" property="consumeAmount" />
 		<result column="consume_date" jdbcType="VARCHAR" property="consumeDate" />
+		<result column="rate" jdbcType="VARCHAR" property="rate" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -43,8 +44,9 @@
 	<select id="querySummaryConsumeAmount" parameterType="Map"
 		resultMap="BaseResultMap">
 		select
-			substr(consume_date,1,6) consume_date,consume_account_type,sum(consume_amount) consume_amount
-		from ad_consume
+			substr(consume_date,1,6) consume_date,consume_account_type,sum(consume_amount) consume_amount,max(d.remarke) rate
+		from ad_consume s
+        inner join dictionary d on d.code = s.consume_account_type
 		where substr(consume_date,1,6) = #{month} 
         group by substr(consume_date,1,6),consume_account_type
 	</select>

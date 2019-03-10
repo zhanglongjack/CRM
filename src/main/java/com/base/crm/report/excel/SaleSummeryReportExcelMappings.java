@@ -81,8 +81,8 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 			BigDecimal procurementAmount = procurementCostService.querySumAmountByMonth(month);
 			BigDecimal salaryAmount = serverSalaryService.querySumAmountByMonth(month);
 			
-			report.setConsumeAD(realConsumeAD.get("normal_account_fact").add(realConsumeAD.get("hospital_account_fact")));
-			report.setRealConsumeAD(realConsumeAD.get("normal_account").add(realConsumeAD.get("hospital_account")));
+			report.setConsumeAD(realConsumeAD.get("sumFact"));
+			report.setRealConsumeAD(realConsumeAD.get("sumReal"));
 			report.setMonth(month);
 			report.setProcurementCosts(procurementAmount==null?zore:procurementAmount);
 			report.setRealSalary(salaryAmount==null?zore:salaryAmount);
@@ -95,7 +95,7 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 			sumReport.setRealncomeTotalAmount(sumReport.getRealncomeTotalAmount().add(report.getRealncomeTotalAmount()));
 			sumReport.setExpressTotalFee(sumReport.getExpressTotalFee().add(report.getExpressTotalFee()));
 			
-			BigDecimal sum = new BigDecimal("0.00");
+			BigDecimal sum = zore;
 			sum = sum.add(report.getRealConsumeAD());
 			sum = sum.add(report.getProcurementCosts());
 			sum = sum.add(report.getRealSalary());

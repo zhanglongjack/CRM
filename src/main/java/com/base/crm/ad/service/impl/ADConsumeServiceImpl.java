@@ -71,28 +71,37 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 	@Override
 	public Map<String,BigDecimal> queryRealConsumeAd(String month) {
 		List<ADConsume> consumeList = querySummaryConsumeAmount(month);
-		BigDecimal normalConsumeAD = new BigDecimal(0);
-		BigDecimal hospitalConsumeAD = new BigDecimal(0);
-		BigDecimal normalConsumeAD_fact = new BigDecimal(0);
-		BigDecimal hospitalConsumeAD_fact = new BigDecimal(0);
+		BigDecimal zero = new BigDecimal(0);
+		BigDecimal sumFact = new BigDecimal(0); 
+		BigDecimal sumReal = new BigDecimal(0); 
+		Map<String,BigDecimal> result = new HashMap<String,BigDecimal>();
+		
 		if(consumeList.size()>0){
 			// 各帐号广告费统计
 			for(ADConsume consume : consumeList){
-				if(consume.getConsumeAccountType().equals("normal_account")){
-					normalConsumeAD = normalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.3"),2,BigDecimal.ROUND_HALF_EVEN));
-					normalConsumeAD_fact = normalConsumeAD_fact.add(consume.getConsumeAmount());
-				}else{
-					hospitalConsumeAD = hospitalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.25"),2,BigDecimal.ROUND_HALF_EVEN));
-					hospitalConsumeAD_fact = hospitalConsumeAD_fact.add(consume.getConsumeAmount());
+				BigDecimal value = result.get(consume.getConsumeAccountType());
+				if(value==null){
+					value= zero;
 				}
+				
+				value=value.add(consume.getConsumeAmount().divide(new BigDecimal(consume.getRate()+1),2,BigDecimal.ROUND_HALF_EVEN));
+				result.put(consume.getConsumeAccountType(),value);
+				sumReal=sumReal.add(value);
+				sumFact=sumFact.add(consume.getConsumeAmount());
+				
+//				if(consume.getConsumeAccountType().equals("normal_account")){
+//					normalConsumeAD = normalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.3"),2,BigDecimal.ROUND_HALF_EVEN));
+//					normalConsumeAD_fact = normalConsumeAD_fact.add(consume.getConsumeAmount());
+//				}else{
+//					hospitalConsumeAD = hospitalConsumeAD.add(consume.getConsumeAmount().divide(new BigDecimal("1.25"),2,BigDecimal.ROUND_HALF_EVEN));
+//					hospitalConsumeAD_fact = hospitalConsumeAD_fact.add(consume.getConsumeAmount());
+//				}
 			}
-		}
+		} 
+		result.put("sumFact", sumFact);
+		result.put("sumReal", sumReal);
 		
-		Map<String,BigDecimal> result = new HashMap<String,BigDecimal>();
-		result.put("normal_account", normalConsumeAD);
-		result.put("hospital_account", hospitalConsumeAD);
-		result.put("normal_account_fact", normalConsumeAD_fact);
-		result.put("hospital_account_fact", hospitalConsumeAD_fact);
+		 
 		return result;
 	} 
 }

@@ -25,8 +25,9 @@ public class ExtensionStatusCheckSchedule {
     public void transferBackJob() {
 		logger.info("开始检查网站是否正常");
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("GD01A01","http://zcs.whbaidianfeng.com/zc");
+		map.put("GD01A01","http://zcs.whbaidianfeng.com/zc/");
 		map.put("GD01A02","http://zc.gzxpyy.com/zc/");
+		map.put("ZCCS01A01","http://tgx.hztjjm.cn/byw26595/");
 		
 		for(String key : map.keySet()){
 	        String result = HttpClientUtils.doGet(map.get(key));

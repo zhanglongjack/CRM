@@ -73,7 +73,7 @@ public class OrdersController {
 	@ResponseBody
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public Map<String,Object>  orderEdit(CustOrder order) throws Exception{
-		logger.info("ordersView request :"+order);
+		logger.info("orderEdit request :"+order);
 		int num = custOrderService.updateByPrimaryKeySelective(order);
 		CustOrder resultOrder = custOrderService.selectByPrimaryKey(order.getOrderNo());
 		CustomerConsume consume = new CustomerConsume();
@@ -130,7 +130,7 @@ public class OrdersController {
 	@RequestMapping(value="/orderAdd")
 	@ResponseBody
 	public Map<String,Object>  orderAdd(CustOrder order) throws Exception{
-		logger.info("ordersView request:"+order);
+		logger.info("orderAdd request:"+order);
 		int num = custOrderService.insertSelective(order);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
