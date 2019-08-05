@@ -16,12 +16,11 @@
 		<where>
 			<if test="id != null">id=#{id}</if>
 			<if test="userId != null">user_id=#{userId}</if>
-			<if test="salaryMonth != null and salaryMonth.length()>0">and salary_month=#{salaryMonth}</if> 
+			<if test="salaryMonth != null and salaryMonth.length()&gt;0">and salary_month=#{salaryMonth}</if> 
 		</where>
 	</sql>
 	
-	<select id="selectPageByObjectForList" parameterType="com.base.crm.salary.entity.ServerSalary"
-		resultMap="BaseResultMap">
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.salary.entity.ServerSalary" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from server_salary
@@ -30,8 +29,7 @@
 		limit #{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 	
-	<select id="selectPageTotalCount" parameterType="com.base.crm.salary.entity.ServerSalary"
-		resultType="Long">
+	<select id="selectPageTotalCount" parameterType="com.base.crm.salary.entity.ServerSalary" resultType="Long">
 		select
 			count(1)
 		from server_salary
@@ -43,8 +41,7 @@
 		where substr(salary_month,1,6) = #{month}  
 	</select>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
-		resultMap="BaseResultMap">
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from server_salary

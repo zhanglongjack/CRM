@@ -103,5 +103,10 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 		
 		 
 		return result;
+	}
+
+	@Override
+	public List<ADConsume> queryRealConsumeAmount(String month) {
+		return consumeMapper.queryRealConsumeAmount(month);
 	} 
 }

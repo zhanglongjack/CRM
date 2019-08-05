@@ -14,6 +14,7 @@
 		<result column="address" jdbcType="VARCHAR" property="address" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
 		<collection property="levelInfo" column="level" select="com.base.crm.level.dao.LevelMapper.selectByPrimaryKey">
         </collection>
 	</resultMap>
@@ -21,7 +22,7 @@
 	<sql id="Base_Column_List">
 		cust_id,user_id, cust_name, cust_wechat_no, cust_phone,serve_wechat_no, level,amt,
 		add_time, address,
-		remark,order_status
+		remark,order_status,status
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -55,7 +56,11 @@
 		
 		FROM cust_info c 
 		where  date_format(str_to_date(add_time, '%Y-%m-%d %H'),'%Y%m') = #{month}
+		and c.status=1
 		and c.serve_wechat_no = #{serveWechatNo}
+		<if test="userId != null">
+			and c.user_id=#{userId}
+		</if>
 	</select>
 	
 	<select id="queryServerSalePerformanBy" parameterType="Map"
@@ -68,6 +73,9 @@
 		where o.order_status = 3 
 		and substr(o.order_date,1,6) = #{month}
 		and c.serve_wechat_no = #{serveWechatNo}
+		<if test="userId != null">
+			and o.user_id=#{userId}
+		</if>
 	</select>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
@@ -144,6 +152,9 @@
 			<if test="orderStatus != null">
 				order_status,
 			</if>
+			<if test="status != null">
+				status,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="custId != null">
@@ -178,6 +189,9 @@
 			</if>
 			<if test="orderStatus != null">
 				#{orderStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -216,6 +230,9 @@
 			</if>
 			<if test="orderStatus != null">
 				order_status = #{orderStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
 			</if>
 		</set>
 		<where>

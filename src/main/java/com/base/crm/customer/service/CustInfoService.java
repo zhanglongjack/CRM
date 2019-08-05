@@ -25,7 +25,11 @@ public interface CustInfoService {
 
 	int updateCustOrderStatus();
 
-	List<Map<String, Object>> queryAddCustCountBy(String month, String serveWechatNo);
+	Map<String, Object> queryAddCustCountBy(String month, String serveWechatNo);
+	Map<String, Object> queryAddCustCountBy(String month, String consumeWechatNo, Long userId);
 
 	BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo);
+	BigDecimal queryServerSalePerformanBy(String month, String consumeWechatNo, Long serverId);
+
+
 }

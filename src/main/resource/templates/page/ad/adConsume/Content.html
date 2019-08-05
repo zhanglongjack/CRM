@@ -103,8 +103,12 @@
 							<thead>
 								<tr>
 									<th>编号</th>
+									<th>消费客服</th>
 									<th>帐号类型</th>
+									<th>服务微信</th>
 									<th>消费金额</th>
+									<th>实际金额</th>
+									<th>返点率</th>
 									<th>消费日期</th>
 									<th>操作</th>
 								</tr>
@@ -112,8 +116,12 @@
 							<tbody>
 								<tr th:each="obj : ${resultList}">
 									<td th:text="${obj.id}"></td>
+									<td th:text="${@userContainer.get(obj.serverId)}"  ></td>
 									<td th:text="${@commonConstants.getAdAccountType(obj.consumeAccountType)}"></td>
+									<td th:text="${obj.consumeWechatNo}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.consumeAmount)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.realAmount)}"></td>
+									<td th:text="${#numbers.formatPercent(obj.rebate,0,2)}"></td>
 									<td th:text="${obj.consumeDate}"></td>
 									<td>
 										<div class="btn-group">

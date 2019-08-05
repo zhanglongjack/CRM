@@ -96,7 +96,7 @@ public class ServerSaleReportExcelMappings extends ExcelMappingsAbstract {
 			
 			for(ServeWechat serverWechat : serverWechatList){
 				
-				List<Map<String,Object>> custCountList = custInfoService.queryAddCustCountBy(month,serverWechat.getServeWechatNo());
+				Map<String,Object> map = custInfoService.queryAddCustCountBy(month,serverWechat.getServeWechatNo());
 				BigDecimal salePerforman= custInfoService.queryServerSalePerformanBy(month,serverWechat.getServeWechatNo());
 				BigDecimal sumConsumeAmount = realConsumeADMap.get(serverWechat.getConsumeAcctType());
 				if(sumConsumeAmount == null){
@@ -104,49 +104,46 @@ public class ServerSaleReportExcelMappings extends ExcelMappingsAbstract {
 				}
 				sumServerSaleReportResult.setAdConsumeSum(sumServerSaleReportResult.getAdConsumeSum().add(sumConsumeAmount));
 				sumReportResult.setAdConsumeSum(sumReportResult.getAdConsumeSum().add(sumConsumeAmount));
+					
+				BigDecimal addSum = new BigDecimal(map.get("num")+"");
+				BigDecimal orderedNum= new BigDecimal(map.get("ordered")+"");
 				
-				for(Map<String,Object> map : custCountList){
-					
-					BigDecimal addSum = new BigDecimal(map.get("num")+"");
-					BigDecimal orderedNum= new BigDecimal(map.get("ordered")+"");
-					
-					ServerSaleReport serverSaleReportResult = new ServerSaleReport();
-					serverSaleReportResult.setMonth(month);
-					serverSaleReportResult.setName(userContainer.get(serverWechat.getUserId()));
-					serverSaleReportResult.setWechatNumber(serverWechat.getServeWechatNo());
-					serverSaleReportResult.setCustAddSumNum(addSum);// 加粉总数
-					serverSaleReportResult.setOrderNumber(orderedNum); // 订购总数
-					serverSaleReportResult.setReorderNumber(new BigDecimal(map.get("reordered")+""));// 复购总数
-					serverSaleReportResult.setAdConsumeSum(sumConsumeAmount);
-					serverSaleReportResult.setSalePerforman(salePerforman);
-					
-					value = divide(serverSaleReportResult.getOrderNumber(), serverSaleReportResult.getCustAddSumNum());
-					serverSaleReportResult.setOrderRate(value.doubleValue());
-					
-					value = divide(serverSaleReportResult.getReorderNumber(), serverSaleReportResult.getOrderNumber());
-					serverSaleReportResult.setReorderRate(value.doubleValue()); 
-					
-					serverSaleReportResult.setAddCustPrice(divide(sumConsumeAmount,addSum).doubleValue());
-					serverSaleReportResult.setOrderAdPrice(divide(sumConsumeAmount,orderedNum).doubleValue());
-					
-					reportResult.add(serverSaleReportResult);
-					
-					sumServerSaleReportResult.setCustAddSumNum(sumServerSaleReportResult.getCustAddSumNum().add(addSum));
-					sumServerSaleReportResult.setOrderNumber(sumServerSaleReportResult.getOrderNumber().add(orderedNum));
-					sumServerSaleReportResult.setReorderNumber(sumServerSaleReportResult.getReorderNumber().add(serverSaleReportResult.getReorderNumber()));
-					
-					value = divide(sumServerSaleReportResult.getOrderNumber(), sumServerSaleReportResult.getCustAddSumNum());
-					sumServerSaleReportResult.setOrderRate(value.doubleValue());
-					
-					value = divide(sumServerSaleReportResult.getReorderNumber(), sumServerSaleReportResult.getOrderNumber());
-					sumServerSaleReportResult.setReorderRate(value.doubleValue());
-					
+				ServerSaleReport serverSaleReportResult = new ServerSaleReport();
+				serverSaleReportResult.setMonth(month);
+				serverSaleReportResult.setName(userContainer.get(serverWechat.getUserId()));
+				serverSaleReportResult.setWechatNumber(serverWechat.getServeWechatNo());
+				serverSaleReportResult.setCustAddSumNum(addSum);// 加粉总数
+				serverSaleReportResult.setOrderNumber(orderedNum); // 订购总数
+				serverSaleReportResult.setReorderNumber(new BigDecimal(map.get("reordered")+""));// 复购总数
+				serverSaleReportResult.setAdConsumeSum(sumConsumeAmount);
+				serverSaleReportResult.setSalePerforman(salePerforman);
+				
+				value = divide(serverSaleReportResult.getOrderNumber(), serverSaleReportResult.getCustAddSumNum());
+				serverSaleReportResult.setOrderRate(value.doubleValue());
+				
+				value = divide(serverSaleReportResult.getReorderNumber(), serverSaleReportResult.getOrderNumber());
+				serverSaleReportResult.setReorderRate(value.doubleValue()); 
+				
+				serverSaleReportResult.setAddCustPrice(divide(sumConsumeAmount,addSum).doubleValue());
+				serverSaleReportResult.setOrderAdPrice(divide(sumConsumeAmount,orderedNum).doubleValue());
+				
+				reportResult.add(serverSaleReportResult);
+				
+				sumServerSaleReportResult.setCustAddSumNum(sumServerSaleReportResult.getCustAddSumNum().add(addSum));
+				sumServerSaleReportResult.setOrderNumber(sumServerSaleReportResult.getOrderNumber().add(orderedNum));
+				sumServerSaleReportResult.setReorderNumber(sumServerSaleReportResult.getReorderNumber().add(serverSaleReportResult.getReorderNumber()));
+				
+				value = divide(sumServerSaleReportResult.getOrderNumber(), sumServerSaleReportResult.getCustAddSumNum());
+				sumServerSaleReportResult.setOrderRate(value.doubleValue());
+				
+				value = divide(sumServerSaleReportResult.getReorderNumber(), sumServerSaleReportResult.getOrderNumber());
+				sumServerSaleReportResult.setReorderRate(value.doubleValue());
+				
 
-					sumReportResult.setCustAddSumNum(sumReportResult.getCustAddSumNum().add(addSum));
-					sumReportResult.setOrderNumber(sumReportResult.getOrderNumber().add(orderedNum));
-					sumReportResult.setReorderNumber(sumReportResult.getReorderNumber().add(serverSaleReportResult.getReorderNumber()));
+				sumReportResult.setCustAddSumNum(sumReportResult.getCustAddSumNum().add(addSum));
+				sumReportResult.setOrderNumber(sumReportResult.getOrderNumber().add(orderedNum));
+				sumReportResult.setReorderNumber(sumReportResult.getReorderNumber().add(serverSaleReportResult.getReorderNumber()));
 
-				}
 				sumServerSaleReportResult.setAddCustPrice(divide(sumServerSaleReportResult.getAdConsumeSum(), sumServerSaleReportResult.getCustAddSumNum()).doubleValue());
 				sumServerSaleReportResult.setOrderAdPrice(divide(sumServerSaleReportResult.getAdConsumeSum(), sumServerSaleReportResult.getOrderNumber()).doubleValue());
 				sumServerSaleReportResult.setSalePerforman(sumServerSaleReportResult.getSalePerforman().add(salePerforman));

@@ -26,8 +26,16 @@ public class CustInfo {
     private String address;
 
     private String remark;
+    
     private String orderStatus;
     
+    private String status;
+    
+    private String createDate;
+    
+    private String updateDate;
+    
+
     @JsonIgnore
     private PageTools pageTools;
     private Level levelInfo;
@@ -136,6 +144,30 @@ public class CustInfo {
 		this.orderStatus = orderStatus;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+
 	public Level getLevelInfo() {
 		return levelInfo;
 	}
@@ -147,9 +179,11 @@ public class CustInfo {
 	@Override
 	public String toString() {
 		return String.format(
-				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, pageTools=%s, levelInfo=%s]",
+				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, status=%s, createDate=%s, updateDate=%s, pageTools=%s, levelInfo=%s]",
 				custId, userId, custName, custWechatNo, serveWechatNo, custPhone, level, amt, addTime, address, remark,
-				orderStatus, pageTools, levelInfo);
+				orderStatus, status, createDate, updateDate, pageTools, levelInfo);
 	}
+
+
 
 }

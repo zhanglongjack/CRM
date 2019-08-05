@@ -1,19 +1,27 @@
 package com.base.common.dictionary.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.base.common.dictionary.dao.DictionaryMapper;
 import com.base.common.dictionary.entity.Dictionary;
 import com.base.common.dictionary.service.DictionaryService;
+import com.base.crm.common.constants.CommonConstants;
 
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
 
 	@Autowired
 	private DictionaryMapper dictionaryMapper;
+	@Autowired
+	private CommonConstants commonConstants;
 	
 	@Override
 	public int deleteByPrimaryKey(Long id) {
@@ -49,6 +57,34 @@ public class DictionaryServiceImpl implements DictionaryService {
 	public List<Dictionary> selectPageByObjectForList(Dictionary record) {
 		return dictionaryMapper.selectPageByObjectForList(record);
 	}
-	
+
+	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public void updateByPrimaryKeySelectiveIncludeCache(Dictionary dictionary) {
+		updateByPrimaryKeySelective(dictionary);
+		commonConstants.updateDictionaryBy(dictionary.getBizCode(),dictionary.getCode(),dictionary.getName());
+	}
+
+	@Override
+	public Map<String,Object> dictionaryList(String bizCode,boolean cache) {
+		Map<String, Object> dictMap = new HashMap<String,Object>();
+		if(!cache){
+			Map<String,String> map = commonConstants.getDictionarysByKey(bizCode);
+			List<Dictionary> list = new ArrayList<Dictionary>();
+			for(String key : map.keySet()){
+				Dictionary dictionary = new Dictionary();
+				dictionary.setCode(key);
+				dictionary.setName(map.get(key));
+				list.add(dictionary);
+			}
+			dictMap.put("resultList",list);
+		}else{
+			Dictionary dictionary = new Dictionary();
+			dictionary.setBizCode(bizCode);
+			List<Dictionary> list = selectBySelective(dictionary);
+			dictMap.put("resultList",list);
+		}
+		return dictMap;
+	}
 
 }

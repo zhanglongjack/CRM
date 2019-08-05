@@ -7,10 +7,14 @@
 		<result column="consume_amount" jdbcType="DECIMAL" property="consumeAmount" />
 		<result column="consume_date" jdbcType="VARCHAR" property="consumeDate" />
 		<result column="rate" jdbcType="VARCHAR" property="rate" />
+		<result column="real_amount" jdbcType="VARCHAR" property="realAmount" />
+		<result column="rebate" jdbcType="VARCHAR" property="rebate" />
+		<result column="consume_wechat_no" jdbcType="VARCHAR" property="consumeWechatNo" />
+		<result column="server_id" jdbcType="VARCHAR" property="serverId" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		id, consume_account_type, consume_amount, consume_date
+		id, consume_account_type, consume_amount, consume_date,real_amount,rebate,consume_wechat_no,server_id
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -20,6 +24,8 @@
 			<if test="consumeDate != null and consumeDate.length()>0">and consume_date=#{consumeDate}</if>
 			<if test="startDate != null and startDate.length()>0">and consume_date>=#{startDate}</if>
 			<if test="endDate != null and endDate.length()>0">and consume_date <![CDATA[<=]]>#{endDate}</if>
+			<if test="consumeWechatNo != null and consumeWechatNo.length()>0">and consume_wechat_no = #{consumeWechatNo}</if>
+			<if test="serverId != null and serverId.length()>0">and server_id = #{serverId}</if>
 		</where>
 	</sql>
 	
@@ -49,6 +55,41 @@
         inner join dictionary d on d.code = s.consume_account_type
 		where substr(consume_date,1,6) = #{month} 
         group by substr(consume_date,1,6),consume_account_type
+	</select>
+	
+	<select id="queryRealConsumeAmount" parameterType="Map" resultMap="BaseResultMap">
+		select
+            consume_account_type,
+            sum(consume_amount) consume_amount,
+            sum(real_amount) real_amount,
+            consume_wechat_no,
+            server_id
+			
+		from ad_consume s
+		where substr(consume_date,1,6) = #{month} 
+        group by consume_account_type,consume_wechat_no,server_id
+        UNION
+		select * from (
+			select
+				'none' consume_account_type ,
+				0 consume_amount,
+				0 real_amount,
+				c.serve_wechat_no consume_wechat_no,
+				s.user_id server_id
+				
+			from cust_orders s
+			inner join cust_info c on c.cust_wechat_no=s.o_wechat_no
+            where substr(order_date,1,6) = #{month} 
+            group by c.serve_wechat_no ,s.user_id 
+        ) t
+        where not exists
+        (	
+			select 1 from ad_consume s 
+        	where s.consume_wechat_no = t.consume_wechat_no 
+            and s.server_id=t.server_id
+        	and substr(consume_date,1,6) = #{month} 
+        )
+        group by consume_wechat_no,server_id
 	</select>
 	
 	<select id="selectBySelective" parameterType="com.base.crm.ad.entity.ADConsume"
@@ -87,6 +128,18 @@
 			<if test="consumeDate != null">
 				consume_date,
 			</if>
+			<if test="realAmount != null">
+				real_amount,
+			</if>
+			<if test="rebate != null">
+				rebate,
+			</if>
+			<if test="consumeWechatNo != null">
+				consume_wechat_no,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -100,6 +153,18 @@
 			</if>
 			<if test="consumeDate != null">
 				#{consumeDate,jdbcType=VARCHAR},
+			</if>
+			<if test="realAmount != null">
+				#{realAmount},
+			</if>
+			<if test="rebate != null">
+				#{rebate},
+			</if>
+			<if test="consumeWechatNo != null">
+				#{consumeWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>
@@ -115,6 +180,18 @@
 			</if>
 			<if test="consumeDate != null">
 				consume_date = #{consumeDate,jdbcType=VARCHAR},
+			</if>
+			<if test="realAmount != null">
+				real_amount = #{realAmount},
+			</if>
+			<if test="rebate != null">
+				rebate = #{rebate},
+			</if>
+			<if test="consumeWechatNo != null">
+				consume_wechat_no = #{consumeWechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=VARCHAR},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

@@ -22,4 +22,6 @@ public interface ADConsumeMapper {
 	List<ADConsume> selectPageByObjectForList(ADConsume queryObject);
 
 	List<ADConsume> querySummaryConsumeAmount(String month);
+
+	List<ADConsume> queryRealConsumeAmount(String month);
 }

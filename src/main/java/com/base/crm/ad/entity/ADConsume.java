@@ -18,7 +18,15 @@ public class ADConsume {
 
     private String consumeDate;
     
-    private double rate;
+    private BigDecimal realAmount;
+    
+    private BigDecimal rebate;
+    
+    private String consumeWechatNo;
+    
+    private Long serverId;
+    
+    private double rate; // 新报表出来以后,这个可以删掉
     
 	// query
 	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
@@ -89,6 +97,38 @@ public class ADConsume {
 
 	public void setRate(double rate) {
 		this.rate = rate;
+	}
+
+	public BigDecimal getRealAmount() {
+		return realAmount;
+	}
+
+	public void setRealAmount(BigDecimal realAmount) {
+		this.realAmount = realAmount;
+	}
+
+	public BigDecimal getRebate() {
+		return rebate;
+	}
+
+	public void setRebate(BigDecimal rebate) {
+		this.rebate = rebate;
+	}
+
+	public String getConsumeWechatNo() {
+		return consumeWechatNo;
+	}
+
+	public void setConsumeWechatNo(String consumeWechatNo) {
+		this.consumeWechatNo = consumeWechatNo;
+	}
+
+	public Long getServerId() {
+		return serverId;
+	}
+
+	public void setServerId(Long serverId) {
+		this.serverId = serverId;
 	}
 
 }

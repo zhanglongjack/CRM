@@ -31,18 +31,22 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (dictionaryMap.size() == 0) {
-			List<Dictionary> dictionList = dictionaryService.selectBySelective(null);
-			for (Dictionary dict : dictionList) {
-				if (dict.getStatus() != 1) {
-					continue;
-				}
+			init();
+		}
+	}
 
-				if (!dictionaryMap.containsKey(dict.getBizCode())) {
-					dictionaryMap.put(dict.getBizCode(), new LinkedHashMap<String, String>());
-				}
-
-				dictionaryMap.get(dict.getBizCode()).put(dict.getCode(), dict.getName());
+	public void init() {
+		List<Dictionary> dictionList = dictionaryService.selectBySelective(null);
+		for (Dictionary dict : dictionList) {
+			if (dict.getStatus() != 1) {
+				continue;
 			}
+
+			if (!dictionaryMap.containsKey(dict.getBizCode())) {
+				dictionaryMap.put(dict.getBizCode(), new LinkedHashMap<String, String>());
+			}
+
+			dictionaryMap.get(dict.getBizCode()).put(dict.getCode(), dict.getName());
 		}
 	}
 	
@@ -62,6 +66,12 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 	public String getDictionarysBy(String bizCode,String code){
 		Assert.isTrue(bizCode!=null&&code!=null, "业务代码和字典代码不允许为空");
 		return dictionaryMap.get(bizCode).get(code);
+	}
+
+	public void updateDictionaryBy(String bizCode, String code,String value) {
+		String msg = String.format("业务代码[%s],字典代码[%s],更新值[%s]均不允许为空", bizCode,code,value);
+		Assert.isTrue(bizCode!=null&&code!=null&&value!=null, msg);
+		dictionaryMap.get(bizCode).put(code, value);
 	}
 	
 

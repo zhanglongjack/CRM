@@ -66,19 +66,33 @@ public class CustInfoServiceImpl implements CustInfoService {
 	}
 
 	@Override
-	public List<Map<String, Object>> queryAddCustCountBy(String month, String serveWechatNo) {
+	public Map<String, Object> queryAddCustCountBy(String month, String serveWechatNo) {
+		return queryAddCustCountBy(month, serveWechatNo, null);
+	}
+	
+	@Override
+	public Map<String, Object> queryAddCustCountBy(String month, String serveWechatNo, Long userId) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("month", month);
 		params.put("serveWechatNo", serveWechatNo);
+		params.put("userId", userId==null?null:userId.toString());
 		return custInfoMapper.queryAddCustCountBy(params);
 	}
-
+	
 	@Override
 	public BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo) {
+		return queryServerSalePerformanBy(month, serveWechatNo, null);
+	}
+	
+	@Override
+	public BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo, Long userId) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("month", month);
 		params.put("serveWechatNo", serveWechatNo);
+		params.put("userId", userId==null?null:userId.toString());
 		return custInfoMapper.queryServerSalePerformanBy(params);
 	}
+
+
  
 }

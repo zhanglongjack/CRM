@@ -1,19 +1,68 @@
 package com.base.common.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 public class FileReaderUtil {
-
+	public static void writeInFileBy(String filePath,List<String> dataList) {
+		writeInFileBy(filePath, dataList,false);
+        
+    }
+	
+	public static void writeInFileBy(String filePath,List<String> dataList,boolean isAppend){
+        File f=new File(filePath);
+        FileWriter fw=null;
+        BufferedWriter bw=null;
+        try{
+            if(!f.exists()){
+                f.createNewFile();
+            }
+             fw=new FileWriter(f.getAbsoluteFile(),isAppend);  //true表示可以追加新内容  
+                         //fw=new FileWriter(f.getAbsoluteFile()); //表示不追加
+             bw=new BufferedWriter(fw);
+             for(String data : dataList){
+            	 bw.write(data);
+            	 bw.newLine();
+             }
+             bw.close();
+        }catch(Exception e){
+           e.printStackTrace();
+        }
+        
+	}
+	
+	public static void writeInFileBy(String filePath,String content,boolean isAppend){
+		File f=new File(filePath);
+		FileWriter fw=null;
+		BufferedWriter bw=null;
+		try{
+			if(!f.exists()){
+				f.createNewFile();
+			}
+			fw=new FileWriter(f.getAbsoluteFile(),isAppend);  //true表示可以追加新内容  
+			//fw=new FileWriter(f.getAbsoluteFile()); //表示不追加
+			bw=new BufferedWriter(fw);
+			bw.write(content);
+			bw.newLine();
+			bw.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static Map<String, String> readFile(String filePath) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		File file = new File(filePath);
@@ -24,10 +73,11 @@ public class FileReaderUtil {
 				BufferedReader bufferedReader = new BufferedReader(read);
 				String lineTxt = null;
 				while ((lineTxt = bufferedReader.readLine()) != null) {
-					System.out.println(lineTxt);
-					resultMap.put(lineTxt, lineTxt);
+					if(lineTxt!=null && lineTxt.length()>0){
+						resultMap.put(lineTxt, lineTxt);
+					}
 				}
-				return null;
+				return resultMap;
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {

@@ -28,7 +28,7 @@ public interface CustInfoMapper {
 
 	int updateCustOrderStatus();
 
-	List<Map<String, Object>> queryAddCustCountBy(Map<String, String> params);
+	Map<String, Object> queryAddCustCountBy(Map<String, String> params);
 	
 	BigDecimal queryServerSalePerformanBy(Map<String, String> params);
 }

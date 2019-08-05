@@ -26,4 +26,6 @@ public interface ADConsumeService {
 	List<ADConsume> querySummaryConsumeAmount(String month);
 
 	Map<String, BigDecimal> queryRealConsumeAd(String month);
+
+	List<ADConsume> queryRealConsumeAmount(String month);
 }

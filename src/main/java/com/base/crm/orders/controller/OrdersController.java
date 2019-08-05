@@ -74,7 +74,7 @@ public class OrdersController {
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public Map<String,Object>  orderEdit(CustOrder order) throws Exception{
 		logger.info("orderEdit request :"+order);
-		int num = custOrderService.updateByPrimaryKeySelective(order);
+		
 		CustOrder resultOrder = custOrderService.selectByPrimaryKey(order.getOrderNo());
 		CustomerConsume consume = new CustomerConsume();
 		consume.setUserId(order.getUserId());
@@ -94,6 +94,10 @@ public class OrdersController {
 				consume.setRemark(String.format("微信号[%s]的余额消费:%s元,订单号[%s]",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			}
 		}else if(order.getOrderStatus()==OrderStatus.SIGNED.getKey()){
+			if(order.getPayAmount()!=order.getTotalAmt()){
+				double payment = order.getDeposits()+ order.getCashOnDeliveryAmt();
+				order.setPayAmount(payment);
+			}
 			if(order.getCashOnDeliveryAmt()!=null&&order.getCashOnDeliveryAmt()>0){
 				consume.setConsumeType(2);
 				consume.setAmount(new BigDecimal(order.getCashOnDeliveryAmt()));
@@ -113,6 +117,8 @@ public class OrdersController {
 			logger.info(consume.getRemark());
 			customerConsumeService.insertSelective(consume);
 		}
+		
+		int num = custOrderService.updateByPrimaryKeySelective(order);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);

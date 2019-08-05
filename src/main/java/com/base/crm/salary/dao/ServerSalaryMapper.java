@@ -9,7 +9,8 @@ import com.base.crm.salary.entity.ServerSalary;
 
 @Mapper
 public interface ServerSalaryMapper {
-    int deleteByPrimaryKey(Long id);
+
+	int deleteByPrimaryKey(Long id);
 
     int insertSelective(ServerSalary record);
 

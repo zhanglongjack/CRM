@@ -54,6 +54,16 @@
 									</select>
 								</div>
 							</div>
+							<div class="form-group">
+								<label  class="col-sm-2 control-label">是否有效</label>
+								<div class="col-sm-10">
+									<select class="form-control" name="status">
+										<option value="" >===是否有效===</option> 
+										<option th:selected="${custInfo!=null&&custInfo.status == '1'}" value="1">有效</option>
+										<option th:selected="${custInfo!=null&&custInfo.status == '0'}" value="0">无效</option>
+									</select>
+								</div>
+							</div>
 							
 							<div class="form-group">
 								<label  class="col-sm-2 control-label">粉丝微信</label>
@@ -209,6 +219,13 @@
 	                validators: { 
 	                	notEmpty: {
 	                        message: '服务微信必选'
+	                    }
+	                }
+	            }, status: {
+	                message: '是否有效必选',
+	                validators: { 
+	                	notEmpty: {
+	                        message: '是否有效必选'
 	                    }
 	                }
 	            }

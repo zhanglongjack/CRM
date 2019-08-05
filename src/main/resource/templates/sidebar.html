@@ -22,6 +22,7 @@
 						<li><a href="#" data-href="/orders" id="menu-4"><i class="lnr lnr-license"></i> <span>订单信息</span></a></li>
 						<li><a href="#" data-href="/consume" id="menu-5"><i class="glyphicon glyphicon-credit-card"></i> <span>会员消费</span></a></li>
 						<li><a href="#" data-href="/sign" id="menu-6"><i class="glyphicon glyphicon-heart"></i> <span>客服签到记录</span></a></li>
+						<li><a href="#" data-href="/hostConfig" id="menu-15"><i class="lnr lnr-earth"></i> <span>域名映射信息</span></a></li>
 						
 						<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/userList" id="menu-7"><i class="glyphicon glyphicon-headphones"></i> <span>客服管理</span></a></li>
 						<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/serve/wechat" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>服务微信管理</span></a></li>
@@ -66,6 +67,7 @@
 								<ul class="nav">
 									<li><a href="#" data-href="/report/saleSummary" id="menu-sub-3">销售业绩汇总</a></li>
 									<li><a href="#" data-href="/serverSaleReport/serverSaleReport" id="menu-sub-1">客服销售业绩</a></li>
+									<li><a href="#" data-href="/serverSaleMonthReport/serverSaleReport" id="menu-sub-1">客服销售业绩新</a></li>
 									<li><a href="#" data-href="/report/saleSummary" id="menu-sub-2">广告消耗统计</a></li>
 								</ul>
 							</div>

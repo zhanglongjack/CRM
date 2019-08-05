@@ -1,5 +1,6 @@
 package com.base.crm.ad.controller;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,10 +65,6 @@ public class ADConsumeController {
 		return result;
 	}
 	
- 
-	
-	
-	
 	@RequestMapping(value = "/loadPage")
 	public ModelAndView loadPage(ADConsume queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) throws Exception {
@@ -92,6 +89,7 @@ public class ADConsumeController {
 	@RequestMapping(value="/adConsumeEdit")
 	@ResponseBody
 	public Map<String,Object> edit(ADConsume editData){
+		editData.setRealAmount(computConsume(editData.getConsumeAmount(),editData.getRebate()));
 		logger.info("adConsumeEdit request:{}",editData);
 		int num = adConsumeService.updateByPrimaryKeySelective(editData);
 		
@@ -104,6 +102,8 @@ public class ADConsumeController {
 	@RequestMapping(value="/adConsumeAdd")
 	@ResponseBody
 	public Map<String,Object> add(ADConsume addData) throws Exception{
+		// 计算实际消费
+		addData.setRealAmount(computConsume(addData.getConsumeAmount(),addData.getRebate()));
 		logger.info("adConsumeAdd request:{}",addData);
 		int num = adConsumeService.insertSelective(addData);
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -111,6 +111,10 @@ public class ADConsumeController {
 		map.put("addNumber", num);
 		return map;
 	}
+	private BigDecimal computConsume(BigDecimal consumeAmount,BigDecimal rebate){
+		return consumeAmount.divide(rebate.add(new BigDecimal(1)),BigDecimal.ROUND_HALF_EVEN);
+	}
+	
 	
 	@RequestMapping("/importModalView")
 	public ModelAndView importModalView(){

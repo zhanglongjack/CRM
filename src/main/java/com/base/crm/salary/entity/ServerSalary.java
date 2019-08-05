@@ -1,16 +1,11 @@
 package com.base.crm.salary.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Locale;
-
-import org.thymeleaf.util.DateUtils;
-
-import com.base.common.util.DateFormateType;
 import com.base.common.util.PageTools;
 
 public class ServerSalary {
-    private Long id;
+
+	private Long id;
     
     private Long userId;
 
