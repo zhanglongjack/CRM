@@ -36,16 +36,19 @@
 			<if test="level != null">and level = #{level}</if>
 			<if test="addTime != null and addTime.length()>0">and substr( add_time,1,10) = #{addTime}</if>
 			<if test="orderStatus != null and orderStatus.length()>0">and order_status = #{orderStatus}</if>
+			<if test="status != null and status.length()>0">and status = #{status}</if>
 		</where>
 	</sql>
 	<select id="selectCustCountByMonth" parameterType="Map"
 		resultType="java.util.HashMap">
 		SELECT  
 		    count(1) monthCustCount,
+		    ifnull(sum((case when substr( add_time,1,10) = date_format(date_sub(curdate(),interval 1 day), '%Y-%m-%d')  then 1 else 0 end )),0) yesterdayCount,
 			ifnull(sum((case when substr( add_time,1,10) = date_format(now(), '%Y-%m-%d')  then 1 else 0 end )),0) currentCount
 		FROM  cust_info
 		where substr( add_time,1,7) = #{month}
 		<if test="userId != null">and user_id=#{userId}</if>
+		<if test="status != null">and status=#{status}</if>
 	</select>
 	
 	<select id="queryAddCustCountBy" parameterType="Map"

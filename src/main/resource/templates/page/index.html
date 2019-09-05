@@ -25,7 +25,44 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-2">
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon">
+									<i class="glyphicon glyphicon-user"></i>
+								</span>
+								<p>
+									<span class="number" th:text="${#strings.defaultString(yesterdayCount,0)}"></span>
+									<span class="title">昨日加粉总数</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon">
+									<i class="glyphicon glyphicon-signal"></i>
+								</span>
+								<p>
+									<span class="number" th:text="${#strings.defaultString(yesterdayOrdCount,0)}"></span>
+									<span class="title">昨日出单数</span>
+
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon">
+									<i class="glyphicon glyphicon-usd"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(yesterdayAmount*100),'0')}"></span>
+									<span class="title">昨日业绩总额</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
 							<div class="metric">
 								<span class="icon">
 									<i class="glyphicon glyphicon-user"></i>
@@ -36,7 +73,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="metric">
 								<span class="icon">
 									<i class="glyphicon glyphicon-signal"></i>
@@ -48,7 +85,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="metric">
 								<span class="icon">
 									<i class="glyphicon glyphicon-usd"></i>
@@ -60,7 +97,9 @@
 								</p>
 							</div>
 						</div>
-						<div class="col-md-2">
+					</div>
+						<div class="row">
+						<div class="col-md-3">
 							<div class="metric">
 								<span class="icon">
 									<i class="fas fa-user-friends"></i>
@@ -71,7 +110,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="metric">
 								<span class="icon">
 									<i class="glyphicon glyphicon-list-alt"></i>
@@ -82,7 +121,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="metric">
 								<span class="icon">
 									<i class="fas fa-yen-sign"></i>

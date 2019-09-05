@@ -94,7 +94,9 @@
 		SELECT 
 			sum(total_amt) sumAmount, 
 		    count(1) sumOrders,
+		    ifnull(sum((case when order_date = date_format(date_sub(curdate(),interval 1 day), '%Y%m%d')  then 1 else 0 end )),0) yesterdayOrdCount,
 			ifnull(sum((case when order_date = date_format(now(), '%Y%m%d')  then 1 else 0 end )),0) currentCount,
+			sum((case when order_date = date_format(date_sub(curdate(),interval 1 day), '%Y%m%d')  then total_amt else 0 end )) yesterdayAmount,
 			sum((case when order_date = date_format(now(), '%Y%m%d')  then total_amt else 0 end )) currentAmount
 		FROM cust_orders
 		where substr(order_date,1,6) = #{month}  

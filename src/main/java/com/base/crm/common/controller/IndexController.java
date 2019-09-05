@@ -42,10 +42,17 @@ public class IndexController {
 		mv.addObject("date", new Date());
 		mv.addObject("currentDayCount", daysCountMap.get("currentCount"));
 		mv.addObject("monthCustCount", daysCountMap.get("monthCustCount"));
+		mv.addObject("yesterdayCount", daysCountMap.get("yesterdayCount"));
+		
 		mv.addObject("sumAmount", orderList.get("sumAmount"));
 		mv.addObject("sumOrders", orderList.get("sumOrders"));
+		
+		mv.addObject("yesterdayOrdCount", orderList.get("yesterdayOrdCount"));
 		mv.addObject("currentOrderCount", orderList.get("currentCount"));
+		
+		mv.addObject("yesterdayAmount", orderList.get("yesterdayAmount"));
 		mv.addObject("currentAmount", orderList.get("currentAmount"));
+		
 		mv.addObject("netWorkCheckList", data.getData());
 		logger.info("index response order count ==="+daysCountMap);
 		logger.info("index response==="+mv);

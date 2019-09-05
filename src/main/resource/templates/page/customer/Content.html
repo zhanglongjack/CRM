@@ -108,6 +108,15 @@
 											th:value="${map.key}" th:text="${map.value}"></option>
 								</select> 
 							</div>
+							<div class="form-group col-sm-2">
+								<label>客户状态</label><br>
+								<select class="form-control" name="status">
+									<option value="">===客户状态===</option>
+									<option th:each="map:${new Object[] {'0', '1'}}" 
+											th:selected="${custInfo!=null&&custInfo.status == map}" 
+											th:value="${map}" th:text="${map=='1'?'有效':'无效'}"></option>
+								</select>
+							</div>
 						</div>
 						<div class="panel-body border-up-down">
 							<div class="btn-right">

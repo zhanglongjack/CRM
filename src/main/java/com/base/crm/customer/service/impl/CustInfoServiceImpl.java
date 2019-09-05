@@ -57,6 +57,7 @@ public class CustInfoServiceImpl implements CustInfoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("month", month);
 		params.put("userId", userId);
+		params.put("status", "1");
 		return custInfoMapper.selectCustCountByMonth(params);
 	}
 
