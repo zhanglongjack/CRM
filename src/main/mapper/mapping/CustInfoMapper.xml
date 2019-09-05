@@ -28,6 +28,7 @@
 		<where>
 			<if test="custId != null">cust_id=#{custId}</if>
 			<if test="userId != null">and user_id=#{userId}</if>
+			<if test="searchUser != null">and serve_wechat_no in (select serve_Wechat_No from serve_wechat s where s.user_id=#{searchUser})</if>
 			<if test="custName != null and custName.length()>0">and cust_name like  CONCAT(#{custName},'%')</if>
 			<if test="custWechatNo != null and custWechatNo.length()>0">and cust_wechat_no=#{custWechatNo}</if>
 			<if test="serveWechatNo != null and serveWechatNo.length()>0">and serve_wechat_no=#{serveWechatNo}</if>

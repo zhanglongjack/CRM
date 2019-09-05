@@ -35,6 +35,7 @@ public class CustInfo {
     
     private String updateDate;
     
+    private Long searchUser;
 
     @JsonIgnore
     private PageTools pageTools;
@@ -174,6 +175,14 @@ public class CustInfo {
 
 	public void setLevelInfo(Level levelInfo) {
 		this.levelInfo = levelInfo;
+	}
+
+	public Long getSearchUser() {
+		return searchUser;
+	}
+
+	public void setSearchUser(Long searchUser) {
+		this.searchUser = searchUser;
 	}
 
 	@Override

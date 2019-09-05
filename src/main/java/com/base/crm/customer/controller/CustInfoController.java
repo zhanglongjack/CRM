@@ -112,7 +112,7 @@ public class CustInfoController {
 		logger.info("loadPage request:"+ci +" page info ==="+pageTools);
 		logger.info("loadPage request: user =="+user);
 		if(!user.isAdmin()){
-			ci.setUserId(user.getuId());
+			ci.setSearchUser(user.getuId());
 		}
 		if(ci.getAddTime()==null&&user.isAdmin()){
 			ci.setAddTime(DateUtils.getStringDateShort());
