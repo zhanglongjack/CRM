@@ -37,9 +37,13 @@
 									th:attr="value=${queryObject==null}?'':${queryObject.hostName}">
 							</div>
 							<div class="form-group col-sm-2">
-								<label>微信号</label><br>
-								<input type="text" class="form-control" placeholder="微信号" name="wechatNo"
-									th:attr="value=${queryObject==null}?'':${queryObject.wechatNo}">
+								<label>服务微信</label>
+								<br> 
+								<select class="form-control" name="serveWechatNo">
+									<option value="" >===服务微信===</option>
+									<option th:each="map:${@serveWechatContainer.serveWechatMap}" th:selected="${custInfo!=null&&custInfo.serveWechatNo == map.value}" 
+											th:value="${map.value}" th:text="${map.value}"></option>
+								</select>
 							</div>
 						</div>
 						<div class="panel-body border-up-down">
