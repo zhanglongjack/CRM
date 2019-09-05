@@ -33,7 +33,7 @@ public class ExtensionStatusCheckSchedule {
 		logger.info("开始检查网站是否正常");
 		List<HostStatus> statusList = hostStatusService.selectBySelective(null);
 		for(HostStatus status : statusList){
-			if("0".equals(status.getStatus())){
+			if("1".equals(status.getStatus())){
 		        String result = HttpClientUtils.doGet(status.getHostName());
 		        boolean isOk = result.contains(status.getWechatNo());
 		        logger.info("推广站检查,服务号[{}],推广站[{}],是否正常:{}",status.getWechatNo(),status.getHostName(),isOk);

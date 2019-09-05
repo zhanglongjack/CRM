@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.host.status.dao.HostStatusMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.host.status.entity.HostStatus">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="host_name" jdbcType="VARCHAR" property="hostName" />
+		<result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, host_name, wechat_no, status
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">and id=#{id}</if>
+			<if test="hostName != null and hostName.length()>0">and host_name=#{hostName}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">and wechat_no=#{wechatNo}</if>
+			<if test="status != null and status.length()>0">and status=#{status}</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from host_status
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from host_status
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.host.status.entity.HostStatus">
+		insert into host_status
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="hostName != null">
+				host_name,
+			</if>
+			<if test="wechatNo != null">
+				wechat_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="hostName != null">
+				#{hostName,jdbcType=VARCHAR},
+			</if>
+			<if test="wechatNo != null">
+				#{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.host.status.entity.HostStatus">
+		update host_status
+		<set>
+			<if test="hostName != null">
+				host_name = #{hostName,jdbcType=VARCHAR},
+			</if>
+			<if test="wechatNo != null">
+				wechat_no = #{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectBySelective" parameterType="com.base.crm.host.status.entity.HostStatus"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from host_status
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.host.status.entity.HostStatus"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from host_status
+		<include refid="dynamicWhere" />
+		order by id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+
+	<select id="selectPageTotalCount" parameterType="com.base.crm.host.status.entity.HostStatus"
+		resultType="Long">
+		select
+		count(1)
+		from host_status
+		<include refid="dynamicWhere" />
+	</select>
+
+
+</mapper>
