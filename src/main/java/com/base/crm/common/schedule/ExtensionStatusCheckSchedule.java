@@ -1,7 +1,6 @@
 package com.base.crm.common.schedule;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,8 @@ import com.base.common.util.HttpClientUtils;
 import com.base.crm.common.constants.CommonConstants;
 import com.base.crm.extension.check.ExtensionStatusCheckData;
 import com.base.crm.extension.check.ExtentensionCheckInfo;
+import com.base.crm.host.status.entity.HostStatus;
+import com.base.crm.host.status.service.HostStatusService;
 
 @Component
 public class ExtensionStatusCheckSchedule {
@@ -24,29 +25,29 @@ public class ExtensionStatusCheckSchedule {
 	
 	@Autowired
 	private CommonConstants commonConstants;
+	@Autowired
+	private HostStatusService hostStatusService;
 	
 	@Scheduled(cron="0 0 0/1 * * ?")
     public void transferBackJob() {
 		logger.info("开始检查网站是否正常");
-//		Map<String,String> map = new HashMap<String,String>();
-//		map.put("GD01A01","http://zcs.whbaidianfeng.com/zc/");
-//		map.put("GD01A03","http://zc.gzxpyy.com/zc/");
-//		map.put("ZCCS01A01","http://tgx.hztjjm.cn/byw26595/");
-//		
-//		for(String key : map.keySet()){
-//	        String result = HttpClientUtils.doGet(map.get(key));
-//	        boolean isOk = result.contains(key);
-//	        logger.info("推广站检查,服务号[{}],推广站[{}],是否正常:{}",key,map.get(key),isOk);
-//	        if(!isOk){
-//	        	// 缓存取
-//	        	ExtentensionCheckInfo info = new ExtentensionCheckInfo();
-//	        	info.setNumber(key);
-//	        	info.setNetWork(map.get(key)+"");
-//	        	info.setDateTime(DateUtils.getStringDate());
-//	        	info.setStatus(1);
-//	        	data.addData(info); 
-//	        }
-//		}
+		List<HostStatus> statusList = hostStatusService.selectBySelective(null);
+		for(HostStatus status : statusList){
+			if("0".equals(status.getStatus())){
+		        String result = HttpClientUtils.doGet(status.getHostName());
+		        boolean isOk = result.contains(status.getWechatNo());
+		        logger.info("推广站检查,服务号[{}],推广站[{}],是否正常:{}",status.getWechatNo(),status.getHostName(),isOk);
+		        if(!isOk){
+		        	// 缓存取
+		        	ExtentensionCheckInfo info = new ExtentensionCheckInfo();
+		        	info.setNumber(status.getWechatNo());
+		        	info.setNetWork(status.getHostName());
+		        	info.setDateTime(DateUtils.getStringDate());
+		        	info.setStatus(1);
+		        	data.addData(info); 
+		        }
+			}
+		}
 		// 每隔一小时更新一下缓存?
 		commonConstants.init();
 		logger.info("结束检查网站是否正常");

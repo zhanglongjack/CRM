@@ -69,10 +69,10 @@
 									<th>编号</th>
 									<th>域名</th>
 									<th>微信</th>
-									<th>生效开关</th>
 									<th>返回微信</th>
 									<th>显示时间</th>
 									<th>创建时间</th>
+									<th>生效开关</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -81,10 +81,13 @@
 									<td th:text="${obj.id}"></td>
 									<td th:text="${obj.hostName}"></td>
 									<td th:text="${obj.wechatNo}"></td>
-									<td th:text="${obj.flag}"></td>
 									<td th:text="${obj.returnWechat}"></td>
 									<td th:text="${obj.showTime}"></td>
 									<td th:text="${obj.createTime}"></td>
+									<td>
+										<span class="label label-success" th:if="${obj.flag==1}" >有效</span>
+										<span class="label label-default" th:if="${obj.flag==0}">无效</span>
+									</td>
 									<td>
 										<!-- Single button -->
 										<div class="btn-group">

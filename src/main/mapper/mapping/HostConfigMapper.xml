@@ -16,9 +16,9 @@
 
 	<sql id="dynamicWhere">
 		<where>
-			<if test="id != null">id=#{id}</if>
-			<if test="hostName != null and hostName.length()>0">host_name=#{hostName}</if>
-			<if test="wechatNo != null and wechatNo.length()>0">wechat_no=#{wechatNo}</if>
+			<if test="id != null">and id=#{id}</if>
+			<if test="hostName != null and hostName.length()>0">and host_name=#{hostName}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">and wechat_no=#{wechatNo}</if>
 		</where>
 	</sql>
 
