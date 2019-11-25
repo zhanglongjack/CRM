@@ -92,6 +92,7 @@
 	
 	<select id="selectOrderCountByMonth" parameterType="String" resultType="java.util.HashMap">
 		SELECT 
+			ifnull(sum(deposits),0) handselAmount,
 			sum(total_amt) sumAmount, 
 		    count(1) sumOrders,
 		    ifnull(sum((case when order_date = date_format(date_sub(curdate(),interval 1 day), '%Y%m%d')  then 1 else 0 end )),0) yesterdayOrdCount,

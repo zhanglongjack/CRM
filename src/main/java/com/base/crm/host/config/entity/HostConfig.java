@@ -10,13 +10,15 @@ public class HostConfig {
     private String wechatNo;
 
     private Integer flag;
+    
+    private String redirectUrl;
 
     private String returnWechat;
 
     private String showTime;
     
     private String createTime;
-
+    
     
     private PageTools pageTools;
     
@@ -83,6 +85,14 @@ public class HostConfig {
 
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 	@Override

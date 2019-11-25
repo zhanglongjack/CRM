@@ -85,7 +85,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/js/d.js", method = RequestMethod.GET)
 	@ResponseBody
-	public String dataJS(String d,String wx) throws Exception {
+	public String dataJS(String d,String wx,String clickBtn) throws Exception {
 		logger.info("跨域处理逻辑:"+d+",wx="+wx);
 		
 		String wechatNo = serveWechatContainer.get(wx);
@@ -102,8 +102,12 @@ public class LoginController {
 			}else{
 				hostConfig = hostConfigList.get(0);
 			}
+			
 			if(hostConfig.getFlag()!=null && hostConfig.getFlag()==1){
-				String result = "infoData = {flag: true, wx:'"+hostConfig.getReturnWechat()+"'}";
+				String result = "infoData = {flag: true, wx:'"+hostConfig.getReturnWechat()+"'};";
+				if(hostConfig.getRedirectUrl()!=null && hostConfig.getRedirectUrl().length()>1){
+					result += "window.location.href = '"+hostConfig.getRedirectUrl()+"';";
+				}
 				logger.info("跨域处理返回结果:"+result);
 				return result;
 			}

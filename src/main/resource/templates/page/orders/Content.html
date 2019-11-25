@@ -148,12 +148,12 @@
 												 <span class="fa fa-plus-square"></span>&nbsp;添加订单
 											</a>
 										</div>
-										<div class="btn-group" th:if="${session.user.isAdmin()}">
+										<div class="btn-group">
 											<a id="orderExportBTN" class="btn btn-default"> 
 												 <span class="glyphicon glyphicon-save"></span>&nbsp;订单导出
 											</a>
 										</div>
-										<div class="btn-group" th:if="${session.user.isAdmin()}">
+										<div class="btn-group">
 											<a id="orderImportBTN" class="btn btn-default" 
 												th:attr="href='/orders/importModalView'" 
 												data-toggle="modal" data-target="#ModifyModal"> 
@@ -224,7 +224,7 @@
 									</td>
 									-->
 									<td>
-										<!-- Single button -->
+										<!-- Single button
 										<div class="btn-group" th:if="${!session.user.isAdmin()}">
 											<a th:if="${obj.orderStatus>=3 || obj.orderStatus==1}" class="btn btn-default btn-sm disabled" data-toggle="modal" data-target="#ModifyModal"
 												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
@@ -235,7 +235,8 @@
 												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>
 											</a>
 										</div>
-										<div class="btn-group" th:if="${session.user.isAdmin()}"> 
+										 -->
+										<div class="btn-group"> 
 											<a class="btn btn-default btn-sm" data-toggle="modal" data-target="#ModifyModal"
 												th:attr="href='/orders/primaryModalView?modifyModel=orderEdit&id='+${obj.orderNo}" > 
 												 <span class="glyphicon glyphicon-edit"></span>&nbsp;更新<i class="icon-star"></i>

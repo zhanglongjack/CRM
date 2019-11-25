@@ -40,18 +40,19 @@ public class IndexController {
 		
 		ModelAndView mv = new ModelAndView("page/index");
 		mv.addObject("date", new Date());
-		mv.addObject("currentDayCount", daysCountMap.get("currentCount"));
-		mv.addObject("monthCustCount", daysCountMap.get("monthCustCount"));
-		mv.addObject("yesterdayCount", daysCountMap.get("yesterdayCount"));
+		mv.addObject("currentDayCount", daysCountMap.get("currentCount")); 	// 当日粉丝数
+		mv.addObject("currentOrderCount", orderList.get("currentCount"));	// 当日订单总数
+		mv.addObject("currentAmount", orderList.get("currentAmount"));		// 当日业绩总额
 		
-		mv.addObject("sumAmount", orderList.get("sumAmount"));
-		mv.addObject("sumOrders", orderList.get("sumOrders"));
+		mv.addObject("yesterdayCount", daysCountMap.get("yesterdayCount"));		// 昨日粉丝数
+		mv.addObject("yesterdayOrdCount", orderList.get("yesterdayOrdCount")); 	// 昨日订单总数
+		mv.addObject("yesterdayAmount", orderList.get("yesterdayAmount"));		// 昨日业绩总额
 		
-		mv.addObject("yesterdayOrdCount", orderList.get("yesterdayOrdCount"));
-		mv.addObject("currentOrderCount", orderList.get("currentCount"));
 		
-		mv.addObject("yesterdayAmount", orderList.get("yesterdayAmount"));
-		mv.addObject("currentAmount", orderList.get("currentAmount"));
+		mv.addObject("monthCustCount", daysCountMap.get("monthCustCount"));	// 当月粉丝数
+		mv.addObject("handselAmount", orderList.get("handselAmount")); 		// 当月定金总额
+		mv.addObject("sumAmount", orderList.get("sumAmount")); 				// 当月业绩总额
+		mv.addObject("sumOrders", orderList.get("sumOrders"));				// 当月订单总数
 		
 		mv.addObject("netWorkCheckList", data.getData());
 		logger.info("index response order count ==="+daysCountMap);

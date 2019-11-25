@@ -169,29 +169,33 @@ public class OrdersController {
 	@RequestMapping(value="/primaryModalView")
 	public String primaryModalView(Long id,String modifyModel,Model model,@ModelAttribute("user") UserInfo user) throws Exception{
 		logger.info("primaryModalView request:"+id+",model:"+model);
-		Map<Integer,String> orderStatusMap = new HashMap<Integer,String>();
+//		Map<Integer,String> orderStatusMap = new HashMap<Integer,String>();
+//		if(id!=null){
+//			CustOrder order = custOrderService.selectByPrimaryKey(id);
+//			model.addAttribute("modifyOrder", order);
+//			if(user.isAdmin()){
+//				orderStatusMap = OrderStatus.orderStatusMap;
+//			}else if(order.getOrderStatus()==OrderStatus.NON_DELIVERY.getKey()){
+//				orderStatusMap.put(OrderStatus.NON_DELIVERY.getKey(), OrderStatus.NON_DELIVERY.toString());
+//				orderStatusMap.put(OrderStatus.WAITING.getKey(), OrderStatus.WAITING.toString());
+//				orderStatusMap.put(OrderStatus.INVALIDATED.getKey(),  OrderStatus.INVALIDATED.toString());
+//			}else if(order.getOrderStatus()==OrderStatus.DELIVERING.getKey()){
+//				orderStatusMap.put(OrderStatus.DELIVERING.getKey(), OrderStatus.DELIVERING.toString());
+//				orderStatusMap.put(OrderStatus.SIGNED.getKey(), OrderStatus.SIGNED.toString());
+//				orderStatusMap.put(OrderStatus.REFUSED.getKey(), OrderStatus.REFUSED.toString());
+//			}else{
+//				
+//				orderStatusMap.put(order.getOrderStatus(), OrderStatus.orderStatusMap.get(order.getOrderStatus()));
+//			}
+//		}else{ 
+//			orderStatusMap.put(OrderStatus.NON_DELIVERY.getKey(), OrderStatus.NON_DELIVERY.toString());
+//		}
+		
 		if(id!=null){
 			CustOrder order = custOrderService.selectByPrimaryKey(id);
 			model.addAttribute("modifyOrder", order);
-			if(user.isAdmin()){
-				orderStatusMap = OrderStatus.orderStatusMap;
-			}else if(order.getOrderStatus()==OrderStatus.NON_DELIVERY.getKey()){
-				orderStatusMap.put(OrderStatus.NON_DELIVERY.getKey(), OrderStatus.NON_DELIVERY.toString());
-				orderStatusMap.put(OrderStatus.WAITING.getKey(), OrderStatus.WAITING.toString());
-				orderStatusMap.put(OrderStatus.INVALIDATED.getKey(),  OrderStatus.INVALIDATED.toString());
-			}else if(order.getOrderStatus()==OrderStatus.DELIVERING.getKey()){
-				orderStatusMap.put(OrderStatus.DELIVERING.getKey(), OrderStatus.DELIVERING.toString());
-				orderStatusMap.put(OrderStatus.SIGNED.getKey(), OrderStatus.SIGNED.toString());
-				orderStatusMap.put(OrderStatus.REFUSED.getKey(), OrderStatus.REFUSED.toString());
-			}else{
-				
-				orderStatusMap.put(order.getOrderStatus(), OrderStatus.orderStatusMap.get(order.getOrderStatus()));
-			}
-		}else{ 
-			orderStatusMap.put(OrderStatus.NON_DELIVERY.getKey(), OrderStatus.NON_DELIVERY.toString());
 		}
-		
-		model.addAttribute("orderStatusMap", orderStatusMap);
+		model.addAttribute("orderStatusMap", OrderStatus.orderStatusMap);
 		model.addAttribute("modifyModel", modifyModel);
 		logger.info("model : "+model+",  levelMap");
 		

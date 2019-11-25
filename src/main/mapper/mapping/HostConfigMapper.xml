@@ -7,11 +7,12 @@
 		<result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
 		<result column="flag" jdbcType="INTEGER" property="flag" />
 		<result column="return_wechat" jdbcType="VARCHAR" property="returnWechat" />
+		<result column="redirect_url" jdbcType="VARCHAR" property="redirectUrl" />
 		<result column="show_time" jdbcType="VARCHAR" property="showTime" />
 		<result column="create_time" jdbcType="VARCHAR" property="createTime" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, host_name, wechat_no, flag, return_wechat, show_time,create_time
+		id, host_name, wechat_no, flag, return_wechat, show_time,create_time,redirect_url
 	</sql>
 
 	<sql id="dynamicWhere">
@@ -84,6 +85,9 @@
 			<if test="createTime != null">
 				create_time,
 			</if>
+			<if test="redirectUrl != null">
+				redirect_url,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -107,6 +111,9 @@
 			<if test="createTime != null">
 				#{createTime,jdbcType=VARCHAR},
 			</if>
+			<if test="redirectUrl != null">
+				#{redirectUrl},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.host.config.entity.HostConfig">
@@ -126,6 +133,9 @@
 			</if>
 			<if test="showTime != null">
 				show_time = #{showTime,jdbcType=VARCHAR},
+			</if>
+			<if test="redirectUrl != null">
+				redirect_url = #{redirectUrl},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

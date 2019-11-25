@@ -168,7 +168,7 @@
 					<label class="col-sm-3 control-label">快递单号</label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" placeholder="快递单号" name="expressNo"
-							th:attr="value=${modifyOrder==null}?'':${modifyOrder.expressNo},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+							th:attr="value=${modifyOrder==null}?'':${modifyOrder.expressNo}">
 					</div>
 				</div>
 
@@ -176,7 +176,7 @@
 					<label class="col-sm-3 control-label">快递公司</label>
 					<div class="col-sm-9">
 						<input type="text" class="form-control" placeholder="快递公司" name="expressCompany"
-							th:attr="value=${modifyOrder==null}?'':${modifyOrder.expressCompany},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+							th:attr="value=${modifyOrder==null}?'':${modifyOrder.expressCompany}">
 					</div>
 				</div>
 				<div class="clearfix"></div>
