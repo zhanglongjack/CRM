@@ -20,7 +20,7 @@ public interface DictionaryService {
 
 	List<Dictionary> selectPageByObjectForList(Dictionary record);
 
-	void updateByPrimaryKeySelectiveIncludeCache(Dictionary dictionary);
+	int updateByPrimaryKeySelectiveIncludeCache(Dictionary dictionary);
 
 	Map<String, Object> dictionaryList(String bizCode, boolean cache);
 

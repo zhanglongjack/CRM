@@ -30,7 +30,9 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	public int insertSelective(Dictionary record) {
-		return dictionaryMapper.insertSelective(record);
+		int num= dictionaryMapper.insertSelective(record);
+		commonConstants.init();
+		return num;
 	}
 
 	@Override
@@ -60,9 +62,10 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	public void updateByPrimaryKeySelectiveIncludeCache(Dictionary dictionary) {
-		updateByPrimaryKeySelective(dictionary);
-		commonConstants.updateDictionaryBy(dictionary.getBizCode(),dictionary.getCode(),dictionary.getName());
+	public int updateByPrimaryKeySelectiveIncludeCache(Dictionary dictionary) {
+		int num = updateByPrimaryKeySelective(dictionary);
+		commonConstants.init();
+		return num;
 	}
 
 	@Override

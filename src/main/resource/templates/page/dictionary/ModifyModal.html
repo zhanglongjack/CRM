@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>test</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+</head>
+
+<body>
+<div th:fragment="dialog-content">
+<script th:inline="javascript">
+/*<![CDATA[*/
+	//var modifyInfo = /*[[${modifyInfo}]]*/;
+/*]]>*/
+ 
+$(function(){
+	initTimePicker();
+})
+</script>
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			&times;
+		</button>
+		<h4 class="modal-title" id="ModifyModalTitle">
+			填写回访信息
+		</h4>
+	</div>
+	<div class="modal-body">
+		<form id="modifyDataFrom" class="form-horizontal" role="form">
+			<input id="modifyId" name="id" type="hidden" th:attr="value=${modifyInfo==null}?'':${modifyInfo.id}">
+			<input id="modifyModel" name="modifyModel" type="hidden" th:attr="value=${modifyModel==null}?'':${modifyModel}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">业务代码</label> 
+				<div class="col-sm-10">
+					<input type="text" class="form-control"  placeholder="业务代码" name="bizCode" 
+						th:attr="value=${modifyInfo==null}?'':${modifyInfo.bizCode}"
+						th:readonly="${modifyInfo!=null}">
+				</div>
+			</div> 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">字典代码</label> 
+				<div class="col-sm-10">
+					<input type="text" class="form-control"  placeholder="字典代码" name="code" 
+						th:attr="value=${modifyInfo==null}?'':${modifyInfo.code}"
+						th:readonly="${modifyInfo!=null}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">字典值</label> 
+				<div class="col-sm-10">
+					<input type="text" class="form-control"  placeholder="字典值" name="name" 
+						th:attr="value=${modifyInfo==null}?'':${modifyInfo.name}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">父节点编号</label> 
+				<div class="col-sm-10">
+					<input type="text" class="form-control"  placeholder="父节点编号" name="parentId" 
+						th:attr="value=${modifyInfo==null}?'':${modifyInfo.parentId}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label  class="col-sm-2 control-label">状态</label>
+				<div class="col-sm-10">
+					<select class="form-control" name="status">
+						<option th:each="map:${@commonConstants.getDictionarysByKey('start_stop')}" 
+								th:selected="${modifyInfo!=null&&modifyInfo.status+'' == map.key}" 
+								th:value="${map.key}" th:text="${map.value}"></option>
+					</select> 
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">备注</label> 
+				<div class="col-sm-10"> 
+					<textarea name="remarke" class="form-control" rows="3" 
+						placeholder="备注" th:text="${modifyInfo==null}?'':${modifyInfo.remarke}"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+		</button>
+		<button type="button" class="btn btn-primary" id="ModifyModalSubmit">
+			提交
+		</button>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$("#ModifyModal").on("hidden.bs.modal", function() {  
+		    $(this).removeData("bs.modal");  
+		}); 
+		
+	    $('#modifyDataFrom').bootstrapValidator({
+	        message: '输入无效,请重新输入',
+	        group:'.form-group',
+	        trigger: 'keyup focus',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	wechatNo: {
+	                message: '粉丝微信号不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '粉丝微信号不能为空'
+	                    }
+	                }
+	            },
+	            revisitResult: {
+	                message: '回访结果输入无效',
+	                validators: {
+	                    notEmpty: {
+	                        message: '回访结果不能为空'
+	                    }
+	                }
+	            },
+	            revisitRecordInfo: {
+	                message: '本次回访记录不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '本次回访记录不能为空'
+	                    }
+	                }
+	            }
+	        }
+	    });
+	});
+</script>
+</html>

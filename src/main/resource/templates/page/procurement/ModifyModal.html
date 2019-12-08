@@ -59,7 +59,7 @@
 						<span class="input-group input-append date" datepicker-flag="datepicker">
 							<input readonly type="text" class="form-control" name="createdDate" placeholder="yyyymmdd"
 								data-date-format="yyyymmdd"
-								th:attr="value=${modifyOrder==null}?${#dates.format(#dates.createNow(), 'yyyyMMdd')}:${modifyOrder.createdDate}">
+								th:attr="value=${modifyInfo==null}?${#dates.format(#dates.createNow(), 'yyyyMMdd')}:${modifyInfo.createdDate}">
 							<span class="input-group-addon add-on">
 								<i class="glyphicon glyphicon-calendar"></i>
 							</span>

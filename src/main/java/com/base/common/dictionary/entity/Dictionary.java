@@ -1,5 +1,7 @@
 package com.base.common.dictionary.entity;
 
+import com.base.common.util.PageTools;
+
 public class Dictionary {
     private Integer id;
 
@@ -15,7 +17,17 @@ public class Dictionary {
 
     private String remarke;
 
-    public Integer getId() {
+    private PageTools pageTools;
+    
+    public PageTools getPageTools() {
+		return pageTools;
+	}
+
+	public void setPageTools(PageTools pageTools) {
+		this.pageTools = pageTools;
+	}
+
+	public Integer getId() {
         return id;
     }
 

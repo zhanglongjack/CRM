@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.base.common.dictionary.entity.Dictionary;
 import com.base.common.dictionary.service.DictionaryService;
 import com.base.common.util.PageTools;
+import com.base.crm.customer.entity.CustInfo;
 import com.base.crm.users.entity.UserInfo;
  
 @Controller
@@ -29,7 +30,7 @@ public class DictionaryController {
 	@Autowired
 	private DictionaryService dictionaryService;
     
-	@RequestMapping(value = "/primaryModalView.ser")
+	@RequestMapping(value = "/primaryModalView")
 	public String primaryModalView(Long id, String modifyModel, Model model) throws Exception {
 		logger.debug("primaryModalView request:" + id + ",model:" + model);
 		if (id != null) {
@@ -43,7 +44,7 @@ public class DictionaryController {
 		return "page/dictionary/ModifyModal";
 	}
 
-	@RequestMapping(value = "/pageView.ser")
+	@RequestMapping(value = "/pageView")
 	@ResponseBody
 	public Map<String, Object> pageView(Dictionary dictionary, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) {
@@ -56,11 +57,20 @@ public class DictionaryController {
 		return result;
 	}
 
-	@RequestMapping(value = "/loadPage.ser")
-	public ModelAndView loadPage(Dictionary dictionary, PageTools pageTools,
+	@RequestMapping(value = "/loadPage")
+	public ModelAndView loadPage(Dictionary queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) throws Exception {
-		logger.debug("loadPage Dictionary request:" + dictionary + " page info ===" + pageTools);
+		logger.debug("loadPage Dictionary request:" + queryObject + " page info ===" + pageTools);
 		ModelAndView mv = new ModelAndView("page/dictionary/Content :: container-fluid");
+		
+		queryObject.setPageTools(pageTools);
+		Long size = dictionaryService.selectPageTotalCount(queryObject);
+		pageTools.setTotal(size);
+		
+		List<Dictionary> resultList = dictionaryService.selectPageByObjectForList(queryObject);
+		mv.addObject("resultList", resultList);
+		mv.addObject("pageTools", pageTools);
+		mv.addObject("queryObject", queryObject);
 		return mv;
 	}
 	
@@ -79,18 +89,27 @@ public class DictionaryController {
 		return mv;
 	}
 
-	@RequestMapping(value="/dictionaryEdit.ser")
+	@RequestMapping(value="/dictionaryEdit")
 	@ResponseBody
 	public Map<String,Object> dictionaryEdit(Dictionary dictionary){
 		logger.info("dictionaryEdit request:{}",dictionary);
-		dictionaryService.updateByPrimaryKeySelectiveIncludeCache(dictionary);
-		Map<String,Object> mv = new HashMap<String,Object>();
-		
-		
-		return mv;
+		int num = dictionaryService.updateByPrimaryKeySelectiveIncludeCache(dictionary);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		return map;
+	}
+	
+	@RequestMapping(value="/dictionaryAdd")
+	@ResponseBody
+	public Map<String,Object> dictionaryAdd(Dictionary dictionary){
+		logger.info("dictionaryAdd request:{}",dictionary);
+		int num = dictionaryService.insertSelective(dictionary);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		return map;
 	}
 
-	@RequestMapping(value = "/dictionaryList.req",method= RequestMethod.POST)
+	@RequestMapping(value = "/dictionaryList",method= RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> dictionaryList(String bizCode,boolean cache) throws Exception{
 		logger.info("DictionaryController request dictionaryList bizCode ==  "+bizCode+"|cache ="+cache);
