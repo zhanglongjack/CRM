@@ -18,7 +18,13 @@
 					pageQueryParams.fromQueryData = dataParams;
 					render(pageQueryParams); // 渲染页面函数
 				});
+				$("a[del-id]").click(function() {
+					var did = $(this).attr("del-id");
+					var targetUrl = "/hostStatus/hostStatusDel";
 
+					delRow(targetUrl,did)
+
+				});
 				$("[data-toggle='popover']").popover();
 
 				initTimePicker();
@@ -95,6 +101,12 @@
 												<span class="glyphicon glyphicon-edit"></span>
 												&nbsp;更新
 												<i class="icon-star"></i>
+											</a>
+										</div>
+										<div class="btn-group" th:if="${session.user.isAdmin()}">
+											<a class="btn btn-default btn-sm" th:attr="del-id=${obj.id}">
+												<span class="glyphicon glyphicon-trash"></span>
+												&nbsp;删除
 											</a>
 										</div>
 									</td>

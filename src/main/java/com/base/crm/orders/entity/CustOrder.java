@@ -59,8 +59,11 @@ public class CustOrder {
 	private Integer oldOrderStatus;
 	
 	// query
-	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
-	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
+	private String startDate;
+	private String endDate ;
+	
+//	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
+//	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
 	
 	public Double getCommission(){
 		return new BigDecimal(cashOnDeliveryAmt*0.03).setScale(2,BigDecimal.ROUND_HALF_DOWN).doubleValue();

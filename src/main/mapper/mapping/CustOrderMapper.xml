@@ -90,7 +90,8 @@
 		and order_status between 1 and 4
 	</select>
 	
-	<select id="selectOrderCountByMonth" parameterType="String" resultType="java.util.HashMap">
+	<!-- 废弃 -->
+	<select id="selectOrderCountByMonth" parameterType="Map" resultType="java.util.HashMap">
 		SELECT 
 			ifnull(sum(deposits),0) handselAmount,
 			sum(total_amt) sumAmount, 
@@ -103,6 +104,152 @@
 		where substr(order_date,1,6) = #{month}  
 		<if test="userId != null">and user_id=#{userId}</if>
 		and  order_status between 1 and 3
+	</select>
+	
+	<select id="selectOrderSummaryBy" parameterType="Map" resultType="java.util.HashMap">
+		SELECT 
+			ifnull(sum(deposits),0) handselAmount,
+			ifnull(sum(total_amt),0) sumAmount, 
+		    count(1) sumOrders
+		FROM cust_orders o
+		where 1=1
+		<if test="orderDate != null and orderDate.length()>0">and order_date=#{orderDate}</if>
+		<if test="month != null and month.length()>0">and substr(order_date,1,6) = #{month}</if>
+		<if test="userId != null">and user_id=#{userId}</if>
+		and  order_status between 1 and 3
+	</select>
+	
+	<select id="selectDailyKPIOrderSummaryPageCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
+		resultType="Long">
+		SELECT COUNT(1) FROM 
+		(
+			select order_date dates from cust_orders
+			union
+			select add_date dates from cust_info cust
+			order by dates desc
+		) t
+		where 1=1
+		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
+	</select>
+	
+	<select id="selectDailyKPIOrderSummaryPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="java.util.HashMap">
+		SELECT 
+			t.dates,
+			( 
+				SELECT count(1)  FROM  cust_info c where c.status = 1 and c.add_date=t.dates
+			) fansNum,
+			ifnull(sum(deposits),0) handselAmount,
+			ifnull(sum(total_amt),0) sumAmount, 
+			ifnull(sum(pay_Amount),0) realAmount, 
+		    count(order_date) sumOrders
+		FROM cust_orders o
+        right join (
+			select order_date dates from cust_orders
+            union
+            select add_date dates from cust_info cust
+            order by dates desc
+        ) t on t.dates = o.order_date
+
+		where o.order_status between 1 and 3
+		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
+		
+        group by t.dates
+        order by t.dates desc
+        limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectDailyKPIOrderSummaryPageCountByMonth" parameterType="com.base.crm.orders.entity.CustOrder"
+		resultType="Long">
+		SELECT COUNT(1) FROM 
+		(
+			select left(order_date ,6) dates 
+            from cust_orders ord
+			union
+			select left(add_date,6) dates from cust_info cust
+			order by dates desc
+		) t
+		where 1=1
+		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
+	</select>
+	
+	<select id="selectDailyKPIOrderSummaryPageByMonth" parameterType="com.base.crm.orders.entity.CustOrder" resultType="java.util.HashMap">
+		SELECT 
+			t.dates,
+			( 
+				SELECT count(1)  FROM  cust_info c where c.status = 1 and left(c.add_date,6)=t.dates
+			) fansNum,
+			ifnull(sum(deposits),0) handselAmount,
+			ifnull(sum(total_amt),0) sumAmount, 
+			ifnull(sum(pay_Amount),0) realAmount, 
+		    count(order_date) sumOrders
+		FROM cust_orders o
+        right join (
+			select left(order_date ,6) dates 
+            from cust_orders ord 
+			union
+			select left(add_date,6) dates from cust_info cust
+			order by dates desc
+        ) t on t.dates = left(o.order_date,6)
+
+		where o.order_status between 1 and 3
+		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
+		
+        group by t.dates
+        order by t.dates desc
+        limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectOrderSalesRateReportPageCountByMonth" parameterType="com.base.crm.orders.entity.OrderSalesRateReport"
+		resultType="Long">
+		SELECT COUNT(1) 
+		FROM order_sales_rate_report_view g 
+		where 1=1
+			<if test="groupId != null">and groupId=#{groupId}</if>
+			<if test="addMonth != null and addMonth.length()>0">and addMonth= #{addMonth}</if>
+	</select>
+	
+	<select id="selectOrderSalesRateReportPageByMonth" parameterType="com.base.crm.orders.entity.OrderSalesRateReport" resultType="com.base.crm.orders.entity.OrderSalesRateReport">
+		select
+			*
+		from order_sales_rate_report_view g 
+		where 1=1
+		<if test="groupId != null">and groupId=#{groupId}</if>
+		<if test="addMonth != null and addMonth.length()>0">and addMonth= #{addMonth}</if>
+  
+        order by addMonth desc 
+        limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectSalesRateReportPageCountByMonth" parameterType="com.base.crm.orders.entity.OrderSalesRateReport"
+		resultType="Long">
+		SELECT COUNT(1) 
+		FROM (
+			SELECT  
+				count(1)
+			FROM order_sales_rate_report_view 
+			where 1=1
+			<if test="addMonth != null and addMonth.length()>0">and addMonth= #{addMonth}</if>
+			group by addMonth 
+		) g 
+	</select>
+	
+	<select id="selectSalesRateReportPageByMonth" parameterType="com.base.crm.orders.entity.OrderSalesRateReport" resultType="com.base.crm.orders.entity.OrderSalesRateReport">
+		SELECT  
+			addMonth, 
+			sum(fansNum) fansNum, 
+			sum(orderedNum) orderedNum, 
+			sum(reorderedNum) reorderedNum
+		FROM order_sales_rate_report_view 
+		where 1=1
+		<if test="addMonth != null and addMonth.length()>0">and addMonth= #{addMonth}</if>
+		
+		group by addMonth 
+		order by addMonth desc
+        limit #{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="pageCustOrderMap">
@@ -136,6 +283,8 @@
 		select
 			count(1)
 		from cust_orders
+		
+		
 		<include refid="dynamicWhere" />
 	</select>
 	

@@ -21,7 +21,7 @@ public interface CustInfoService {
 
 	CustInfo selectByPrimaryWechatNo(String checkWechatNo);
 
-	Map<String, Integer> selectCustCountByMonth(String month,Long userId);
+//	Map<String, Integer> selectCustCountByMonth(String month,Long userId);
 
 	int updateCustOrderStatus();
 
@@ -30,6 +30,8 @@ public interface CustInfoService {
 
 	BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo);
 	BigDecimal queryServerSalePerformanBy(String month, String consumeWechatNo, Long serverId);
+
+	Long selectCustCountByMonth(Map<String, Object> params);
 
 
 }

@@ -42,7 +42,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(currentOrderCount,0)}"></span>
+										th:text="${#strings.defaultString(currentReport.sumOrders,0)}"></span>
 									<span class="title">当日出单数</span>
 
 								</p>
@@ -54,8 +54,19 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(currentAmount),'0')}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentReport.sumAmount),'0')}"></span>
 									<span class="title">当日业绩总额</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon"> <i class="fas fa-yen-sign"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentReport.handselAmount),0)}"></span>
+									<span class="title">当日定金总额</span>
 								</p>
 							</div>
 						</div>
@@ -78,7 +89,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(yesterdayOrdCount,0)}"></span>
+										th:text="${#strings.defaultString(yesterdayReport.sumOrders,0)}"></span>
 									<span class="title">昨日出单数</span>
 
 								</p>
@@ -90,8 +101,19 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(yesterdayAmount),'0')}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(yesterdayReport.sumAmount),'0')}"></span>
 									<span class="title">昨日业绩总额</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon"> <i class="fas fa-yen-sign"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(yesterdayReport.handselAmount),0)}"></span>
+									<span class="title">昨日定金总额</span>
 								</p>
 							</div>
 						</div>
@@ -115,7 +137,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(sumOrders,0)}"></span> <span
+										th:text="${#strings.defaultString(currentMonthReport.sumOrders,0)}"></span> <span
 										class="title">当月出单数</span>
 								</p>
 							</div>
@@ -126,7 +148,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(sumAmount),0)}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentMonthReport.sumAmount),'0')}"></span>
 									<span class="title">当月业绩总额</span>
 								</p>
 							</div>
@@ -137,12 +159,61 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(handselAmount),0)}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentMonthReport.handselAmount),0)}"></span>
 									<span class="title">当月定金总额</span>
 								</p>
 							</div>
 						</div>
 					</div>
+					<!-- 上月业绩 -->
+					<div class="row">
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon"> <i class="fas fa-user-friends"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(lastMonthCustCount,0)}"></span>
+									<span class="title">上月加粉数</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon"> <i
+									class="glyphicon glyphicon-list-alt"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(lastMonthReport.sumOrders,0)}"></span> <span
+										class="title">上月出单数</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon"> <i class="fas fa-yen-sign"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(lastMonthReport.sumAmount),'0')}"></span>
+									<span class="title">上月业绩总额</span>
+								</p>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="metric">
+								<span class="icon"> <i class="fas fa-yen-sign"></i>
+								</span>
+								<p>
+									<span class="number"
+										th:text="${#strings.defaultString(#numbers.formatCurrency(lastMonthReport.handselAmount),0)}"></span>
+									<span class="title">上月定金总额</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					
 					<!-- 
 					<div class="row">
 						<div class="col-md-10">
@@ -188,8 +259,169 @@
 				</div>
 			</div>
 			<!-- END OVERVIEW -->
+			
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6" th:if="${session.user.isAdmin()}">
+					<!-- RECENT PURCHASES -->
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title">分组消费报表</h3>
+							<div class="right">
+								<button type="button" class="btn-toggle-collapse">
+									<i class="lnr lnr-chevron-up"></i>
+								</button>
+								<button type="button" class="btn-remove">
+									<i class="lnr lnr-cross"></i>
+								</button>
+							</div>
+						</div>
+						<div class="panel-body no-padding">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>分组名称</th>
+										<th>消费额度</th>
+										<th>实际费用</th>
+										<th>粉丝总数</th>
+										<th>客单价</th>
+										<th>日期</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="obj : ${consumeAcctGroupReportList}">
+										<td th:text="${obj.groupName}"></td>
+										<td th:text="${obj.consumeAmount }"></td>
+										<td th:text="${obj.realAmount}"></td>
+										<td th:text="${obj.fansNum}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.price==0?obj.realAmount:obj.price),0)}"></td>
+										<td th:text="${obj.consumeDate}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="panel-footer">
+							<div class="row">
+								<div class="col-md-6">
+									<span class="panel-note"> <i class="fa fa-clock-o"></i>
+										最新  7 天消费展示
+									</span>
+								</div>
+								<div class="col-md-6 text-right">
+									<a data-href="" jumb-href="/consumeAcctGroupReport/consumeAcctGroupReport" href="#"  class="btn btn-primary">查看更多</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END RECENT PURCHASES -->
+				</div>
+				<div class="col-md-6" th:if="${session.user.isAdmin()}">
+					<!-- RECENT PURCHASES -->
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title">业绩报表</h3>
+							<div class="right">
+								<button type="button" class="btn-toggle-collapse">
+									<i class="lnr lnr-chevron-up"></i>
+								</button>
+								<button type="button" class="btn-remove">
+									<i class="lnr lnr-cross"></i>
+								</button>
+							</div>
+						</div>
+						<div class="panel-body no-padding">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>日期</th>
+										<th>粉丝数量</th>
+										<th>订单数量</th>
+										<th>定金总额</th>
+										<th>预计业绩</th>
+										<th>实际业绩</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="obj : ${kpiList}">
+										<td th:text="${obj.dates}"></td>
+										<td th:text="${obj.fansNum}"></td>
+										<td th:text="${obj.sumOrders}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount),'0')}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.sumAmount),'0')}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.realAmount),'0')}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="panel-footer">
+							<div class="row">
+								<div class="col-md-6">
+									<span class="panel-note"> <i class="fa fa-clock-o"></i>
+										最近半月内业绩展示
+									</span>
+								</div>
+								<div class="col-md-6 text-right">
+									<a data-href="" jumb-href="/dailyKPIReport/dailyKPIReport" href="#"  class="btn btn-primary">查看更多</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END RECENT PURCHASES -->
+				</div>
+				<div class="col-md-6"
+					th:if="${session.user.isAdmin()&&netWorkCheckList.size()>0}">
+					<!-- RECENT PURCHASES -->
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title">网络检查信息</h3>
+							<div class="right">
+								<button type="button" class="btn-toggle-collapse">
+									<i class="lnr lnr-chevron-up"></i>
+								</button>
+								<button type="button" class="btn-remove">
+									<i class="lnr lnr-cross"></i>
+								</button>
+							</div>
+						</div>
+						<div class="panel-body no-padding">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>时间</th>
+										<th>服务号</th>
+										<th>状态</th>
+										<th>网络地址</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="obj : ${netWorkCheckList}">
+										<td th:text="${obj.dateTime}"></td>
+										<td th:text="${obj.number}"></td>
+										<td><span class="label label-danger"
+											th:if="${obj.status==1}">异常</span> <span
+											class="label label-success" th:if="${obj.status==0}">已处理</span>
+										</td>
+										<td th:text="${obj.netWork}"></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="panel-footer">
+							<div class="row">
+								<div class="col-md-6">
+									<span class="panel-note"> <i class="fa fa-clock-o"></i>
+										Last 24 hours
+									</span>
+								</div>
+								<div class="col-md-6 text-right">
+									<a href="#" class="btn btn-primary">View All Purchases</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END RECENT PURCHASES -->
+				</div>
+<div class="col-md-6">
 					<!-- TIMELINE -->
 					<div class="panel panel-scrolling">
 						<div class="panel-heading">
@@ -231,63 +463,6 @@
 					</div>
 					<!-- END TIMELINE -->
 				</div>
-
-				<div class="col-md-6"
-					th:if="${session.user.isAdmin()&&netWorkCheckList.size()>0}">
-					<!-- RECENT PURCHASES -->
-					<div class="panel">
-						<div class="panel-heading">
-							<h3 class="panel-title">网络检查信息</h3>
-							<div class="right">
-								<button type="button" class="btn-toggle-collapse">
-									<i class="lnr lnr-chevron-up"></i>
-								</button>
-								<button type="button" class="btn-remove">
-									<i class="lnr lnr-cross"></i>
-								</button>
-							</div>
-						</div>
-						<div class="panel-body no-padding">
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th>时间</th>
-										<th>服务号</th>
-										<th>状态</th>
-										<th>网络地址</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="obj : ${netWorkCheckList}">
-										<td th:text="${obj.dateTime}"></td>
-										<td th:text="${obj.number}"></td>
-										<td><span class="label label-danger"
-											th:if="${obj.status==1}">异常</span> <span
-											class="label label-success" th:if="${obj.status==0}">已处理</span>
-										</td>
-										<td th:text="${obj.netWork}"></td>
-										<td></td>
-									</tr>
-
-								</tbody>
-							</table>
-						</div>
-						<div class="panel-footer">
-							<div class="row">
-								<div class="col-md-6">
-									<span class="panel-note"> <i class="fa fa-clock-o"></i>
-										Last 24 hours
-									</span>
-								</div>
-								<div class="col-md-6 text-right">
-									<a href="#" class="btn btn-primary">View All Purchases</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END RECENT PURCHASES -->
-				</div>
-
 				<div class="col-md-6">
 					<!-- RECENT PURCHASES -->
 					<div class="panel">
@@ -367,7 +542,10 @@
 					</div>
 					<!-- END RECENT PURCHASES -->
 				</div>
+			
+			
 			</div>
+		
 		</div>
 	</div>
 </body>

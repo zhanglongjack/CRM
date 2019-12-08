@@ -61,6 +61,7 @@ public class CustInfoController {
 	@RequestMapping(value="/custInfoEdit")
 	@ResponseBody
 	public Map<String,Object> custInfoEdit(CustInfo custInfo){
+		custInfo.setAddDate(custInfo.getAddTime().substring(0,10).replaceAll("-", ""));
 		logger.info("custInfoEdit request");
 		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -99,6 +100,7 @@ public class CustInfoController {
 	@RequestMapping(value="/custInfoAdd")
 	@ResponseBody
 	public Map<String,Object> custInfoAdd(CustInfo custInfo) throws Exception{
+		custInfo.setAddDate(custInfo.getAddTime().substring(0,10).replaceAll("-", ""));
 		logger.info("custInfoAdd request:"+custInfo);
 		int num = custInfoService.insertSelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();

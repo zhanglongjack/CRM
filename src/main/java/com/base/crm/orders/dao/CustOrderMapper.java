@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.base.crm.orders.entity.CustOrder;
+import com.base.crm.orders.entity.OrderSalesRateReport;
 import com.base.crm.report.entity.SummaryReport;
 @Mapper
 public interface CustOrderMapper {
@@ -29,8 +30,27 @@ public interface CustOrderMapper {
 
 	SummaryReport querySumAmountByMonth(String month);
 
-	Map<String, Integer> selectOrderCountByMonth(Map<String, Object> params);
+//	Map<String, Integer> selectOrderCountByMonth(Map<String, Object> params);
 
 	void updateBuyStatusByErrBuyStatus();
 
+	Map<String, Double> selectOrderSummaryBy(Map<String, Object> params);
+
+	List<Map<String, String>> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
+
+	Long selectDailyKPIOrderSummaryPageCountBy(CustOrder queryObject);
+	
+	List<Map<String, String>> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
+	
+	Long selectDailyKPIOrderSummaryPageCountByMonth(CustOrder queryObject);
+	
+	List<OrderSalesRateReport> selectOrderSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
+	
+	Long selectOrderSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
+	
+	List<OrderSalesRateReport> selectSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
+	
+	Long selectSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
+	
+	
 }

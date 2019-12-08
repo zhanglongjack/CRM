@@ -22,6 +22,7 @@ import com.base.crm.serve.wechat.service.ServeWechatService;
 import com.base.crm.users.constants.UserContainer;
 
 @Component
+@Deprecated
 public class ServerSaleReportExcelMappings extends ExcelMappingsAbstract {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private static String sheetName ="客服销售业绩";

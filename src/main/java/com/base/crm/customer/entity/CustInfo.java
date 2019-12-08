@@ -31,6 +31,8 @@ public class CustInfo {
     
     private String status;
     
+    private String addDate;
+    
     private String createDate;
     
     private String updateDate;
@@ -153,6 +155,14 @@ public class CustInfo {
 		this.status = status;
 	}
 
+	public String getAddDate() {
+		return addDate;
+	}
+
+	public void setAddDate(String addDate) {
+		this.addDate = addDate;
+	}
+
 	public String getCreateDate() {
 		return createDate;
 	}
@@ -188,11 +198,9 @@ public class CustInfo {
 	@Override
 	public String toString() {
 		return String.format(
-				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, status=%s, createDate=%s, updateDate=%s, pageTools=%s, levelInfo=%s]",
+				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, status=%s, addDate=%s, createDate=%s, updateDate=%s, searchUser=%s, pageTools=%s, levelInfo=%s]",
 				custId, userId, custName, custWechatNo, serveWechatNo, custPhone, level, amt, addTime, address, remark,
-				orderStatus, status, createDate, updateDate, pageTools, levelInfo);
+				orderStatus, status, addDate, createDate, updateDate, searchUser, pageTools, levelInfo);
 	}
-
-
 
 }

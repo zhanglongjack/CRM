@@ -29,9 +29,9 @@
 		where id = #{id}
 	</select>
 
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from host_status
-		where id = #{id,jdbcType=INTEGER}
+		where id = #{id}
 	</delete>
 
 	<insert id="insertSelective" parameterType="com.base.crm.host.status.entity.HostStatus">

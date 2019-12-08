@@ -24,7 +24,7 @@ public interface CustInfoMapper {
 
 	CustInfo selectByPrimaryWechatNo(String checkWechatNo);
 
-	Map<String, Integer> selectCustCountByMonth(Map<String, Object> params);
+	Long selectCustCountByMonth(Map<String, Object> params);
 
 	int updateCustOrderStatus();
 

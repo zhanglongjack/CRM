@@ -90,42 +90,50 @@
 			$("#sidebar-nav nav a").removeClass("active");
 			$(this).addClass("active");
 			var preUrl = $(this).attr("data-href");
-			if(!preUrl){
-				return;
-			}
-			$("#modalDailog").addClass("modal-lg");
-			
-			var reqURL=preUrl+"/pageView";
-			//$("#loading").show();
-			$('#main-content').empty();
-			$('#loadingModal').modal('show');
-			console.log("ttt=="+reqURL);
-			$.ajax({
-				url: reqURL,
-				type: 'POST',
-				data: '',
-				dataType: 'json',
-				success: function(response) {
-					console.log(JSON.stringify(response));
-					pageQueryParams.total = response.pageTools.total;
-					pageQueryParams.index = 1;
-					pageQueryParams.pageSize = response.pageTools.pageSize;
-					pageQueryParams.fromQueryData = null;
-					pageQueryParams.preUrl= preUrl; 
-					pageQueryParams.pageUrl = preUrl+"/loadPage";
-					
-					render(pageQueryParams);  // 渲染页面函数
-				},
-				error:function(rep,errMsg,exception){
-					if(rep.responseText=="LoginTimeout"){
-						location.href="/login.html";
-					}
-					console.log(JSON.stringify(rep));
-				}
-			});
-			
+			pageRequestAjax(preUrl);
+		});
+		
+		$("a[jumb-href]").click(function(){
+			var preUrl = $(this).attr("jumb-href");
+			pageRequestAjax(preUrl);
 		});
 	})
+	
+	function pageRequestAjax(preUrl){
+		if(!preUrl){
+			return;
+		}
+		$("#modalDailog").addClass("modal-lg");
+		
+		var reqURL=preUrl+"/pageView";
+		//$("#loading").show();
+		$('#main-content').empty();
+		$('#loadingModal').modal('show');
+		console.log("ttt=="+reqURL);
+		$.ajax({
+			url: reqURL,
+			type: 'POST',
+			data: '',
+			dataType: 'json',
+			success: function(response) {
+				console.log(JSON.stringify(response));
+				pageQueryParams.total = response.pageTools.total;
+				pageQueryParams.index = 1;
+				pageQueryParams.pageSize = response.pageTools.pageSize;
+				pageQueryParams.fromQueryData = null;
+				pageQueryParams.preUrl= preUrl; 
+				pageQueryParams.pageUrl = preUrl+"/loadPage";
+				
+				render(pageQueryParams);  // 渲染页面函数
+			},
+			error:function(rep,errMsg,exception){
+				if(rep.responseText=="LoginTimeout"){
+					location.href="/login.html";
+				}
+				console.log(JSON.stringify(rep));
+			}
+		});
+	}
 </script>
 
 <style type="text/css">

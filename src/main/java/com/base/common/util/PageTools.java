@@ -5,6 +5,17 @@ public class PageTools {
 	private Integer pageSize = 50;
 	private Integer rowIndex;
 	private Long total;
+	private Long limitRows;
+	
+	public PageTools() { }
+	public PageTools(Integer index, Integer pageSize) {
+		this.index = index;
+		this.pageSize = pageSize;
+	}
+	
+	public PageTools(Long limitRows) {
+		this.limitRows = limitRows;
+	}
 	public Integer getIndex() {
 		return index;
 	}
@@ -34,6 +45,13 @@ public class PageTools {
 		if(this.index>totalPage){
 			this.index=totalPage;
 		}
+	}
+	
+	public Long getLimitRows() {
+		return limitRows;
+	}
+	public void setLimitRows(Long limitRows) {
+		this.limitRows = limitRows;
 	}
 	@Override
 	public String toString() {

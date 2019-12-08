@@ -83,3 +83,29 @@ var initTimePicker =function(){
 	    pickerPosition: "bottom-left"
 	});
 }
+
+function delRow(targetUrl,did){
+	deleteRow(targetUrl, { id : Number(did) });
+}
+function deleteRow(targetUrl,params){
+	var isConfirm = confirm("温馨提示","确定要删除数据吗?");  
+	if(isConfirm){
+		$.ajax({
+			type : 'post',
+			url : targetUrl,
+			cache : false,
+			data : params,
+			dataType : 'json',
+			success : function(data) {
+				toastr.success("删除成功");
+				render(pageQueryParams); // 渲染页面函数
+			},
+			error : function(data) {
+				if (data.responseJSON) {
+					toastr.error("删除失败:" + data.responseJSON.message);
+				}
+			}
+		})
+	}
+}
+

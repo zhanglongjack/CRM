@@ -96,6 +96,17 @@ public class HostStatusController {
 		map.put("addNumber", num);
 		return map;
 	}
+	
+	@RequestMapping(value="/hostStatusDel")
+	@ResponseBody
+	public Map<String,Object> hostStatusDel(HostStatus addData) throws Exception{
+		logger.info("hostStatusDel request:{}",addData);
+		int num = hostStatusService.deleteByPrimaryKey(addData.getId());
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		map.put("addNumber", num);
+		return map;
+	}
 
      
 	 

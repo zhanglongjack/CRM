@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.ad.dao.ADAcctTypeMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.ad.entity.ADAcctType">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="introducer" jdbcType="VARCHAR" property="introducer" />
+		<result column="platform" jdbcType="VARCHAR" property="platform" />
+		<result column="rebate" jdbcType="DECIMAL" property="rebate" />
+		<result column="acct" jdbcType="VARCHAR" property="acct" />
+		<result column="pwd" jdbcType="VARCHAR" property="pwd" />
+		<result column="PC_URL" jdbcType="VARCHAR" property="pcUrl" />
+		<result column="mobile_url" jdbcType="VARCHAR" property="mobileUrl" />
+		<result column="company" jdbcType="VARCHAR" property="company" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, 
+		introducer, 
+		platform, 
+		rebate, 
+		acct, 
+		pwd, 
+		PC_URL, 
+		mobile_url, 
+		company,
+		status,
+		created_date,
+		remark
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="status != null">status=#{status}</if>
+			<if test="platform != null and platform.length()>0">and platform=#{platform}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and created_date <![CDATA[<=]]>#{endDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.ad.entity.ADAcctType"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_acct_type
+		<include refid="dynamicWhere" />
+		order by created_date desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.ad.entity.ADAcctType"
+		resultType="Long">
+		select
+			count(1)
+		from ad_acct_type
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ad_acct_type
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from ad_acct_type
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.ad.entity.ADAcctType">
+		insert into ad_acct_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="introducer != null">
+				introducer,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="rebate != null">
+				rebate,
+			</if>
+			<if test="acct != null">
+				acct,
+			</if>
+			<if test="pwd != null">
+				pwd,
+			</if>
+			<if test="pcUrl != null">
+				PC_URL,
+			</if>
+			<if test="mobileUrl != null">
+				mobile_url,
+			</if>
+			<if test="company != null">
+				company,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="introducer != null">
+				#{introducer,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="rebate != null">
+				#{rebate,jdbcType=DECIMAL},
+			</if>
+			<if test="acct != null">
+				#{acct,jdbcType=VARCHAR},
+			</if>
+			<if test="pwd != null">
+				#{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="pcUrl != null">
+				#{pcUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="mobileUrl != null">
+				#{mobileUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="company != null">
+				#{company,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.ad.entity.ADAcctType">
+		update ad_acct_type
+		<set>
+			<if test="introducer != null">
+				introducer = #{introducer,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="rebate != null">
+				rebate = #{rebate,jdbcType=DECIMAL},
+			</if>
+			<if test="acct != null">
+				acct = #{acct,jdbcType=VARCHAR},
+			</if>
+			<if test="pwd != null">
+				pwd = #{pwd,jdbcType=VARCHAR},
+			</if>
+			<if test="pcUrl != null">
+				PC_URL = #{pcUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="mobileUrl != null">
+				mobile_url = #{mobileUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="company != null">
+				company = #{company,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

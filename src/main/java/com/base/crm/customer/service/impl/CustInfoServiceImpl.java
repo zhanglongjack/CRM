@@ -52,14 +52,14 @@ public class CustInfoServiceImpl implements CustInfoService {
 		return custInfoMapper.selectByPrimaryWechatNo(checkWechatNo);
 	}
 
-	@Override
-	public Map<String, Integer> selectCustCountByMonth(String month,Long userId) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("month", month);
-		params.put("userId", userId);
-		params.put("status", "1");
-		return custInfoMapper.selectCustCountByMonth(params);
-	}
+//	@Override
+//	public Map<String, Integer> selectCustCountByMonth(String month,Long userId) {
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("month", month);
+//		params.put("userId", userId);
+//		params.put("status", "1");
+//		return custInfoMapper.selectCustCountByMonth(params);
+//	}
 
 	@Override
 	public int updateCustOrderStatus() {
@@ -92,6 +92,16 @@ public class CustInfoServiceImpl implements CustInfoService {
 		params.put("serveWechatNo", serveWechatNo);
 		params.put("userId", userId==null?null:userId.toString());
 		return custInfoMapper.queryServerSalePerformanBy(params);
+	}
+
+	@Override
+	public Long selectCustCountByMonth(Map<String, Object> queryParams) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("month", queryParams.get("month"));
+		params.put("queryDate", queryParams.get("orderDate"));
+		params.put("userId", queryParams.get("userId"));
+		params.put("status", "1");
+		return custInfoMapper.selectCustCountByMonth(params);
 	}
 
 

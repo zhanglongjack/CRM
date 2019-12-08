@@ -34,6 +34,27 @@ public class DateUtils {
 		Date currentTime_2 = formatter.parse(dateString, pos);
 		return currentTime_2;
 	}
+	/**
+	 * 获取昨天日期
+	 * 
+	 * @return返回长时间格式 yyyy-MM-dd HH:mm:ss
+	 */
+	public static Date getYesterdayDate() {
+		Calendar calendar=Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY,-24);
+		return calendar.getTime();
+	}
+	/**
+	 * 获取上个月
+	 * 
+	 * @return返回长时间格式 yyyyMM
+	 */
+	public static String getLastMonth() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date()); // 设置为当前时间
+		calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1); // 设置为上一个月
+		return DateUtils.dateToTightStr(calendar.getTime()).substring(0, 6);
+	}
 
 	/**
 	 * 获取指定日期当月的第一天

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.ad.dao.WechatConsumeGroupRelationMapper">
+	<resultMap id="BaseResultMap"
+		type="com.base.crm.ad.entity.WechatConsumeGroupRelation">
+		<id column="group_id" jdbcType="INTEGER" property="groupId" />
+		<result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="created_datetime" jdbcType="VARCHAR" property="createdDatetime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		group_id, wechat_no, status, created_datetime
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="groupId != null">group_id=#{groupId}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">wechat_no=#{wechatNo}</if>
+			<if test="status != null">status=#{status}</if>
+			<if test="startDate != null and startDate.length()>0">and created_datetime>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and created_datetime <![CDATA[<=]]>#{endDate}</if>
+		</where>
+	</sql>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from wechat_consume_group_relation
+		<include refid="dynamicWhere" />
+		order by created_datetime desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation"
+		resultType="Long">
+		select
+			count(1)
+		from wechat_consume_group_relation
+		<include refid="dynamicWhere" />
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from wechat_consume_group_relation
+		where group_id = #{groupId} and wechat_no = #{wechatNo}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation">
+		delete from wechat_consume_group_relation
+		where group_id = #{groupId} and wechat_no = #{wechatNo}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation">
+		insert into wechat_consume_group_relation
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="groupId != null">
+				group_id,
+			</if>
+			<if test="wechatNo != null">
+				wechat_no,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createdDatetime != null">
+				created_datetime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="groupId != null">
+				#{groupId},
+			</if>
+			<if test="wechatNo != null">
+				#{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDatetime != null">
+				#{createdDatetime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation">
+		update wechat_consume_group_relation
+		<set>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if> 
+		</set>
+		where group_id = #{groupId} and wechat_no = #{wechatNo}
+	</update>
+
+</mapper>

@@ -15,6 +15,7 @@
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
 		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="add_date" jdbcType="VARCHAR" property="addDate" />
 		<collection property="levelInfo" column="level" select="com.base.crm.level.dao.LevelMapper.selectByPrimaryKey">
         </collection>
 	</resultMap>
@@ -22,7 +23,7 @@
 	<sql id="Base_Column_List">
 		cust_id,user_id, cust_name, cust_wechat_no, cust_phone,serve_wechat_no, level,amt,
 		add_time, address,
-		remark,order_status,status
+		remark,order_status,status,add_date
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -40,13 +41,13 @@
 		</where>
 	</sql>
 	<select id="selectCustCountByMonth" parameterType="Map"
-		resultType="java.util.HashMap">
+		resultType="java.lang.Long">
 		SELECT  
-		    count(1) monthCustCount,
-		    ifnull(sum((case when substr( add_time,1,10) = date_format(date_sub(curdate(),interval 1 day), '%Y-%m-%d')  then 1 else 0 end )),0) yesterdayCount,
-			ifnull(sum((case when substr( add_time,1,10) = date_format(now(), '%Y-%m-%d')  then 1 else 0 end )),0) currentCount
+		    count(1) monthCustCount
 		FROM  cust_info
-		where substr( add_time,1,7) = #{month}
+		where 1=1
+		<if test="month != null and month.length()>0">and substr(add_date,1,6)=#{month}</if>
+		<if test="queryDate != null and queryDate.length()>0">and add_date=#{queryDate}</if>
 		<if test="userId != null">and user_id=#{userId}</if>
 		<if test="status != null">and status=#{status}</if>
 	</select>
@@ -159,6 +160,9 @@
 			<if test="status != null">
 				status,
 			</if>
+			<if test="addDate != null">
+				add_date,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="custId != null">
@@ -196,6 +200,9 @@
 			</if>
 			<if test="status != null">
 				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="addDate != null">
+				#{addDate},
 			</if>
 		</trim>
 	</insert>
@@ -237,6 +244,9 @@
 			</if>
 			<if test="status != null">
 				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="addDate != null">
+				add_date = #{addDate},
 			</if>
 		</set>
 		<where>

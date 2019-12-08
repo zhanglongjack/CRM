@@ -97,6 +97,17 @@ public class HostConfigController {
 		map.put("addNumber", num);
 		return map;
 	}
+	
+	@RequestMapping(value="/hostConfigDel")
+	@ResponseBody
+	public Map<String,Object> hostConfigDel(HostConfig addData) throws Exception{
+		logger.info("hostConfigDel request:{}",addData);
+		int num = hostConfigService.deleteByPrimaryKey(addData.getId());
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		map.put("addNumber", num);
+		return map;
+	}
 
      
 	 

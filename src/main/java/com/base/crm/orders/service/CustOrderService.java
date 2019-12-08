@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.base.crm.orders.entity.CustOrder;
+import com.base.crm.orders.entity.OrderSalesRateReport;
 import com.base.crm.report.entity.SummaryReport;
 
 public interface CustOrderService {
@@ -29,8 +30,25 @@ public interface CustOrderService {
 
 	SummaryReport querySumAmountByMonth(String month);
 
-	Map<String, Integer> selectOrderCountByMonth(String month, Long userId);
+//	Map<String, Integer> selectOrderCountByMonth(String month, Long userId);
 
 	void doUpdateBuyStatus();
 
+	Map<String, Double> selectOrderSummaryBy(Map<String, Object> params);
+
+	List<Map<String, String>> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
+
+	long selectDailyKPIOrderSummaryPageCountBy(CustOrder queryObject);
+	
+	List<Map<String, String>> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
+	
+	Long selectDailyKPIOrderSummaryPageCountByMonth(CustOrder queryObject);
+	
+	List<OrderSalesRateReport> selectOrderSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
+	
+	Long selectOrderSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
+	
+	List<OrderSalesRateReport> selectSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
+	
+	Long selectSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
 }

@@ -19,31 +19,15 @@
 					render(pageQueryParams); // 渲染页面函数
 				});
 
+
 				$("a[del-id]").click(function() {
 					var did = $(this).attr("del-id");
 					var targetUrl = "/sign/signDel";
 
-					$.ajax({
-						type : 'post',
-						url : targetUrl,
-						cache : false,
-						data : {
-							id : Number(did)
-						},
-						dataType : 'json',
-						success : function(data) {
-							toastr.success("删除成功");
-							render(pageQueryParams); // 渲染页面函数
-						},
-						error : function(data) {
-							if (data.responseJSON) {
-								toastr.error("删除失败:" + data.responseJSON.message);
-							}
-						}
-					})
+					delRow(targetUrl,did)
 
 				});
-
+				
 				$("[data-toggle='popover']").popover();
 
 				initTimePicker();
