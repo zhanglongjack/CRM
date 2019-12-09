@@ -34,7 +34,6 @@
 								<label  class="col-sm-2 control-label">服务微信</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="serveWechatNo">
-										<option value="" >===服务微信===</option>
 										<option th:if="${!session.user.isAdmin()}" th:each="map:${@serveWechatContainer.userServeWechatMap.get(session.user.uId)}" th:selected="${custInfo!=null&&custInfo.serveWechatNo == map.value}" 
 												th:value="${map.value}" th:text="${map.value}"></option>
 												
@@ -48,7 +47,6 @@
 								<label  class="col-sm-2 control-label">服务客服</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="userId">
-										<option value="" >===服务客服===</option> 
 										<option th:each="map:${@userContainer.userMap}" th:selected="${custInfo!=null&&custInfo.userId == map.key}" 
 											th:value="${map.key}" th:text="${map.value}"></option>
 									</select>
@@ -58,7 +56,6 @@
 								<label  class="col-sm-2 control-label">是否有效</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="status">
-										<option value="" >===是否有效===</option> 
 										<option th:selected="${custInfo!=null&&custInfo.status == '1'}" value="1">有效</option>
 										<option th:selected="${custInfo!=null&&custInfo.status == '0'}" value="0">无效</option>
 									</select>

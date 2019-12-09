@@ -12,13 +12,15 @@ public class ADConsumeExcelImport extends ExcelImport<ADConsume> {
 	@Override
 	protected ADConsume buildObjectByRow(Row row) {
 		ADConsume consume = new ADConsume();
-		consume.setConsumeAccountType(conversCell(row.getCell(0)));
+		consume.setAdAcctId((long)Double.parseDouble(conversCell(row.getCell(0))));
 		consume.setConsumeAmount(new BigDecimal(conversCell(row.getCell(1))));
 		consume.setRebate(new BigDecimal(conversCell(row.getCell(2))));
-		consume.setConsumeWechatNo(conversCell(row.getCell(3)));
-		consume.setServerId(Long.parseLong(conversCell(row.getCell(4))));
-		consume.setConsumeDate(conversCell(row.getCell(5)));
+		consume.setConsumeDate(conversCell(row.getCell(3)));
 		consume.setRealAmount(computConsume(consume.getConsumeAmount(), consume.getRebate()));
+		
+//		consume.setConsumeAccountType(conversCell(row.getCell(0)));
+//		consume.setConsumeWechatNo(conversCell(row.getCell(3)));
+//		consume.setServerId(Long.parseLong(conversCell(row.getCell(4))));
 		
 		return consume;
 	}

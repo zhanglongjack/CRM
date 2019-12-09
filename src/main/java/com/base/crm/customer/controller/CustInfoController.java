@@ -22,6 +22,8 @@ import org.thymeleaf.expression.Dates;
 
 import com.base.common.util.DateUtils;
 import com.base.common.util.PageTools;
+import com.base.crm.ad.entity.ADAcctType;
+import com.base.crm.ad.service.ADAcctTypeService;
 import com.base.crm.consume.entity.CustomerConsume;
 import com.base.crm.consume.service.CustomerConsumeService;
 import com.base.crm.customer.entity.CustInfo;
@@ -37,6 +39,8 @@ public class CustInfoController {
 	private CustInfoService custInfoService;
 	@Autowired
 	private CustomerConsumeService customerConsumeService;
+	@Autowired
+	private ADAcctTypeService adAcctTypeService;
 	
 	@RequestMapping(value = "/pageView")
 	@ResponseBody
@@ -63,11 +67,17 @@ public class CustInfoController {
 	public Map<String,Object> custInfoEdit(CustInfo custInfo){
 		custInfo.setAddDate(custInfo.getAddTime().substring(0,10).replaceAll("-", ""));
 		logger.info("custInfoEdit request");
+		custInfo.setAdAcctId(queryAcctTypeId(custInfo));
 		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);
 		map.put("editNumber", num);
 		return map;
+	}
+	
+	private Long queryAcctTypeId(CustInfo custInfo){
+		ADAcctType acctType = adAcctTypeService.selectAdAcctIdByWechatNo(custInfo.getServeWechatNo());
+		return acctType==null?null:acctType.getId();
 	}
 	
 	@RequestMapping(value="/custInfoRecharge")
@@ -102,6 +112,7 @@ public class CustInfoController {
 	public Map<String,Object> custInfoAdd(CustInfo custInfo) throws Exception{
 		custInfo.setAddDate(custInfo.getAddTime().substring(0,10).replaceAll("-", ""));
 		logger.info("custInfoAdd request:"+custInfo);
+		custInfo.setAdAcctId(queryAcctTypeId(custInfo));
 		int num = custInfoService.insertSelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);

@@ -11,10 +11,11 @@
 		<result column="rebate" jdbcType="VARCHAR" property="rebate" />
 		<result column="consume_wechat_no" jdbcType="VARCHAR" property="consumeWechatNo" />
 		<result column="server_id" jdbcType="VARCHAR" property="serverId" />
+		<result column="ad_acct_id" jdbcType="VARCHAR" property="adAcctId" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		id, consume_account_type, consume_amount, consume_date,real_amount,rebate,consume_wechat_no,server_id
+		id, consume_account_type, consume_amount, consume_date,real_amount,rebate,consume_wechat_no,server_id,ad_acct_id
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -140,6 +141,9 @@
 			<if test="serverId != null">
 				server_id,
 			</if>
+			<if test="adAcctId != null">
+				ad_acct_id,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -165,6 +169,9 @@
 			</if>
 			<if test="serverId != null">
 				#{serverId,jdbcType=VARCHAR},
+			</if>
+			<if test="adAcctId != null">
+				#{adAcctId},
 			</if>
 		</trim>
 	</insert>
@@ -192,6 +199,9 @@
 			</if>
 			<if test="serverId != null">
 				server_id = #{serverId,jdbcType=VARCHAR},
+			</if>
+			<if test="adAcctId != null">
+				ad_acct_id = #{adAcctId},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

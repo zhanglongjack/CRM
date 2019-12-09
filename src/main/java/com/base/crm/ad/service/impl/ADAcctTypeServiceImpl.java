@@ -45,5 +45,10 @@ public class ADAcctTypeServiceImpl implements ADAcctTypeService {
 		return adAcctTypeMapper.selectPageByObjectForList(queryObject);
 	}
 
+	@Override
+	public ADAcctType selectAdAcctIdByWechatNo(String wechatNo) {
+		return adAcctTypeMapper.selectAdAcctIdByWechatNo(wechatNo);
+	}
+
 
 }

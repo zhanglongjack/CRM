@@ -17,4 +17,7 @@ public interface ADAcctTypeService {
 	Long selectPageTotalCount(ADAcctType queryObject);
 
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
+	
+	ADAcctType selectAdAcctIdByWechatNo(String wechatNo);
+	
 }

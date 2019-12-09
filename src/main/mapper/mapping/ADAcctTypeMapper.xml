@@ -67,6 +67,17 @@
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	
+	<select id="selectAdAcctIdByWechatNo" parameterType="String"
+		resultMap="BaseResultMap">
+		select 
+			aat.id
+		from ad_acct_type aat
+		inner join consume_acct_group cag on cag.acct_id = aat.id
+		inner join wechat_consume_group_relation r on r.group_id = cag.id
+		where r.status = 1 and cag.status = 1 and aat.status = 1
+		and r.wechat_no = #{wechatNo}
+	</select>
+	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from ad_acct_type
 		where id = #{id,jdbcType=INTEGER}

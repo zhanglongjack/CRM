@@ -19,4 +19,6 @@ public interface ADAcctTypeMapper {
 	Long selectPageTotalCount(ADAcctType queryObject);
 
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
+
+	ADAcctType selectAdAcctIdByWechatNo(String wechatNo);
 }

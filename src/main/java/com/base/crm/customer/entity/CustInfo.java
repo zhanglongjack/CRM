@@ -5,6 +5,8 @@ import com.base.crm.level.entity.Level;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CustInfo {
+	private Long adAcctId;
+	
     private Long custId;
     
     private Long userId;
@@ -49,6 +51,14 @@ public class CustInfo {
 
 	public void setPageTools(PageTools pageTools) {
 		this.pageTools = pageTools;
+	}
+
+	public Long getAdAcctId() {
+		return adAcctId;
+	}
+
+	public void setAdAcctId(Long adAcctId) {
+		this.adAcctId = adAcctId;
 	}
 
 	public Long getCustId() {

@@ -32,7 +32,9 @@ public class UserContainer  implements ApplicationListener<ContextRefreshedEvent
 		List<UserInfo> userList = userService.selectAllForMap();
 		logger.debug("userList:{}",userList);
 		for(UserInfo user : userList){
-			userMap.put(user.getuId(), user.getName());
+			if(user.getuLevel()!=0){
+				userMap.put(user.getuId(), user.getName());
+			}
 		}
 		 
 		logger.debug("userMap:{}",userMap);

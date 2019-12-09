@@ -8,11 +8,12 @@
 		<result column="real_amount" jdbcType="DECIMAL" property="realAmount" />
 		<result column="return_rate" jdbcType="DECIMAL" property="returnRate" />
 		<result column="recharge_date" jdbcType="VARCHAR" property="rechargeDate" />
+		<result column="ad_acct_id" jdbcType="VARCHAR" property="adAcctId" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, account_type, recharge_amount, real_amount,
 		return_rate,
-		recharge_date
+		recharge_date,ad_acct_id
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -77,6 +78,9 @@
 			<if test="rechargeDate != null">
 				recharge_date,
 			</if>
+			<if test="adAcctId != null">
+				ad_acct_id,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -97,6 +101,9 @@
 			<if test="rechargeDate != null">
 				#{rechargeDate,jdbcType=VARCHAR},
 			</if>
+			<if test="adAcctId != null">
+				#{adAcctId},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.ad.entity.ADRechargeRecord">
@@ -116,6 +123,9 @@
 			</if>
 			<if test="rechargeDate != null">
 				recharge_date = #{rechargeDate,jdbcType=VARCHAR},
+			</if>
+			<if test="adAcctId != null">
+				ad_acct_id = #{adAcctId},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

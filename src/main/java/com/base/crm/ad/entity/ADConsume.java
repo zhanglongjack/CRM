@@ -26,6 +26,8 @@ public class ADConsume {
     
     private Long serverId;
     
+    private Long adAcctId;
+    
     private double rate; // 新报表出来以后,这个可以删掉
     
 	// query
@@ -129,6 +131,14 @@ public class ADConsume {
 
 	public void setServerId(Long serverId) {
 		this.serverId = serverId;
+	}
+
+	public Long getAdAcctId() {
+		return adAcctId;
+	}
+
+	public void setAdAcctId(Long adAcctId) {
+		this.adAcctId = adAcctId;
 	}
 
 }

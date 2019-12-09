@@ -40,6 +40,13 @@
 									th:attr="value=${queryObject==null}?'':${queryObject.id}">
 							</div>
 							<div class="form-group col-sm-2">
+								<label>账户编号</label>
+								<br>
+								<input type="text" class="form-control" placeholder="账户编号" name="adAcctId"
+									th:attr="value=${queryObject==null}?'':${queryObject.adAcctId}">
+							</div>
+						<!-- 
+							<div class="form-group col-sm-2">
 								<label>帐号类型</label>
 								<br> 
 								<select class="form-control" name="accountType">
@@ -49,6 +56,7 @@
 											th:value="${map.key}" th:text="${map.value}"></option>
 								</select>
 							</div>
+						 -->
 							<div class="form-group col-sm-2">
 								<label>开始日期</label><br>
 								<span class="input-group input-append date" datepicker-flag="datepicker">
@@ -96,7 +104,7 @@
 							<thead>
 								<tr>
 									<th>编号</th>
-									<th>帐号类型</th>
+									<th>帐号编号</th>
 									<th>充值金额</th>
 									<th>到账金额</th>
 									<th>返点率</th>
@@ -107,7 +115,7 @@
 							<tbody>
 								<tr th:each="obj : ${resultList}">
 									<td th:text="${obj.id}"></td>
-									<td th:text="${@commonConstants.getAdAccountType(obj.accountType)}"></td>
+									<td th:text="${obj.adAcctId}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.rechargeAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realAmount)}"></td>
 									<td th:text="${#numbers.formatPercent(obj.returnRate,0,2)}"></td>

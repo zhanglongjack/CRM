@@ -16,6 +16,7 @@
 		<result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
 		<result column="status" jdbcType="VARCHAR" property="status" />
 		<result column="add_date" jdbcType="VARCHAR" property="addDate" />
+		<result column="ad_acct_id" jdbcType="BIGINT" property="adAcctId" />
 		<collection property="levelInfo" column="level" select="com.base.crm.level.dao.LevelMapper.selectByPrimaryKey">
         </collection>
 	</resultMap>
@@ -23,7 +24,7 @@
 	<sql id="Base_Column_List">
 		cust_id,user_id, cust_name, cust_wechat_no, cust_phone,serve_wechat_no, level,amt,
 		add_time, address,
-		remark,order_status,status,add_date
+		remark,order_status,status,add_date,ad_acct_id
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -163,6 +164,9 @@
 			<if test="addDate != null">
 				add_date,
 			</if>
+			<if test="adAcctId != null">
+				ad_acct_id,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="custId != null">
@@ -203,6 +207,9 @@
 			</if>
 			<if test="addDate != null">
 				#{addDate},
+			</if>
+			<if test="adAcctId != null">
+				#{adAcctId},
 			</if>
 		</trim>
 	</insert>
@@ -247,6 +254,9 @@
 			</if>
 			<if test="addDate != null">
 				add_date = #{addDate},
+			</if>
+			<if test="adAcctId != null">
+				ad_acct_id = #{adAcctId},
 			</if>
 		</set>
 		<where>

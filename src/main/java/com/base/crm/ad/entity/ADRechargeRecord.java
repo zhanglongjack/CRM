@@ -23,6 +23,8 @@ public class ADRechargeRecord {
 
     private String rechargeDate;
 
+    private String adAcctId;
+    
 	// query
 	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
 	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
@@ -101,5 +103,13 @@ public class ADRechargeRecord {
     public void setRechargeDate(String rechargeDate) {
         this.rechargeDate = rechargeDate;
     }
+
+	public String getAdAcctId() {
+		return adAcctId;
+	}
+
+	public void setAdAcctId(String adAcctId) {
+		this.adAcctId = adAcctId;
+	}
  
 }
