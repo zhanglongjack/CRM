@@ -13,7 +13,7 @@ public class ConsumeAcctGroupReport {
 	private String consumeDate;
 	private String consumeMonth;
 	private int fansNum;
-	private BigDecimal price = new BigDecimal(0);
+	private Double price;
 
 	// query
 	private String status;
@@ -92,11 +92,12 @@ public class ConsumeAcctGroupReport {
 		this.fansNum = fansNum;
 	}
 
-	public BigDecimal getPrice() {
+	public Double getPrice() {
+		price = fansNum==0?realAmount.doubleValue():(realAmount.doubleValue()/fansNum);
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
