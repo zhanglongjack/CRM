@@ -52,6 +52,7 @@
 					})
 
 				});
+
 			});
 		</script>
 		
@@ -83,6 +84,7 @@
 							</a>
 							<ul class="dropdown-menu notifications">
 								<li sign-tag="signAlarm"><a id="signBTN" class="notification-item"><span class="dot bg-warning"></span>签到</a></li>
+								<li th:if="${errorSize>0&&session.user.isAdmin()}"><a id="websiteErrorBTN" class="notification-item" data-href="" jumb-href="/websiteStatusCheckLog" href="#"><span class="dot bg-warning"></span>查看异常</a></li>
 								<!-- 
 								<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
 								<li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>

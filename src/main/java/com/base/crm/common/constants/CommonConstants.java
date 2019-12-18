@@ -13,6 +13,8 @@ import org.springframework.util.Assert;
 
 import com.base.common.dictionary.entity.Dictionary;
 import com.base.common.dictionary.service.DictionaryService;
+import com.base.crm.ad.entity.ConsumeAcctGroup;
+import com.base.crm.ad.service.ConsumeAcctGroupService;
 
 @Component
 public class CommonConstants implements ApplicationListener<ContextRefreshedEvent> {
@@ -27,6 +29,8 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private DictionaryService dictionaryService;
+	@Autowired
+	private ConsumeAcctGroupService consumeAcctGroupService;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -50,12 +54,17 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 		}
 	}
 	
+	private static Map<String, ConsumeAcctGroup> adAcctGroup;
 	public String getAdAccountType(String code){
-		return getDictionarysByKey("AdAccountType").get(code);
+		if(adAcctGroup==null){
+			getAdAccountTypeMap();
+		}
+		return adAcctGroup.get(code)==null?null:adAcctGroup.get(code).getGroupName();
 	}
 	
-	public Map<String, String> getAdAccountTypeMap(){
-		return getDictionarysByKey("AdAccountType");
+	public Map<String, ConsumeAcctGroup> getAdAccountTypeMap(){
+		adAcctGroup = consumeAcctGroupService.queryGroupAcctRelationData();
+		return adAcctGroup;
 	}
 	
 	public Map<String, String> getDictionarysByKey(String bizCode){

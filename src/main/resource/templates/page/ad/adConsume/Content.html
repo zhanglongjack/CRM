@@ -26,7 +26,7 @@
 
 			});
 		</script>
-		<h3 class="page-title">广告消费记录</h3>
+		<h3 class="page-title">广告消费记录维护</h3>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- TABLE HOVER -->
@@ -34,16 +34,20 @@
 					<form class="form-inline" id="queryFrom">
 						<div class="panel-body">
 							<div class="form-group col-sm-2">
-								<label>编号</label>
+								<label>编号1</label>
 								<br>
 								<input type="text" class="form-control" placeholder="编号" name="id"
 									th:attr="value=${queryObject==null}?'':${queryObject.id}">
 							</div>
 							<div class="form-group col-sm-2">
-								<label>账户编号</label>
-								<br>
-								<input type="text" class="form-control" placeholder="账户编号" name="adAcctId"
-									th:attr="value=${queryObject==null}?'':${queryObject.adAcctId}">
+								<label>帐号分组</label>
+								<br> 
+								<select class="form-control" name="adAcctId">
+									<option value="" >===帐号分组===</option>
+									<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
+											th:selected="${queryObject!=null&&queryObject.adAcctId+'' == map.key}" 
+											th:value="${map.value.acctId}" th:text="${map.value.groupName}"></option>
+								</select>
 							</div>
 						<!-- 
 							<div class="form-group col-sm-2">
@@ -62,7 +66,7 @@
 								<span class="input-group input-append date" datepicker-flag="datepicker">
 									<input type="text" class="form-control" name="startDate"
                                            placeholder="yyyymmdd" data-date-format="yyyymmdd" readonly
-                                           th:attr="value=${queryObject.startDate==null?#dates.format(#dates.createNow(), 'yyyyMM01'):queryObject.startDate}">
+                                           th:attr="value=${queryObject.startDate==null?'':queryObject.startDate}">
                                         <span class="input-group-addon add-on">
                                            <i class="glyphicon glyphicon-calendar"></i>
                                         </span>
@@ -73,7 +77,7 @@
 								<span class="input-group input-append date" datepicker-flag="datepicker">
 									<input type="text" class="form-control" name="endDate"
                                            placeholder="yyyymmdd" data-date-format="yyyymmdd" readonly
-                                           th:attr="value=${queryObject.endDate==null?#dates.format(#dates.createNow(), 'yyyyMMdd'):queryObject.endDate}">
+                                           th:attr="value=${queryObject.endDate==null?'':queryObject.endDate}">
                                         <span class="input-group-addon add-on">
                                            <i class="glyphicon glyphicon-calendar"></i>
                                         </span>
@@ -111,7 +115,7 @@
 							<thead>
 								<tr>
 									<th>编号</th>
-									<th>账户编号</th>
+									<th>分组名称</th>
 									<th>消费金额</th>
 									<th>实际金额</th>
 									<th>返点率</th>
@@ -122,7 +126,7 @@
 							<tbody>
 								<tr th:each="obj : ${resultList}">
 									<td th:text="${obj.id}"></td>
-									<td th:text="${obj.adAcctId}"></td>
+									<td th:text="${@commonConstants.getAdAccountType(obj.adAcctId+'')}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.consumeAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realAmount)}"></td>
 									<td th:text="${#numbers.formatPercent(obj.rebate,0,2)}"></td>

@@ -18,11 +18,12 @@ import com.base.common.util.DateUtils;
 import com.base.common.util.PageTools;
 import com.base.crm.ad.service.ConsumeAcctGroupService;
 import com.base.crm.customer.service.CustInfoService;
-import com.base.crm.extension.check.ExtensionStatusCheckData;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.report.entity.ConsumeAcctGroupReport;
 import com.base.crm.users.entity.UserInfo;
+import com.base.crm.website.entity.WebsiteStatusCheckLog;
+import com.base.crm.website.service.WebsiteStatusCheckLogService;
 
 @Controller
 @SessionAttributes("user")
@@ -34,7 +35,7 @@ public class IndexController {
 	@Autowired
 	private CustOrderService orderService;
 	@Autowired
-	private ExtensionStatusCheckData data;
+	private WebsiteStatusCheckLogService websiteStatusCheckLogService;
 	@Autowired
 	private ConsumeAcctGroupService consumeAcctGroupService;
 
@@ -54,9 +55,19 @@ public class IndexController {
 			queryOrderParams.setPageTools(new PageTools(1, 15));
 			List<Map<String, String>> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
 
-			mv.addObject("netWorkCheckList", data.getData());
+			PageTools pageTools = new PageTools();
+			pageTools.setPageSize(15);
+			WebsiteStatusCheckLog log = new WebsiteStatusCheckLog();
+			log.setStatus("1");
+			log.setPageTools(pageTools);
+			
+			Long size = websiteStatusCheckLogService.selectPageTotalCount(log);
+			
+			List<WebsiteStatusCheckLog> netWorkCheckList = websiteStatusCheckLogService.selectPageByObjectForList(log);
+			mv.addObject("netWorkCheckList", netWorkCheckList);
 			mv.addObject("consumeAcctGroupReportList", resultList);
 			mv.addObject("kpiList", kpiList);
+			mv.addObject("errorSize", size);
 		}
 
 		logger.info("index response===" + mv);

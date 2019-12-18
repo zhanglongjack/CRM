@@ -1,6 +1,7 @@
 package com.base.crm.ad.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.base.crm.ad.entity.ConsumeAcctGroup;
 import com.base.crm.report.entity.ConsumeAcctGroupReport;
@@ -25,6 +26,8 @@ public interface ConsumeAcctGroupService {
 	Long selectConsumeAcctGroupReportPageTotalCountMonth(ConsumeAcctGroupReport queryObject);
 	
 	List<ConsumeAcctGroupReport> selectConsumeAcctGroupReportPageMonth(ConsumeAcctGroupReport queryObject);
+
+	Map<String, ConsumeAcctGroup> queryGroupAcctRelationData();
 	
 	
 	

@@ -140,7 +140,7 @@
 				SELECT count(1)  FROM  cust_info c where c.status = 1 and c.add_date=t.dates
 			) fansNum,
 			ifnull(sum(deposits),0) handselAmount,
-			ifnull(sum(total_amt),0) sumAmount, 
+			ifnull(sum((case when order_status = 4 then (pay_Amount) else total_amt end )),0) sumAmount, 
 			ifnull(sum(pay_Amount),0) realAmount, 
 		    count(order_date) sumOrders
 		FROM cust_orders o
@@ -151,7 +151,7 @@
             order by dates desc
         ) t on t.dates = o.order_date
 
-		where o.order_status between 1 and 3
+		where o.order_status between 1 and 4
 		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
 		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
 		
@@ -182,7 +182,7 @@
 				SELECT count(1)  FROM  cust_info c where c.status = 1 and left(c.add_date,6)=t.dates
 			) fansNum,
 			ifnull(sum(deposits),0) handselAmount,
-			ifnull(sum(total_amt),0) sumAmount, 
+			ifnull(sum((case when order_status = 4 then (pay_Amount) else total_amt end )),0) sumAmount, 
 			ifnull(sum(pay_Amount),0) realAmount, 
 		    count(order_date) sumOrders
 		FROM cust_orders o
@@ -194,7 +194,7 @@
 			order by dates desc
         ) t on t.dates = left(o.order_date,6)
 
-		where o.order_status between 1 and 3
+		where o.order_status between 1 and 4
 		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
 		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
 		

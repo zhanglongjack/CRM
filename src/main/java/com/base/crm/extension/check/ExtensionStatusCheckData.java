@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import com.base.common.util.DateUtils;
 
-@Component
+//@Component
+@Deprecated
 public class ExtensionStatusCheckData {
 //	private Map<String, ExtentensionCheckInfo> data = new HashMap<String, ExtentensionCheckInfo>();
 	private List<ExtentensionCheckInfo> data = new ArrayList<ExtentensionCheckInfo>();

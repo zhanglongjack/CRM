@@ -59,6 +59,17 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 	public List<ADConsume> querySummaryConsumeAmount(String month) {
 		return consumeMapper.querySummaryConsumeAmount(month);
 	}
+	
+	@Override
+	public Map<String,ADConsume> querySummaryConsumeAmountGroupByMonth() {
+		List<ADConsume> consumeList = consumeMapper.querySummaryConsumeAmount(null);
+		Map<String,ADConsume> map = new HashMap<String,ADConsume>();
+		for(ADConsume consume : consumeList){
+			map.put(consume.getConsumeDate(), consume);
+		}
+		
+		return map;
+	}
  
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
@@ -68,7 +79,11 @@ public class ADConsumeServiceImpl implements ADConsumeService {
 		}
 	}
 
+	/**
+	 * 改造后废弃
+	 */
 	@Override
+	@Deprecated
 	public Map<String,BigDecimal> queryRealConsumeAd(String month) {
 		List<ADConsume> consumeList = querySummaryConsumeAmount(month);
 		BigDecimal zero = new BigDecimal(0);

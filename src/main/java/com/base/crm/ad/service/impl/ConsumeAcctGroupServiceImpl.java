@@ -1,6 +1,8 @@
 package com.base.crm.ad.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,17 @@ public class ConsumeAcctGroupServiceImpl implements ConsumeAcctGroupService {
 	@Override
 	public List<ConsumeAcctGroupReport> selectConsumeAcctGroupReportPageMonth(ConsumeAcctGroupReport queryObject) {
 		return consumeAcctGroupMapper.selectConsumeAcctGroupReportPageMonth(queryObject);
+	}
+
+	@Override
+	public Map<String, ConsumeAcctGroup> queryGroupAcctRelationData() {
+		List<ConsumeAcctGroup> list = consumeAcctGroupMapper.selectPageByObjectForList(new ConsumeAcctGroup());
+		Map<String, ConsumeAcctGroup> groupMap = new HashMap<String, ConsumeAcctGroup>();
+		for(ConsumeAcctGroup group : list){
+			groupMap.put(group.getAcctId().toString(), group);
+		}
+		
+		return groupMap;
 	}
 
 

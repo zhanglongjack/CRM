@@ -26,8 +26,8 @@ public class ADRechargeRecord {
     private String adAcctId;
     
 	// query
-	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
-	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
+	private String startDate;
+	private String endDate;
 	
     @JsonIgnore
     private PageTools pageTools;

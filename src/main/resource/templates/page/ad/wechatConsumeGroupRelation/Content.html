@@ -39,7 +39,7 @@
 				deleteRow(targetUrl,{groupId:Number(groupId),wechatNo:wechatNo});
 			}
 		</script>
-		<h3 class="page-title">广告账号信息</h3>
+		<h3 class="page-title">微信分组维护</h3>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- TABLE HOVER -->
@@ -47,10 +47,14 @@
 					<form class="form-inline" id="queryFrom">
 						<div class="panel-body">
 							<div class="form-group col-sm-2">
-								<label>分组编号</label>
-								<br>
-								<input type="text" class="form-control" placeholder="编号" name="groupId"
-									th:attr="value=${queryObject==null}?'':${queryObject.groupId}">
+								<label>帐号分组</label>
+								<br> 
+								<select class="form-control" name="groupId">
+									<option value="" >===帐号分组===</option>
+									<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
+											th:selected="${queryObject!=null&&queryObject.groupId+'' == map.value.id}" 
+											th:value="${map.value.id}" th:text="${map.value.groupName}"></option>
+								</select>
 							</div>
 							<div class="form-group col-sm-2">
 								<label>开始日期</label><br>

@@ -19,6 +19,16 @@
 		<where>
 			<if test="id != null">id=#{id}</if>
 			<if test="status != null and status.length>0">status=#{status}</if>
+			<if test="acctId != null">acct_id=#{acctId}</if>
+		</where>
+	</sql>
+	<sql id="dynamicReportWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="status != null and status.length>0">and status=#{status}</if>
+			<if test="startDate != null and startDate.length()>0">and consumeDate>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and consumeDate <![CDATA[<=]]>#{endDate}</if>
+			<if test="consumeMonth != null and consumeMonth.length()>0">and consumeMonth = #{consumeMonth}</if>
 		</where>
 	</sql>
 	
@@ -29,15 +39,14 @@
 			inner join (
 				select ad.consume_date from consume_acct_group cg
 				inner join ad_consume ad on ad.ad_acct_id=cg.acct_id
+				
 				group by ad.consume_date
 				order by ad.consume_date desc
 				limit 0,#{pageTools.limitRows}
 			) t on t.consume_date = g.consumeDate
 		</if> 
-		where 1=1
-		<if test="status != null and status.length>0">
-			and g.status = #{status}
-		</if> 
+		<include refid="dynamicReportWhere" />
+		
 		order by g.status desc,g.consumeDate desc
 		
 		<if test="pageTools != null">
@@ -48,9 +57,7 @@
 	<select id="selectConsumeAcctGroupReportPageTotalCount" parameterType="com.base.crm.report.entity.ConsumeAcctGroupReport"
 		resultType="Long">
 		select count(1) from ad_group_consume_view g
-		<if test="status != null and status.length>0">
-			where g.status = #{status}
-		</if> 
+		<include refid="dynamicReportWhere" /> 
 	</select>
 	
 	<select id="selectConsumeAcctGroupReportPageMonth" parameterType="com.base.crm.report.entity.ConsumeAcctGroupReport"
@@ -67,13 +74,7 @@
 			ifnull(sum(realAmount)/sum(fansNum),0) price
 		
 		from ad_group_consume_view v
-		where 1=1
-		<if test="status != null and status.length>0">
-			and v.status = #{status}
-		</if>
-		<if test="consumeMonth != null and consumeMonth.length>0">
-			and consumeMonth = #{consumeMonth}
-		</if>
+		<include refid="dynamicReportWhere" />
 			
 		group by id, groupName, status, consumeMonth 
 		order by v.status desc, consumeMonth desc
@@ -89,13 +90,7 @@
 			select 
 				count(1)
 			from ad_group_consume_view v
-			where 1=1
-			<if test="status != null and status.length>0">
-				and v.status = #{status}
-			</if>
-			<if test="consumeMonth != null and consumeMonth.length>0">
-				and consumeMonth = #{consumeMonth}
-			</if>
+			<include refid="dynamicReportWhere" />
 				
 			group by id, groupName, status, consumeMonth 
 		) t

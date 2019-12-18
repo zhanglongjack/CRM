@@ -24,7 +24,7 @@
 				initTimePicker();
 			});
 		</script>
-		<h3 class="page-title">业绩报表</h3>
+		<h3 class="page-title">销售业绩月报</h3>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- TABLE HOVER -->
@@ -34,9 +34,9 @@
 							<div class="form-group col-sm-2">
 								<label>开始日期</label>
 								<br>
-								<span class="input-group input-append date" datepicker-flag="datepicker">
-									<input type="text" class="form-control" name="startDate" placeholder="yyyymmdd"
-										data-date-format="yyyymmdd" readonly
+								<span class="input-group input-append date" datepicker-moth-id="datepicker">
+									<input type="text" class="form-control" name="startDate" placeholder="yyyymm"
+										data-date-format="yyyymm" readonly
 										th:attr="value=${queryObject.startDate==null?'':queryObject.startDate}">
 									<span class="input-group-addon add-on">
 										<i class="glyphicon glyphicon-calendar"></i>
@@ -46,9 +46,9 @@
 							<div class="form-group col-sm-2">
 								<label>结束日期</label>
 								<br>
-								<span class="input-group input-append date" datepicker-flag="datepicker">
-									<input type="text" class="form-control" name="endDate" placeholder="yyyymmdd"
-										data-date-format="yyyymmdd" readonly
+								<span class="input-group input-append date" datepicker-moth-id="datepicker">
+									<input type="text" class="form-control" name="endDate" placeholder="yyyymm"
+										data-date-format="yyyymm" readonly
 										th:attr="value=${queryObject.endDate==null?'':queryObject.endDate}">
 									<span class="input-group-addon add-on">
 										<i class="glyphicon glyphicon-calendar"></i>

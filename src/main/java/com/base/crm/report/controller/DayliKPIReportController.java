@@ -89,7 +89,7 @@ public class DayliKPIReportController {
 		
 		List<Map<String, String>> resultList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryObject);
 		
-		ModelAndView mv = new ModelAndView(LOAD_PAGE_VIEW);
+		ModelAndView mv = new ModelAndView(LOAD_PAGE_MONTH_VIEW);
 		mv.addObject("resultList", resultList);
 		mv.addObject("pageTools", pageTools);
 		mv.addObject("queryObject", queryObject);

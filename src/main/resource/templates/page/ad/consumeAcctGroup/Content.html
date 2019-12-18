@@ -33,7 +33,7 @@
 
 			});
 		</script>
-		<h3 class="page-title">广告账号信息</h3>
+		<h3 class="page-title">推广分组信息</h3>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- TABLE HOVER -->
@@ -45,6 +45,16 @@
 								<br>
 								<input type="text" class="form-control" placeholder="编号" name="id"
 									th:attr="value=${queryObject==null}?'':${queryObject.id}">
+							</div>
+							<div class="form-group col-sm-2">
+								<label>帐号分组</label>
+								<br> 
+								<select class="form-control" name="acctId">
+									<option value="" >===帐号分组===</option>
+									<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
+											th:selected="${queryObject!=null&&queryObject.acctId+'' == map.key}" 
+											th:value="${map.value.acctId}" th:text="${map.value.groupName}"></option>
+								</select>
 							</div>
 							<div class="form-group col-sm-2">
 								<label>开始日期</label><br>

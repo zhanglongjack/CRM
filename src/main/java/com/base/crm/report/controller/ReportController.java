@@ -48,7 +48,6 @@ public class ReportController {
 	public Map<String, Object> saleSummaryReportView(SummaryReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
 		logger.info("saleSummaryReportExport request:"+queryObject);
 		List<String> monthList = procurementCostService.queryMonthBy(queryObject.getMonth());
-		
 		pageTools.setTotal((long) monthList.size());
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("pageTools", pageTools);

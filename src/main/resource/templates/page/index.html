@@ -307,7 +307,7 @@
 									</span>
 								</div>
 								<div class="col-md-6 text-right">
-									<a data-href="" jumb-href="/consumeAcctGroupReport/consumeAcctGroupReport" href="#"  class="btn btn-primary">查看更多</a>
+									<a data-href="" jumb-href="/websiteStatusCheckLog" href="#"  class="btn btn-primary">查看更多</a>
 								</div>
 							</div>
 						</div>
@@ -384,44 +384,46 @@
 						</div>
 						<div class="panel-body no-padding">
 							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th>时间</th>
-										<th>服务号</th>
-										<th>状态</th>
-										<th>网络地址</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="obj : ${netWorkCheckList}">
-										<td th:text="${obj.dateTime}"></td>
-										<td th:text="${obj.number}"></td>
-										<td><span class="label label-danger"
-											th:if="${obj.status==1}">异常</span> <span
-											class="label label-success" th:if="${obj.status==0}">已处理</span>
-										</td>
-										<td th:text="${obj.netWork}"></td>
-										<td></td>
-									</tr>
-								</tbody>
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>检查URL</th>
+									<th>微信号</th>
+									<th>状态</th>
+									<th>检查时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="obj : ${netWorkCheckList}">
+									<td th:text="${obj.id}"></td>
+									<td th:text="${obj.wechatNo}"></td>
+									<td th:text="${obj.checkUrl}"></td>
+									<td th:text="${obj.status}"></td>
+									<td>
+										<span class="label label-danger" th:if="${obj.status=='1'}" >异常</span>
+										<span class="label label-success" th:if="${obj.status=='0'}">正常</span>
+									</td>
+									<td th:text="${obj.createTime}"></td>
+								</tr>
+							</tbody>
 							</table>
 						</div>
 						<div class="panel-footer">
 							<div class="row">
 								<div class="col-md-6">
 									<span class="panel-note"> <i class="fa fa-clock-o"></i>
-										Last 24 hours
+										最近十五小时异常展示
 									</span>
 								</div>
 								<div class="col-md-6 text-right">
-									<a href="#" class="btn btn-primary">View All Purchases</a>
+									<a data-href="" jumb-href="/websiteStatusCheckLog" href="#"  class="btn btn-primary">查看更多</a>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- END RECENT PURCHASES -->
 				</div>
-<div class="col-md-6">
+				<div class="col-md-6">
 					<!-- TIMELINE -->
 					<div class="panel panel-scrolling">
 						<div class="panel-heading">

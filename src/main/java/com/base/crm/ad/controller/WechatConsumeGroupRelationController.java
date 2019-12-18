@@ -30,7 +30,7 @@ import com.base.crm.users.entity.UserInfo;
 @Controller
 @RequestMapping(value = "/wechatConsumeGroupRelation")
 @SessionAttributes("user")
-public class wechatConsumeGroupRelationController {
+public class WechatConsumeGroupRelationController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private WechatConsumeGroupRelationService wechatConsumeGroupRelationService;

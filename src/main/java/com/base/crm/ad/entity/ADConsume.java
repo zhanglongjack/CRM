@@ -1,12 +1,6 @@
 package com.base.crm.ad.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Locale;
-
-import org.thymeleaf.util.DateUtils;
-
-import com.base.common.util.DateFormateType;
 import com.base.common.util.PageTools;
 
 public class ADConsume {
@@ -31,8 +25,8 @@ public class ADConsume {
     private double rate; // 新报表出来以后,这个可以删掉
     
 	// query
-	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
-	private String endDate = DateUtils.format(new Date(), DateFormateType.TIGHT_SHORT_FORMAT, Locale.getDefault());
+	private String startDate;
+	private String endDate;
 	
 //    @JsonIgnore
     private PageTools pageTools;

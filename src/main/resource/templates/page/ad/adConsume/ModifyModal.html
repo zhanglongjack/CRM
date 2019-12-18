@@ -58,7 +58,6 @@
 							th:attr="value=${modifyInfo==null}?'':${modifyInfo.serverId}">
 					</div>
 				</div> 
-				 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label">广告帐号编号</label>
 					<div class="col-sm-10">
@@ -66,6 +65,18 @@
 							th:attr="value=${modifyInfo==null}?'':${modifyInfo.adAcctId}">
 					</div>
 				</div> 
+				 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">帐号分组</label> 
+					<div class="col-sm-10"> 
+						<select class="form-control" name="adAcctId">
+							<option value="" >===帐号分组===</option>
+							<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
+									th:selected="${modifyInfo!=null&&modifyInfo.adAcctId == map.key}" 
+									th:value="${map.value.acctId}" th:text="${map.value.groupName}"></option>
+						</select>
+					</div>
+				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">消费金额</label>
 					<div class="col-sm-10">

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.base.common.util.ExcelMappingsAbstract;
+import com.base.crm.ad.entity.ADConsume;
 import com.base.crm.ad.service.ADConsumeService;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.procurement.service.ProcurementCostService;
@@ -68,21 +69,22 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 	public ExcelMappingsAbstract statistics(SummaryReport summaryReport) {
 		logger.info("开始统计销售报表 SummaryReport ==== "+summaryReport);
 		List<String> monthList = procurementCostService.queryMonthBy(summaryReport.getMonth());
+		Map<String, ADConsume> consumeByMonth = consumeADService.querySummaryConsumeAmountGroupByMonth();
 		reportResult = new ArrayList<SummaryReport>();
 		SummaryReport sumReport = new SummaryReport();
 		sumReport.setMonth("总计");
 		BigDecimal zore = new BigDecimal("0.00");
+		
 		for(String month : monthList){
 			logger.info("开始统计{}月销售业绩 ",month);
 			SummaryReport orderReport = custOrderService.querySumAmountByMonth(month);
 			SummaryReport report = orderReport==null?new SummaryReport():orderReport;
 			
-			Map<String, BigDecimal> realConsumeAD = consumeADService.queryRealConsumeAd(month);
 			BigDecimal procurementAmount = procurementCostService.querySumAmountByMonth(month);
 			BigDecimal salaryAmount = serverSalaryService.querySumAmountByMonth(month);
 			
-			report.setConsumeAD(realConsumeAD.get("sumFact"));
-			report.setRealConsumeAD(realConsumeAD.get("sumReal"));
+			report.setConsumeAD(consumeByMonth.get(month).getConsumeAmount());
+			report.setRealConsumeAD(consumeByMonth.get(month).getRealAmount());
 			report.setMonth(month);
 			report.setProcurementCosts(procurementAmount==null?zore:procurementAmount);
 			report.setRealSalary(salaryAmount==null?zore:salaryAmount);

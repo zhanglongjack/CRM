@@ -18,7 +18,7 @@
 	<sql id="dynamicWhere">
 		<where>
 			<if test="id != null">id=#{id}</if>
-			<if test="accountType != null and accountType.length()>0">and account_type=#{accountType}</if>
+			<if test="adAcctId != null and adAcctId.length()>0">and ad_acct_id=#{adAcctId}</if>
 			<if test="rechargeDate != null and rechargeDate.length()>0">and recharge_date=#{rechargeDate}</if>
 			<if test="startDate != null and startDate.length()>0">and recharge_date>=#{startDate}</if>
 			<if test="endDate != null and endDate.length()>0">and recharge_date <![CDATA[<=]]>#{endDate}</if>

@@ -24,8 +24,11 @@ public interface ADConsumeService {
 	List<ADConsume> selectBySelective(ADConsume queryObject);
 
 	List<ADConsume> querySummaryConsumeAmount(String month);
-
+	
+	@Deprecated
 	Map<String, BigDecimal> queryRealConsumeAd(String month);
 
 	List<ADConsume> queryRealConsumeAmount(String month);
+
+	Map<String, ADConsume> querySummaryConsumeAmountGroupByMonth();
 }

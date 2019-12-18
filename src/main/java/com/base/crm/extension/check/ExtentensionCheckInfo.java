@@ -1,10 +1,19 @@
 package com.base.crm.extension.check;
 
 public class ExtentensionCheckInfo {
+	private Long id;
 	private String number;
 	private String netWork;
 	private String dateTime;
 	private int status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getNumber() {
 		return number;

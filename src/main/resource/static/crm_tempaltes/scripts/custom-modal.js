@@ -88,7 +88,7 @@ function delRow(targetUrl,did){
 	deleteRow(targetUrl, { id : Number(did) });
 }
 function deleteRow(targetUrl,params){
-	var isConfirm = confirm("温馨提示","确定要删除数据吗?");  
+	var isConfirm = confirm("确定要删除数据吗?");  
 	if(isConfirm){
 		$.ajax({
 			type : 'post',

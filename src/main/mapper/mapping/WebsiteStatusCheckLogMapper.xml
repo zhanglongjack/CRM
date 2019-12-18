@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.website.dao.WebsiteStatusCheckLogMapper">
+	<resultMap id="BaseResultMap"
+		type="com.base.crm.website.entity.WebsiteStatusCheckLog">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
+		<result column="check_url" jdbcType="VARCHAR" property="checkUrl" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="create_date" jdbcType="VARCHAR" property="createDate" />
+		<result column="create_time" jdbcType="VARCHAR" property="createTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, wechat_no, check_url, status, create_date, create_time
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">id=#{id}</if>
+			<if test="status != null">status=#{status}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">wechat_no=#{wechatNo}</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from website_status_check_log
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from website_status_check_log
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective"
+		parameterType="com.base.crm.website.entity.WebsiteStatusCheckLog">
+		insert into website_status_check_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="wechatNo != null">
+				wechat_no,
+			</if>
+			<if test="checkUrl != null">
+				check_url,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="wechatNo != null">
+				#{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="checkUrl != null">
+				#{checkUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.base.crm.website.entity.WebsiteStatusCheckLog">
+		update website_status_check_log
+		<set>
+			<if test="wechatNo != null">
+				wechat_no = #{wechatNo,jdbcType=VARCHAR},
+			</if>
+			<if test="checkUrl != null">
+				check_url = #{checkUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.website.entity.WebsiteStatusCheckLog"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from website_status_check_log
+		<include refid="dynamicWhere" />
+		order by create_time desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.website.entity.WebsiteStatusCheckLog"
+		resultType="Long">
+		select
+			count(1)
+		from website_status_check_log
+		<include refid="dynamicWhere" />
+	</select>
+	
+</mapper>

@@ -19,4 +19,5 @@ public interface WechatConsumeGroupRelationMapper {
 	Long selectPageTotalCount(WechatConsumeGroupRelation queryObject);
 
 	List<WechatConsumeGroupRelation> selectPageByObjectForList(WechatConsumeGroupRelation queryObject);
+	
 }

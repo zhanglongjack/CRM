@@ -1,5 +1,6 @@
 package com.base.crm.common.schedule;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,23 +12,23 @@ import org.springframework.stereotype.Component;
 import com.base.common.util.DateUtils;
 import com.base.common.util.HttpClientUtils;
 import com.base.crm.common.constants.CommonConstants;
-import com.base.crm.extension.check.ExtensionStatusCheckData;
-import com.base.crm.extension.check.ExtentensionCheckInfo;
 import com.base.crm.host.status.entity.HostStatus;
 import com.base.crm.host.status.service.HostStatusService;
+import com.base.crm.website.entity.WebsiteStatusCheckLog;
+import com.base.crm.website.service.WebsiteStatusCheckLogService;
 
 @Component
 public class ExtensionStatusCheckSchedule {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private ExtensionStatusCheckData data;
-	
-	@Autowired
 	private CommonConstants commonConstants;
 	@Autowired
 	private HostStatusService hostStatusService;
+	@Autowired
+	private WebsiteStatusCheckLogService websiteStatusCheckLogService;
 	
+//	@Scheduled(cron="0 0/1 * * * ?")
 	@Scheduled(cron="0 0 0/1 * * ?")
     public void transferBackJob() {
 		logger.info("开始检查网站是否正常");
@@ -37,15 +38,14 @@ public class ExtensionStatusCheckSchedule {
 		        String result = HttpClientUtils.doGet(status.getHostName());
 		        boolean isOk = result.contains(status.getWechatNo());
 		        logger.info("推广站检查,服务号[{}],推广站[{}],是否正常:{}",status.getWechatNo(),status.getHostName(),isOk);
-		        if(!isOk){
-		        	// 缓存取
-		        	ExtentensionCheckInfo info = new ExtentensionCheckInfo();
-		        	info.setNumber(status.getWechatNo());
-		        	info.setNetWork(status.getHostName());
-		        	info.setDateTime(DateUtils.getStringDate());
-		        	info.setStatus(1);
-		        	data.addData(info); 
-		        }
+		        WebsiteStatusCheckLog info = new WebsiteStatusCheckLog();
+	        	info.setWechatNo(status.getWechatNo());
+	        	info.setCheckUrl(status.getHostName());
+	        	info.setCreateDate(DateUtils.dateToTightStr(new Date()));
+	        	info.setCreateTime(DateUtils.getStringDate());
+		        info.setStatus(!isOk?"1":"0"); 
+		        
+		        websiteStatusCheckLogService.insertSelective(info);
 			}
 		}
 		// 每隔一小时更新一下缓存?

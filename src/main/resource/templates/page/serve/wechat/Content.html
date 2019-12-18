@@ -53,6 +53,7 @@
 											th:value="${map.key}" th:text="${map.value}"></option>
 								</select>
 							</div> 
+							<!-- 
 							<div class="form-group col-sm-2">
 								<label>广告帐号类型</label>
 								<br>
@@ -62,6 +63,7 @@
 											th:value="${map.key}" th:text="${map.value}"></option>
 								</select>
 							</div> 
+							 -->
 						</div>
 						<div class="panel-body border-up-down">
 							<div class="btn-right">
@@ -90,7 +92,6 @@
 									<th>微信编号</th>
 									<th>服务微信</th>
 									<th>服务客服</th>
-									<th>消费帐号类型</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -99,7 +100,6 @@
 									<td th:text="${obj.id}"></td>
 									<td th:text="${obj.serveWechatNo}"></td>
 									<td th:text="${@userContainer.get(obj.userId)}"></td>
-									<td th:text="${@commonConstants.getAdAccountType(obj.consumeAcctType)}"></td>
 									<td>
 										<div class="btn-group">
 											<a class="btn btn-default btn-sm " data-toggle="modal" data-target="#ModifyModal"

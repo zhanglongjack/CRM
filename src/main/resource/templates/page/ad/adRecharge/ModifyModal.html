@@ -32,18 +32,18 @@
 					th:attr="value=${modifyInfo==null}?'':${modifyInfo.id}">
 				<input id="modifyModel" name="modifyModel" type="hidden"
 					th:attr="value=${modifyModel==null}?'':${modifyModel}">
-			<!--  
 				<div class="form-group">
-					<label class="col-sm-2 control-label">帐号类型</label> 
+					<label class="col-sm-2 control-label">帐号分组1</label> 
 					<div class="col-sm-10"> 
-						<select class="form-control" name="accountType">
+						<select class="form-control" name="adAcctId">
+							<option value="" >===帐号分组===</option>
 							<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
-									th:selected="${modifyInfo!=null&&modifyInfo.accountType == map.key}" 
-									th:value="${map.key}" th:text="${map.value}"></option>
+									th:selected="${modifyInfo!=null&&modifyInfo.adAcctId == map.key}" 
+									th:value="${map.value.acctId}" th:text="${map.value.groupName}"></option>
 						</select>
 					</div>
 				</div>
-			 -->
+			<!--  
 				<div class="form-group">
 					<label class="col-sm-2 control-label">帐号编号</label>
 					<div class="col-sm-10">
@@ -51,6 +51,7 @@
 							th:attr="value=${modifyInfo==null}?'':${modifyInfo.adAcctId}">
 					</div>
 				</div>
+			 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label">充值金额</label>
 					<div class="col-sm-10">

@@ -23,18 +23,13 @@
 						<li><a href="#" data-href="/consume" id="menu-5"><i class="glyphicon glyphicon-credit-card"></i> <span>会员消费</span></a></li>
 						<li><a href="#" data-href="/sign" id="menu-6"><i class="glyphicon glyphicon-heart"></i> <span>客服签到记录</span></a></li>
 						<li th:if="${session.user.isAdmin()}">
-							<a href="#costPage" data-toggle="collapse" id="menu-13">
+							<a href="#adAcctPage" data-toggle="collapse" id="menu-20">
 								<i class="glyphicon glyphicon-ruble"></i> 
-								<span>成本记录</span> 
+								<span>广告帐号维护</span> 
 								<i class="icon-submenu lnr lnr-chevron-left"></i>
 							</a>
-							<div id="costPage" class="collapse">
-								<ul class="nav">
-									<li th:if="${session.user.isAdmin()}">
-										<a href="#" data-href="/procurement" id="menu-9">
-										<i class="glyphicon glyphicon-shopping-cart"></i> 
-										<span>采购信息</span></a>
-									</li>
+							<div id="adAcctPage" class="collapse">
+								<ul class="nav"> 
 									<li th:if="${session.user.isAdmin()}">
 										<a href="#" data-href="/adAcctType" id="menu-17">
 										<i class="glyphicon glyphicon-cd"></i> 
@@ -43,12 +38,12 @@
 									<li th:if="${session.user.isAdmin()}">
 										<a href="#" data-href="/consumeAcctGroup" id="menu-18">
 										<i class="glyphicon glyphicon-cd"></i> 
-										<span>推广消费分组</span></a>
+										<span>推广分组维护</span></a>
 									</li>
 									<li th:if="${session.user.isAdmin()}">
 										<a href="#" data-href="/wechatConsumeGroupRelation" id="menu-19">
 										<i class="glyphicon glyphicon-cd"></i> 
-										<span>微信分组配置</span></a>
+										<span>微信分组维护</span></a>
 									</li>
 									<li th:if="${session.user.isAdmin()}">
 										<a href="#" data-href="/adRecharge" id="menu-10">
@@ -60,6 +55,22 @@
 										<i class="glyphicon glyphicon-hd-video"></i> 
 										<span>广告消费记录</span></a>
 									</li>
+								</ul>
+							</div>
+						</li>
+						<li th:if="${session.user.isAdmin()}">
+							<a href="#costPage" data-toggle="collapse" id="menu-13">
+								<i class="glyphicon glyphicon-ruble"></i> 
+								<span>成本维护</span> 
+								<i class="icon-submenu lnr lnr-chevron-left"></i>
+							</a>
+							<div id="costPage" class="collapse">
+								<ul class="nav">
+									<li th:if="${session.user.isAdmin()}">
+										<a href="#" data-href="/procurement" id="menu-9">
+										<i class="glyphicon glyphicon-shopping-cart"></i> 
+										<span>采购信息</span></a>
+									</li>
 									<li><a href="#" data-href="/serverSalary" id="menu-12">
 										<i class="glyphicon glyphicon-piggy-bank"></i> 
 										<span>薪资记录</span></a>
@@ -70,22 +81,22 @@
 						<li th:if="${session.user.isAdmin()}">
 							<a href="#reportPage" data-toggle="collapse" id="menu-14">
 								<i class="lnr lnr-chart-bars"></i> 
-								<span>报表汇总</span> 
+								<span>报表功能</span> 
 								<i class="icon-submenu lnr lnr-chevron-left"></i>
 							</a>
 							<div id="reportPage" class="collapse" aria-expanded="false">
 								<ul class="nav">
-									<li><a href="#" data-href="/report/saleSummary" id="menu-sub-3">销售业绩汇总</a></li>
+									<li><a href="#" data-href="/report/saleSummary" id="menu-sub-3">销售利润统计</a></li>
 									<!-- 
 									<li><a href="#" data-href="/serverSaleReport/serverSaleReport" id="menu-sub-1">客服销售业绩</a></li>
 									<li><a href="#" data-href="/serverSaleMonthReport/serverSaleReport" id="menu-sub-4">客服销售业绩新</a></li>
 									 -->
-									<li><a href="#" data-href="/orderSalesRateReport/orderSalesRateReport" id="menu-sub-7">分组月销售出单报表</a></li>
-									<li><a href="#" data-href="/orderSalesRateReport/salesRateReport" id="menu-sub-8">月销售出单报表</a></li>
-									<li><a href="#" data-href="/consumeAcctGroupReport/consumeAcctGroupReport" id="menu-sub-2">广告消耗报表</a></li>
-									<li><a href="#" data-href="/consumeAcctGroupReport/consumeAcctGroupReportMonth" id="menu-sub-7">广告消耗月报</a></li>
-									<li><a href="#" data-href="/kpiReport/dailyKPIReport" id="menu-sub-5">分日业绩报表</a></li>
-									<li><a href="#" data-href="/kpiReport/monthKPIReport" id="menu-sub-6">分月业绩报表</a></li>
+									<li><a href="#" data-href="/consumeAcctGroupReport/consumeAcctGroupReport" id="menu-sub-2">分组推广日报</a></li>
+									<li><a href="#" data-href="/consumeAcctGroupReport/consumeAcctGroupReportMonth" id="menu-sub-7">分组推广月报</a></li>
+									<li><a href="#" data-href="/orderSalesRateReport/orderSalesRateReport" id="menu-sub-7">分组出单月报</a></li>
+									<li><a href="#" data-href="/orderSalesRateReport/salesRateReport" id="menu-sub-8">总计出单月报</a></li>
+									<li><a href="#" data-href="/kpiReport/dailyKPIReport" id="menu-sub-5">销售业绩日报</a></li>
+									<li><a href="#" data-href="/kpiReport/monthKPIReport" id="menu-sub-6">销售业绩月报</a></li>
 								</ul>
 							</div>
 						</li>
@@ -104,6 +115,7 @@
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/userList" id="menu-7"><i class="glyphicon glyphicon-headphones"></i> <span>客服管理</span></a></li>
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/serve/wechat" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>服务微信管理</span></a></li>
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/dictionary" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>字典维护</span></a></li>
+									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/websiteStatusCheckLog" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>网站检查日志</span></a></li>
 									
 								</ul>
 							</div>
