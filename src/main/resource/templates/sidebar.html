@@ -101,7 +101,7 @@
 							</div>
 						</li>
 						
-						<li th:if="${session.user.isAdmin()}">
+						<li>
 							<a href="#serviceConfigPage" data-toggle="collapse" id="menu-20">
 								<i class="lnr lnr-chart-bars"></i> 
 								<span>服务配置</span> 
@@ -114,7 +114,7 @@
 									
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/userList" id="menu-7"><i class="glyphicon glyphicon-headphones"></i> <span>客服管理</span></a></li>
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/serve/wechat" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>服务微信管理</span></a></li>
-									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/dictionary" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>字典维护</span></a></li>
+									<li><a href="#" data-href="/dictionary" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>字典维护</span></a></li>
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/websiteStatusCheckLog" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>网站检查日志</span></a></li>
 									
 								</ul>
