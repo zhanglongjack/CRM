@@ -47,16 +47,6 @@
 					<form class="form-inline" id="queryFrom">
 						<div class="panel-body">
 							<div class="form-group col-sm-2">
-								<label>帐号分组</label>
-								<br> 
-								<select class="form-control" name="groupId">
-									<option value="" >===帐号分组===</option>
-									<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
-											th:selected="${queryObject!=null&&queryObject.groupId+'' == map.value.id}" 
-											th:value="${map.value.id}" th:text="${map.value.groupName}"></option>
-								</select>
-							</div>
-							<div class="form-group col-sm-2">
 								<label>开始日期</label><br>
 								<span class="input-group input-append date" datepicker-flag="datepicker">
 									<input type="text" class="form-control" name="startDate"
@@ -78,6 +68,36 @@
                                         </span>
 								 </span>
 							</div>	
+							<div class="form-group col-sm-2">
+								<label>帐号分组</label>
+								<br> 
+								<select class="form-control" name="groupId">
+									<option value="" >===帐号分组===</option>
+									<option th:each="map:${groupNameMap}" 
+											th:selected="${queryObject!=null&&queryObject.groupId+'' == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+											 
+								</select>
+							</div>
+							<div class="form-group col-sm-2">
+								<label>服务微信</label>
+								<br> 
+								<select class="form-control" name="wechatNo">
+									<option value="" >===服务微信===</option>
+									<option th:each="map:${@serveWechatContainer.serveWechatMap}" th:selected="${queryObject!=null&&queryObject.wechatNo == map.value}" 
+											th:value="${map.value}" th:text="${map.value}"></option>
+								</select>
+							</div>
+							<div class="form-group col-sm-2">
+								<label>状态</label>
+								<br> 
+								<select class="form-control" name="status">
+									<option value="" >===状态===</option>
+									<option th:each="map:${@commonConstants.getDictionarysByKey('start_stop')}" 
+											th:selected="${queryObject!=null&&queryObject.status == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+								</select>
+							</div>
 						</div>
 						<div class="panel-body border-up-down">
 							<div class="btn-right">

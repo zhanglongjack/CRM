@@ -31,7 +31,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(currentDayCount,0)}"></span>
+										th:text="${#strings.defaultString(currentReport.fansNum,0)}"></span>
 									<span class="title">当日加粉总数</span>
 								</p>
 							</div>
@@ -54,7 +54,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(currentReport.sumAmount),'0')}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentReport.expectAmount),'0')}"></span>
 									<span class="title">当日业绩总额</span>
 								</p>
 							</div>
@@ -78,7 +78,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(yesterdayCount,0)}"></span>
+										th:text="${#strings.defaultString(yesterdayReport.fansNum,0)}"></span>
 									<span class="title">昨日加粉总数</span>
 								</p>
 							</div>
@@ -101,7 +101,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(yesterdayReport.sumAmount),'0')}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(yesterdayReport.expectAmount),'0')}"></span>
 									<span class="title">昨日业绩总额</span>
 								</p>
 							</div>
@@ -125,7 +125,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(monthCustCount,0)}"></span>
+										th:text="${#strings.defaultString(currentMonthReport.fansNum,0)}"></span>
 									<span class="title">当月加粉数</span>
 								</p>
 							</div>
@@ -148,8 +148,8 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(currentMonthReport.sumAmount),'0')}"></span>
-									<span class="title">当月业绩总额</span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(currentMonthReport.expectAmount),'0')}"></span>
+									<span class="title">当月预计业绩</span>
 								</p>
 							</div>
 						</div>
@@ -173,7 +173,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(lastMonthCustCount,0)}"></span>
+										th:text="${#strings.defaultString(lastMonthReport.fansNum,0)}"></span>
 									<span class="title">上月加粉数</span>
 								</p>
 							</div>
@@ -196,7 +196,7 @@
 								</span>
 								<p>
 									<span class="number"
-										th:text="${#strings.defaultString(#numbers.formatCurrency(lastMonthReport.sumAmount),'0')}"></span>
+										th:text="${#strings.defaultString(#numbers.formatCurrency(lastMonthReport.serviceKPI),'0')}"></span>
 									<span class="title">上月业绩总额</span>
 								</p>
 							</div>
@@ -318,7 +318,7 @@
 					<!-- RECENT PURCHASES -->
 					<div class="panel">
 						<div class="panel-heading">
-							<h3 class="panel-title">业绩报表</h3>
+							<h3 class="panel-title">每日销售统计</h3>
 							<div class="right">
 								<button type="button" class="btn-toggle-collapse">
 									<i class="lnr lnr-chevron-up"></i>
@@ -346,7 +346,7 @@
 										<td th:text="${obj.fansNum}"></td>
 										<td th:text="${obj.sumOrders}"></td>
 										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount),'0')}"></td>
-										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.sumAmount),'0')}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.expectAmount),'0')}"></td>
 										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.realAmount),'0')}"></td>
 									</tr>
 								</tbody>
@@ -360,7 +360,7 @@
 									</span>
 								</div>
 								<div class="col-md-6 text-right">
-									<a data-href="" jumb-href="/dailyKPIReport/dailyKPIReport" href="#"  class="btn btn-primary">查看更多</a>
+									<a data-href="" jumb-href="/kpiReport/dailyKPIReport" href="#"  class="btn btn-primary">查看更多</a>
 								</div>
 							</div>
 						</div>

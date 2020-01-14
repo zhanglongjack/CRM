@@ -1,5 +1,6 @@
 package com.base.crm.common.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.base.common.util.DateUtils;
+import com.base.crm.ad.entity.WechatConsumeGroupRelation;
+import com.base.crm.ad.service.WechatConsumeGroupRelationService;
 import com.base.crm.common.constants.ConsumeType;
 import com.base.crm.common.constants.CustomerLevelContainer;
 import com.base.crm.common.constants.OrderStatus;
@@ -39,7 +43,8 @@ public class LoginController {
 	private HostConfigService hostConfigService;
 	@Autowired
 	private ServeWechatContainer serveWechatContainer;
-	
+	@Autowired
+	private WechatConsumeGroupRelationService wechatConsumeGroupRelationService;
 	
 //	mv.setViewName("forward:/login.html");
 //	mv.setViewName("redirect:/login.html");
@@ -111,6 +116,20 @@ public class LoginController {
 				logger.info("跨域处理返回结果:"+result);
 				return result;
 			}
+		}
+		
+		return "";
+	}
+	
+	@RequestMapping(value = "/js/wx.js", method = RequestMethod.GET)
+	@ResponseBody
+	public String wx(String d) throws Exception {
+		logger.info("跨域处理逻辑:acctId="+d);
+		List<String> relationList = wechatConsumeGroupRelationService.queryJSWechatNo(d);
+		
+		if(relationList.size()>0){
+			String wechats = JSON.toJSON(relationList).toString();
+			return "arr_wx = "+wechats;
 		}
 		
 		return "";

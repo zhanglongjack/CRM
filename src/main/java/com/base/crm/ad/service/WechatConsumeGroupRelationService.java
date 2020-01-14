@@ -16,4 +16,6 @@ public interface WechatConsumeGroupRelationService {
 	Long selectPageTotalCount(WechatConsumeGroupRelation queryObject);
 
 	List<WechatConsumeGroupRelation> selectPageByObjectForList(WechatConsumeGroupRelation queryObject);
+
+	List<String> queryJSWechatNo(String acctId);
 }

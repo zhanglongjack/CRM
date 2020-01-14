@@ -45,6 +45,11 @@ public class WechatConsumeGroupRelationServiceImpl  implements WechatConsumeGrou
 		return wechatConsumeGroupRelationMapper.selectPageByObjectForList(queryObject);
 	}
 
+	@Override
+	public List<String> queryJSWechatNo(String acctId) {
+		return wechatConsumeGroupRelationMapper.queryJSWechatNo(acctId);
+	}
+
  
 
 }

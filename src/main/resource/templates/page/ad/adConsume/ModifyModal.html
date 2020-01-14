@@ -72,7 +72,7 @@
 						<select class="form-control" name="adAcctId">
 							<option value="" >===帐号分组===</option>
 							<option th:each="map:${@commonConstants.getAdAccountTypeMap()}" 
-									th:selected="${modifyInfo!=null&&modifyInfo.adAcctId == map.key}" 
+									th:selected="${modifyInfo!=null&&modifyInfo.adAcctId == map.value.acctId}" 
 									th:value="${map.value.acctId}" th:text="${map.value.groupName}"></option>
 						</select>
 					</div>
@@ -143,7 +143,25 @@
 	                    }
 	                }
 
-	            }, 
+	            },rebate: {
+	                message: '返点率输入不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '返点率不能为空'
+	                    },
+	                    regexp: {
+	                        regexp: /^(([1-9]\d*)(\.\d{1,2})?)$|^(0\.0?([1-9]\d?))$/,
+	                        message: '返点率不正确'
+	                    }
+	                }
+	            }, adAcctId: {
+	                message: '无效帐号分组',
+	                validators: { 
+	                	notEmpty: {
+	                        message: '帐号分组必选'
+	                    }
+	                }
+	            }
 			}
 		});
 	});

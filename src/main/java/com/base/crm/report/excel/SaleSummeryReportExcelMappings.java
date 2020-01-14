@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.base.common.util.ExcelMappingsAbstract;
 import com.base.crm.ad.entity.ADConsume;
 import com.base.crm.ad.service.ADConsumeService;
+import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.procurement.service.ProcurementCostService;
 import com.base.crm.report.entity.SummaryReport;
@@ -67,6 +68,35 @@ public class SaleSummeryReportExcelMappings extends ExcelMappingsAbstract {
 	}
 
 	public ExcelMappingsAbstract statistics(SummaryReport summaryReport) {
+		logger.info("开始统计销售报表 SummaryReport ==== "+summaryReport);
+		CustOrder orderParams = new CustOrder();
+		orderParams.setStartDate(summaryReport.getMonth());
+		orderParams.setEndDate(summaryReport.getMonth());
+		reportResult = custOrderService.selectDailyKPIOrderSummaryPageByMonth(orderParams);
+		SummaryReport sumReport = new SummaryReport();
+		sumReport.setDates("总计");
+		for(SummaryReport report : reportResult){
+			//预计利润 = 销售总额 - 实际广告费 - 采购成本 - 实发薪资 - 快递费用 - 快递佣金
+			BigDecimal profit = report.getRealConsumeAD();
+			profit=profit.add(report.getProcurementCosts());
+			profit=profit.add(report.getRealSalary());
+			profit=profit.add(report.getExpressTotalFee());
+			profit=profit.add(report.getExpressCommissionTotalFee());
+			
+			report.setProfit(report.getExpectAmount().subtract(profit));
+			
+			// 实际利润 = 实收总额 - 实际广告费 - 采购成本 - 实发新增 - 快递费用 - 快递佣金
+			report.setRealProfit(report.getRealAmount().subtract(profit));
+			
+			sumReport.sum(report);
+		}
+		reportResult.add(sumReport);
+		setExcelMappings(reportResult, sumReport);
+		logger.info("结束统计销售报表 SummaryReport ==== "+sumReport);
+		return this;
+	}
+
+	private ExcelMappingsAbstract old(SummaryReport summaryReport) {
 		logger.info("开始统计销售报表 SummaryReport ==== "+summaryReport);
 		List<String> monthList = procurementCostService.queryMonthBy(summaryReport.getMonth());
 		Map<String, ADConsume> consumeByMonth = consumeADService.querySummaryConsumeAmountGroupByMonth();

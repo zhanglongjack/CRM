@@ -19,6 +19,7 @@ import com.base.common.util.PageTools;
 import com.base.crm.ad.service.ConsumeAcctGroupService;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
+import com.base.crm.report.entity.SummaryReport;
 import com.base.crm.users.entity.UserInfo;
 
 @Controller
@@ -26,8 +27,8 @@ import com.base.crm.users.entity.UserInfo;
 @SessionAttributes("user")
 public class DayliKPIReportController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired
-	private ConsumeAcctGroupService consumeAcctGroupService;
+//	@Autowired
+//	private ConsumeAcctGroupService consumeAcctGroupService;
 	@Autowired
 	private CustOrderService orderService;
 	
@@ -56,7 +57,7 @@ public class DayliKPIReportController {
 		long size = orderService.selectDailyKPIOrderSummaryPageCountBy(queryObject);
 		pageTools.setTotal(size);
 		
-		List<Map<String, String>> resultList = orderService.selectDailyKPIOrderSummaryPageBy(queryObject);
+		List<SummaryReport> resultList = orderService.selectDailyKPIOrderSummaryPageBy(queryObject);
 		
 		ModelAndView mv = new ModelAndView(LOAD_PAGE_VIEW);
 		mv.addObject("resultList", resultList);
@@ -87,7 +88,7 @@ public class DayliKPIReportController {
 		long size = orderService.selectDailyKPIOrderSummaryPageCountByMonth(queryObject);
 		pageTools.setTotal(size);
 		
-		List<Map<String, String>> resultList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryObject);
+		List<SummaryReport> resultList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryObject);
 		
 		ModelAndView mv = new ModelAndView(LOAD_PAGE_MONTH_VIEW);
 		mv.addObject("resultList", resultList);

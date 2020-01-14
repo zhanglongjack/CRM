@@ -63,8 +63,6 @@ public class WechatConsumeGroupRelationController {
 			@ModelAttribute("user") UserInfo user) {
 		logger.debug("adConsumetView request : " +queryObject);
 		
-		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
-		
 		Long size = wechatConsumeGroupRelationService.selectPageTotalCount(queryObject);
 		pageTools.setTotal(size);
 		Map<String,Object> result = new HashMap<String,Object>();
@@ -76,9 +74,7 @@ public class WechatConsumeGroupRelationController {
 	public ModelAndView loadPage(WechatConsumeGroupRelation queryObject, PageTools pageTools,
 			@ModelAttribute("user") UserInfo user) throws Exception {
 		logger.debug("loadPage WechatConsumeGroupRelation request:" + queryObject + " page info ===" + pageTools);
-		
-		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
-		
+
 		queryObject.setPageTools(pageTools);
 		ModelAndView mv = new ModelAndView(LOAD_PAGE_VIEW);
 		Long size = wechatConsumeGroupRelationService.selectPageTotalCount(queryObject);

@@ -28,7 +28,8 @@ public interface CustOrderMapper {
 
 	List<CustOrder> selectPageByObjectForList(CustOrder order);
 
-	SummaryReport querySumAmountByMonth(String month);
+//	SummaryReport querySumAmountByMonth(String month);
+	SummaryReport querySumAmountByMonth(Map<String, Object> params);
 
 //	Map<String, Integer> selectOrderCountByMonth(Map<String, Object> params);
 
@@ -36,11 +37,11 @@ public interface CustOrderMapper {
 
 	Map<String, Double> selectOrderSummaryBy(Map<String, Object> params);
 
-	List<Map<String, String>> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
+	List<SummaryReport> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
 
 	Long selectDailyKPIOrderSummaryPageCountBy(CustOrder queryObject);
 	
-	List<Map<String, String>> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
+	List<SummaryReport> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
 	
 	Long selectDailyKPIOrderSummaryPageCountByMonth(CustOrder queryObject);
 	
@@ -51,6 +52,6 @@ public interface CustOrderMapper {
 	List<OrderSalesRateReport> selectSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
 	
 	Long selectSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
-	
+
 	
 }

@@ -79,18 +79,36 @@
 			<if test="buyStatus != null and buyStatus.length()>0">and buy_status = #{buyStatus}</if>
 		</where>
 	</sql>
+
+	<sql id="orderStatistics">
+		select 
+			ifnull(sum(deposits),0) handselAmount,
+			ifnull(sum(total_amt),0) expectAmount, 
+			ifnull(sum((case when order_status = 4 then (pay_Amount) else 0 end)),0) refuseAmount, 
+			ifnull(sum((case when order_status = 4 then (cash_on_delivery_amt) else 0 end)),0) refusePaymentAmount, 
+			ifnull(sum(pay_Amount),0) realAmount, 
+		    sum((case when order_status = 4 then (express_amount*2) else express_amount end )) expressTotalFee,
+		    sum((case when order_status = 4 then 0 else ROUND((cash_on_delivery_amt*0.03) ,2) end )) expressCommissionTotalFee,
+		    count((case when order_status = 4 then null else 1 end)) sumOrders,
+			order_date,
+			left(order_date,6) month
+			
+		FROM cust_orders o
+		where o.order_status between 1 and 4
+		<if test="userId != null">and user_id=#{userId}</if>
+		
+		group by o.order_date
+	</sql>
 	
-	<select id="querySumAmountByMonth" parameterType="String" resultType="com.base.crm.report.entity.SummaryReport">
-		SELECT 
-			sum(pay_Amount) realncomeTotalAmount,
-			sum((case when order_status = 4 then (pay_Amount) else total_amt end )) saleTotalAmount,
-			sum((case when order_status = 4 then (express_amount*2) else  express_amount+ROUND((cash_on_delivery_amt*0.03) ,2) end )) expressTotalFee
-		FROM cust_orders
-		where substr(order_date,1,6) = #{month}  
-		and order_status between 1 and 4
+	<select id="querySumAmountByMonth" parameterType="Map" resultType="com.base.crm.report.entity.SummaryReport">
+		select 
+			* 
+		from (<include refid="orderStatistics" />) t
+		where t.month = #{month}
+		group by t.month desc
 	</select>
 	
-	<!-- 废弃 -->
+	<!-- 废弃
 	<select id="selectOrderCountByMonth" parameterType="Map" resultType="java.util.HashMap">
 		SELECT 
 			ifnull(sum(deposits),0) handselAmount,
@@ -105,102 +123,127 @@
 		<if test="userId != null">and user_id=#{userId}</if>
 		and  order_status between 1 and 3
 	</select>
+	-->
 	
 	<select id="selectOrderSummaryBy" parameterType="Map" resultType="java.util.HashMap">
-		SELECT 
-			ifnull(sum(deposits),0) handselAmount,
-			ifnull(sum(total_amt),0) sumAmount, 
-		    count(1) sumOrders
-		FROM cust_orders o
-		where 1=1
-		<if test="orderDate != null and orderDate.length()>0">and order_date=#{orderDate}</if>
-		<if test="month != null and month.length()>0">and substr(order_date,1,6) = #{month}</if>
-		<if test="userId != null">and user_id=#{userId}</if>
-		and  order_status between 1 and 3
+		select 
+			* 
+		from (<include refid="orderStatistics" />) t
+		group by t.month desc
+		
 	</select>
 	
 	<select id="selectDailyKPIOrderSummaryPageCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
 		resultType="Long">
-		SELECT COUNT(1) FROM 
+		select count(1) from 
 		(
-			select order_date dates from cust_orders
-			union
-			select add_date dates from cust_info cust
-			order by dates desc
+			select 
+				daily_date
+			from statistics_date_view c 
+			where 1=1
+			<if test="startDate != null and startDate.length()>0">and c.daily_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and c.daily_date <![CDATA[<=]]>#{endDate}</if>
+			group by c.daily_date 
+			order by c.daily_date desc
 		) t
-		where 1=1
-		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
-		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
 	</select>
 	
-	<select id="selectDailyKPIOrderSummaryPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="java.util.HashMap">
-		SELECT 
-			t.dates,
+	<select id="selectDailyKPIOrderSummaryPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
+		select 
+			d.daily_date dates,
 			( 
-				SELECT count(1)  FROM  cust_info c where c.status = 1 and c.add_date=t.dates
+				SELECT count(1)  FROM  cust_info c 
+				where c.status = 1 and c.add_date=d.daily_date
 			) fansNum,
-			ifnull(sum(deposits),0) handselAmount,
-			ifnull(sum((case when order_status = 4 then (pay_Amount) else total_amt end )),0) sumAmount, 
-			ifnull(sum(pay_Amount),0) realAmount, 
-		    count(order_date) sumOrders
-		FROM cust_orders o
-        right join (
-			select order_date dates from cust_orders
-            union
-            select add_date dates from cust_info cust
-            order by dates desc
-        ) t on t.dates = o.order_date
-
-		where o.order_status between 1 and 4
-		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
-		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
+			ifnull(od.handselAmount,0) handselAmount,
+			ifnull(od.expectAmount,0) expectAmount,
+			ifnull(od.realAmount,0) realAmount,
+			ifnull(od.refuseAmount,0) refuseAmount,
+			ifnull(od.refusePaymentAmount,0) refusePaymentAmount,
+			(ifnull(od.realAmount,0) - ifnull(od.refuseAmount,0)) serviceKPI,
+			ifnull(od.sumOrders,0) sumOrders
+			
+		from statistics_date_view d
+		left join (
+				<include refid="orderStatistics" />
+		) od on od.order_date = d.daily_date
+		where 1=1
+		<if test="startDate != null and startDate.length()>0">and d.daily_date>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and d.daily_date <![CDATA[<=]]>#{endDate}</if>
+				
+		order by d.daily_date desc
 		
-        group by t.dates
-        order by t.dates desc
-        limit #{pageTools.rowIndex},#{pageTools.pageSize}
+       <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
 	</select>
 	
 	<select id="selectDailyKPIOrderSummaryPageCountByMonth" parameterType="com.base.crm.orders.entity.CustOrder"
 		resultType="Long">
-		SELECT COUNT(1) FROM 
+		select count(1) 
+		from 
 		(
-			select left(order_date ,6) dates 
-            from cust_orders ord
-			union
-			select left(add_date,6) dates from cust_info cust
-			order by dates desc
+			select 
+				month_date
+			from statistics_date_view c 
+			group by month_date
 		) t
 		where 1=1
-		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
-		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
+		<if test="startDate != null and startDate.length()>0">and t.month_date>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.month_date <![CDATA[<=]]>#{endDate}</if>
+
 	</select>
 	
-	<select id="selectDailyKPIOrderSummaryPageByMonth" parameterType="com.base.crm.orders.entity.CustOrder" resultType="java.util.HashMap">
+	<select id="selectDailyKPIOrderSummaryPageByMonth" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
 		SELECT 
+			ad.*,
 			t.dates,
+			(
+				select
+					sum(amount) amount
+				from procurement_costs
+				where left(created_date,6) = t.dates 
+			) procurementCosts,
+			(
+				select
+					ifnull(sum(salary+sales_performance),0)
+				from server_salary
+				where salary_month = t.dates 
+			) realSalary,
 			( 
 				SELECT count(1)  FROM  cust_info c where c.status = 1 and left(c.add_date,6)=t.dates
 			) fansNum,
-			ifnull(sum(deposits),0) handselAmount,
-			ifnull(sum((case when order_status = 4 then (pay_Amount) else total_amt end )),0) sumAmount, 
-			ifnull(sum(pay_Amount),0) realAmount, 
-		    count(order_date) sumOrders
-		FROM cust_orders o
+			ifnull(sum(od.handselAmount),0) handselAmount,
+			ifnull(sum(od.expectAmount),0) expectAmount,
+			ifnull(sum(od.realAmount),0) realAmount,
+			ifnull(sum(od.refuseAmount),0) refuseAmount,
+			ifnull(sum(od.refusePaymentAmount),0) refusePaymentAmount,
+			(ifnull(sum(od.realAmount),0) - ifnull(sum(od.refuseAmount),0)) serviceKPI,
+			ifnull(sum(od.expressTotalFee),0) expressTotalFee,
+			ifnull(sum(od.expressCommissionTotalFee),0) expressCommissionTotalFee,
+			ifnull(sum(od.sumOrders),0) sumOrders
+		    
+		FROM (<include refid="orderStatistics" />) od
         right join (
-			select left(order_date ,6) dates 
-            from cust_orders ord 
-			union
-			select left(add_date,6) dates from cust_info cust
-			order by dates desc
-        ) t on t.dates = left(o.order_date,6)
-
-		where o.order_status between 1 and 4
+			select 
+				month_date dates
+			from statistics_date_view c 
+			group by month_date
+        ) t on t.dates = od.month
+		left join (
+			select 
+				sum(a.consume_amount) consumeAD ,
+		        sum(a.real_amount) realConsumeAD,
+		        left(a.consume_date,6) consumeMonth
+		    from ad_consume a
+		    group by left(a.consume_date,6)
+		) ad on ad.consumeMonth = t.dates
+		where 1=1
 		<if test="startDate != null and startDate.length()>0">and t.dates>=#{startDate}</if>
 		<if test="endDate != null and endDate.length()>0">and t.dates <![CDATA[<=]]>#{endDate}</if>
 		
         group by t.dates
         order by t.dates desc
-        limit #{pageTools.rowIndex},#{pageTools.pageSize}
+        <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
+       
 	</select>
 	
 	<select id="selectOrderSalesRateReportPageCountByMonth" parameterType="com.base.crm.orders.entity.OrderSalesRateReport"

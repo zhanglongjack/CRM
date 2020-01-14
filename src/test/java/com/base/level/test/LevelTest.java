@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.base.StartCRMApp;
+import com.base.common.util.DateUtils;
 import com.base.crm.common.constants.CustomerLevelContainer;
 
 @RunWith(SpringRunner.class)
@@ -20,7 +21,9 @@ public class LevelTest {
 	
 	@Test
 	public void test(){
-		System.err.println(level.levelMap);
+		
+//		System.err.println(level.levelMap);
+		System.err.println(DateUtils.getLastMonth());
 	}
 	
 }

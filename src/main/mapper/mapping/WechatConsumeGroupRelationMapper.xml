@@ -15,9 +15,9 @@
 	
 	<sql id="dynamicWhere">
 		<where>
-			<if test="groupId != null">group_id=#{groupId}</if>
-			<if test="wechatNo != null and wechatNo.length()>0">wechat_no=#{wechatNo}</if>
-			<if test="status != null">status=#{status}</if>
+			<if test="groupId != null">and group_id=#{groupId}</if>
+			<if test="wechatNo != null and wechatNo.length()>0">and wechat_no=#{wechatNo}</if>
+			<if test="status != null and status.length()>0">and status=#{status}</if>
 			<if test="startDate != null and startDate.length()>0">and created_datetime>=#{startDate}</if>
 			<if test="endDate != null and endDate.length()>0">and created_datetime <![CDATA[<=]]>#{endDate}</if>
 		</where>
@@ -47,6 +47,14 @@
 		<include refid="Base_Column_List" />
 		from wechat_consume_group_relation
 		where group_id = #{groupId} and wechat_no = #{wechatNo}
+	</select>
+	
+	<select id="queryJSWechatNo" parameterType="String" resultType="String">
+		select wechat_no from ad_acct_type t
+		inner join  consume_acct_group g on g.acct_id = t.id
+		inner join wechat_consume_group_relation r on g.id = r.group_id
+		where r.status =1 and g.status=1 and t.status = 1
+		and t.id = #{acctId}
 	</select>
 	
 	<delete id="deleteByPrimaryKey" parameterType="com.base.crm.ad.entity.WechatConsumeGroupRelation">

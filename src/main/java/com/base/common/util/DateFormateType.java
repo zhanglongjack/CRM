@@ -16,7 +16,11 @@ public class DateFormateType {
 	 * 紧凑短时间格式 yyyyMMdd
 	 */
 	public static final String TIGHT_SHORT_FORMAT = "yyyyMMdd";
-
+	
+	/**
+	 * 年月格式 yyyyMM
+	 */
+	public static final String YEAR_MONTH_FORMAT = "yyyyMM";
 	/**
 	 * 紧凑长时间格式 yyyyMMdd HHmmss
 	 */

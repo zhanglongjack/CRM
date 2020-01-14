@@ -76,35 +76,39 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th width="10%">业绩月份</th>
-									<th width="10%" data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="left" 
-										data-content='当月订单总金额的总额'>销售总额</th>
-									<th width="10%" data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="left" data-content='实际已收款总额'>实收总额</th>
-									<th width="10%">采购成本</th>
-									<th width="10%" class="textOverFlowHide" data-container="body" data-toggle="popover"
+									<th width="8%">业绩月份</th>
+									<th width="8%">采购成本</th>
+									<th width="8%" class="textOverFlowHide" data-container="body" data-toggle="popover"
 										data-trigger="hover" data-placement="left" data-content='当月广告消耗总额'>广告消耗</th>
-									<th width="10%" class="textOverFlowHide" data-container="body" data-toggle="popover"
+									<th width="8%" class="textOverFlowHide" data-container="body" data-toggle="popover"
 										data-trigger="hover" data-placement="left" data-content='当月实际广告消耗减去返点后的总额'>实际广告费</th>
-									<th width="10%">实发薪资</th>
-									<th width="10%">快递总额</th>
-									<th width="10%" class="textOverFlowHide" data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="left" data-content='预计利润 = 销售总额 - 实际广告费 - 采购成本 - 实发新增 - 快递总额'>预计利润</th>
-									<th width="10%" class="textOverFlowHide" data-container="body" data-toggle="popover"
-										data-trigger="hover" data-placement="left" data-content='实际利润 = 实收总额 - 实际广告费 - 采购成本 - 实发新增 - 快递总额'>实际利润</th>
+									<th width="8%">实发薪资</th>
+									<th width="8%">快递费用</th>
+									<th width="8%">快递佣金</th>
+									<th width="8%" data-container="body" data-toggle="popover"
+										data-trigger="hover" data-placement="left" 
+										data-content='当月订单总金额的总额'>预计业绩</th>
+									<th width="8%" data-container="body" data-toggle="popover"
+										data-trigger="hover" data-placement="left" data-content='实际已收款总额=实际业绩'>实收总额</th>
+									<th width="8%">未签总额</th>
+									<th width="8%" class="textOverFlowHide" data-container="body" data-toggle="popover"
+										data-trigger="hover" data-placement="left" data-content='预计利润 = 销售总额 - 实际广告费 - 采购成本 - 实发薪资 - 快递费用 - 快递佣金'>预计利润</th>
+									<th width="8%" class="textOverFlowHide" data-container="body" data-toggle="popover"
+										data-trigger="hover" data-placement="left" data-content='实际利润 = 实收总额 - 实际广告费 - 采购成本 - 实发新增 - 快递费用 - 快递佣金'>实际利润</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="obj : ${resultList}">
-									<td th:text="${obj.month}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.saleTotalAmount)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.realncomeTotalAmount)}"></td>
+									<td th:text="${obj.dates}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.procurementCosts)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.consumeAD)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realConsumeAD)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realSalary)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.expressTotalFee)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.expressCommissionTotalFee)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.expectAmount)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.realAmount)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.refusePaymentAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.profit)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realProfit)}"></td>
 								</tr>

@@ -1,5 +1,6 @@
 package com.base.crm.orders.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +78,10 @@ public class CustOrderServiceImpl implements CustOrderService {
 
 	@Override
 	public SummaryReport querySumAmountByMonth(String month) {
-		return custOrderMapper.querySumAmountByMonth(month);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("month", month);
+		
+		return custOrderMapper.querySumAmountByMonth(params);
 	}
 
 //	@Override
@@ -101,7 +105,7 @@ public class CustOrderServiceImpl implements CustOrderService {
 	}
 
 	@Override
-	public List<Map<String, String>> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject) {
+	public List<SummaryReport> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject) {
 		return custOrderMapper.selectDailyKPIOrderSummaryPageBy(queryObject);
 	}
 
@@ -111,7 +115,7 @@ public class CustOrderServiceImpl implements CustOrderService {
 	}
 
 	@Override
-	public List<Map<String, String>> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject) {
+	public List<SummaryReport> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject) {
 		return custOrderMapper.selectDailyKPIOrderSummaryPageByMonth(queryObject);
 	}
 

@@ -36,11 +36,11 @@ public interface CustOrderService {
 
 	Map<String, Double> selectOrderSummaryBy(Map<String, Object> params);
 
-	List<Map<String, String>> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
+	List<SummaryReport> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
 
 	long selectDailyKPIOrderSummaryPageCountBy(CustOrder queryObject);
 	
-	List<Map<String, String>> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
+	List<SummaryReport> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
 	
 	Long selectDailyKPIOrderSummaryPageCountByMonth(CustOrder queryObject);
 	

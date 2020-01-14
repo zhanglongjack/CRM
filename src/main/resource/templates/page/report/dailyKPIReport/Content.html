@@ -80,9 +80,12 @@
 									<th>日期</th>
 									<th>粉丝数量</th>
 									<th>订单数量</th>
-									<th>定金总额</th>
+									<th>客服业绩</th>
 									<th>预计业绩</th>
-									<th>实际业绩</th>
+									<th>定金总额</th>
+									<th>实际收款</th>
+									<th>拒签定金</th>
+									<th>拒付金额</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -90,9 +93,12 @@
 									<td th:text="${obj.dates}"></td>
 									<td th:text="${obj.fansNum}"></td>
 									<td th:text="${obj.sumOrders}"></td>
+									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.serviceKPI),'0')}"></td>
+									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.expectAmount),'0')}"></td>
 									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount),'0')}"></td>
-									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.sumAmount),'0')}"></td>
 									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.realAmount),'0')}"></td>
+									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.refuseAmount),'0')}"></td>
+									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.refusePaymentAmount),'0')}"></td>
 								</tr>
 							</tbody>
 						</table>

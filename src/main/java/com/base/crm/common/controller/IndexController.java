@@ -21,6 +21,7 @@ import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.report.entity.ConsumeAcctGroupReport;
+import com.base.crm.report.entity.SummaryReport;
 import com.base.crm.users.entity.UserInfo;
 import com.base.crm.website.entity.WebsiteStatusCheckLog;
 import com.base.crm.website.service.WebsiteStatusCheckLogService;
@@ -44,6 +45,7 @@ public class IndexController {
 		logger.info("index request");
 		Long userId = user.isAdmin() ? null : user.getuId();
 		ModelAndView mv = new ModelAndView("page/index");
+		mv.addObject("date", new Date());
 		orderReport(mv, userId);
 		if (userId==null) {
 			ConsumeAcctGroupReport queryObject = new ConsumeAcctGroupReport();
@@ -53,7 +55,7 @@ public class IndexController {
 
 			CustOrder queryOrderParams = new CustOrder();
 			queryOrderParams.setPageTools(new PageTools(1, 15));
-			List<Map<String, String>> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
+			List<SummaryReport> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
 
 			PageTools pageTools = new PageTools();
 			pageTools.setPageSize(15);
@@ -77,39 +79,77 @@ public class IndexController {
 	private ModelAndView orderReport(ModelAndView mv, Long userId) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
-
+		
 		// 查询当日订单报表
-		params.put("orderDate", DateUtils.dateToTightStr(new Date()));
-		Map<String, Double> orderSummaryMap = orderService.selectOrderSummaryBy(params);
-		Long count = custInfoService.selectCustCountByMonth(params);
-		mv.addObject("date", new Date());
-		mv.addObject("currentReport", orderSummaryMap);
-		mv.addObject("currentDayCount", count); // 当日粉丝数
+		String date = DateUtils.dateToTightStr(new Date());
+		CustOrder queryOrderParams = new CustOrder();
+		queryOrderParams.setUserId(userId);
+		queryOrderParams.setStartDate(date);
+		queryOrderParams.setEndDate(date);
+		List<SummaryReport> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
+		mv.addObject("currentReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
+		
+//		params.put("orderDate", DateUtils.dateToTightStr(new Date()));
+//		Map<String, Double> orderSummaryMap = orderService.selectOrderSummaryBy(params);
+//		Long count = custInfoService.selectCustCountByMonth(params);
+//		mv.addObject("date", new Date());
+//		mv.addObject("currentReport", kpiList);
+//		mv.addObject("currentDayCount", count); // 当日粉丝数
 
 		// 查询昨日订单报表
-		params.put("orderDate", DateUtils.dateToTightStr(DateUtils.getYesterdayDate()));
-		orderSummaryMap = orderService.selectOrderSummaryBy(params);
-		Long yesterdayCount = custInfoService.selectCustCountByMonth(params);
-		mv.addObject("yesterdayReport", orderSummaryMap);
-		mv.addObject("yesterdayCount", yesterdayCount); // 昨日粉丝数
+		date = DateUtils.dateToTightStr(DateUtils.getYesterdayDate());
+		queryOrderParams = new CustOrder();
+		queryOrderParams.setUserId(userId);
+		queryOrderParams.setStartDate(date);
+		queryOrderParams.setEndDate(date);
+		kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
+		mv.addObject("yesterdayReport", kpiList.get(0));
+		
+//		params.put("orderDate", DateUtils.dateToTightStr(DateUtils.getYesterdayDate()));
+//		orderSummaryMap = orderService.selectOrderSummaryBy(params);
+//		Long yesterdayCount = custInfoService.selectCustCountByMonth(params);
+//		mv.addObject("yesterdayReport", orderSummaryMap);
+//		mv.addObject("yesterdayCount", yesterdayCount); // 昨日粉丝数
 
 		// 查询当月订单报表
-		params.clear();
-		params.put("userId", userId);
-		params.put("month", DateUtils.dateToTightStr(new Date()).substring(0, 6));
-		orderSummaryMap = orderService.selectOrderSummaryBy(params);
-		Long monthCustCount = custInfoService.selectCustCountByMonth(params);
-		mv.addObject("currentMonthReport", orderSummaryMap);
-		mv.addObject("monthCustCount", monthCustCount); // 当月粉丝数
+		String month = DateUtils.dateToTightStr(new Date()).substring(0, 6);
+		queryOrderParams = new CustOrder();
+		queryOrderParams.setUserId(userId);
+		queryOrderParams.setStartDate(month);
+		queryOrderParams.setEndDate(month);
+		kpiList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryOrderParams);
+		mv.addObject("currentMonthReport", kpiList.get(0));
+		
+//		params.clear();
+//		String month = DateUtils.dateToTightStr(new Date()).substring(0, 6);
+//		params.put("userId", userId);
+//		params.put("startDate", month);
+//		params.put("endDate", month);
+//		orderSummaryMap = orderService.selectOrderSummaryBy(params);
+//		Long monthCustCount = custInfoService.selectCustCountByMonth(params);
+//		mv.addObject("currentMonthReport", orderSummaryMap);
+//		mv.addObject("monthCustCount", monthCustCount); // 当月粉丝数
 
 		// 查询上月订单报表
-		params.put("month", DateUtils.getLastMonth());
-		orderSummaryMap = orderService.selectOrderSummaryBy(params);
-		Long lastMonthCustCount = custInfoService.selectCustCountByMonth(params);
-		mv.addObject("lastMonthReport", orderSummaryMap);
-		mv.addObject("lastMonthCustCount", lastMonthCustCount); // 上月粉丝数
+		queryOrderParams = new CustOrder();
+		queryOrderParams.setUserId(userId);
+		queryOrderParams.setStartDate(DateUtils.getLastMonth());
+		queryOrderParams.setEndDate(DateUtils.getLastMonth());
+		kpiList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryOrderParams);
+		mv.addObject("lastMonthReport", kpiList.get(0));
+		
+//		params.put("startDate", DateUtils.getLastMonth());
+//		params.put("endDate", DateUtils.getLastMonth());
+//		orderSummaryMap = orderService.selectOrderSummaryBy(params);
+//		Long lastMonthCustCount = custInfoService.selectCustCountByMonth(params);
+//		mv.addObject("lastMonthReport", orderSummaryMap);
+//		mv.addObject("lastMonthCustCount", lastMonthCustCount); // 上月粉丝数
 
 		return mv;
+	}
+	
+	public static void main(String[] args) {
+		System.err.println(DateUtils.getLastMonth());
 	}
 
 	@RequestMapping(value = "/home")

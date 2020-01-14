@@ -3,6 +3,8 @@ package com.base.common.util;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -50,10 +52,10 @@ public class DateUtils {
 	 * @return返回长时间格式 yyyyMM
 	 */
 	public static String getLastMonth() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date()); // 设置为当前时间
-		calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1); // 设置为上一个月
-		return DateUtils.dateToTightStr(calendar.getTime()).substring(0, 6);
+		LocalDate today = LocalDate.now();
+		today = today.minusMonths(1);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateFormateType.YEAR_MONTH_FORMAT);
+		return formatter.format(today);
 	}
 
 	/**

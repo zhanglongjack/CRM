@@ -34,6 +34,7 @@
 								<label  class="col-sm-2 control-label">服务微信</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="serveWechatNo">
+										<option value="" >===选择微信===</option>
 										<option th:if="${!session.user.isAdmin()}" th:each="map:${@serveWechatContainer.userServeWechatMap.get(session.user.uId)}" th:selected="${custInfo!=null&&custInfo.serveWechatNo == map.value}" 
 												th:value="${map.value}" th:text="${map.value}"></option>
 												
