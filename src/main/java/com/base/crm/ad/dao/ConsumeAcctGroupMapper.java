@@ -29,6 +29,9 @@ public interface ConsumeAcctGroupMapper {
 	
 	List<ConsumeAcctGroupReport> selectConsumeAcctGroupReportPageMonth(ConsumeAcctGroupReport queryObject);
 	
+	Long selectConsumeAcctGroupReportPageTotalCountSummary(ConsumeAcctGroupReport queryObject);
+	
+	List<ConsumeAcctGroupReport> selectConsumeAcctGroupReportPageSummary(ConsumeAcctGroupReport queryObject);
 	
 	
 }

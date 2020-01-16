@@ -47,7 +47,7 @@ public class ADAcctTypeServiceImpl implements ADAcctTypeService {
 	}
 
 	@Override
-	public List<Map<String,String>> selectAdAcctIdByWechatNo(String wechatNo) {
+	public List<Map<String, Object>> selectAdAcctIdByWechatNo(String wechatNo) {
 		return adAcctTypeMapper.selectAdAcctIdByWechatNo(wechatNo);
 	}
 

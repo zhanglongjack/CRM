@@ -95,6 +95,39 @@
 			group by id, groupName, status, consumeMonth 
 		) t
 	</select>
+	<select id="selectConsumeAcctGroupReportPageSummary" parameterType="com.base.crm.report.entity.ConsumeAcctGroupReport"
+		resultType="com.base.crm.report.entity.ConsumeAcctGroupReport">
+		select 
+			sum(consumeAmount) consumeAmount, 
+			sum(realAmount) realAmount, 
+			avg(rebate) rebate,  
+			consumeMonth, 
+			sum(fansNum) fansNum,
+			ifnull(sum(realAmount)/sum(fansNum),0) price
+		
+		from ad_group_consume_view v
+		<include refid="dynamicReportWhere" />
+			
+		group by consumeMonth 
+		order by consumeMonth desc
+		
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
+	</select>
+	
+	<select id="selectConsumeAcctGroupReportPageTotalCountSummary" parameterType="com.base.crm.report.entity.ConsumeAcctGroupReport"
+		resultType="Long">
+		select count(1) from (
+			select 
+				count(1)
+			from ad_group_consume_view v
+			<include refid="dynamicReportWhere" />
+				
+			group by consumeMonth 
+		) t
+	</select>
+	
 	
 	<select id="selectPageByObjectForList" parameterType="com.base.crm.ad.entity.ConsumeAcctGroup"
 		resultMap="BaseResultMap">

@@ -21,5 +21,5 @@ public interface ADAcctTypeMapper {
 
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
 
-	List<Map<String,String>> selectAdAcctIdByWechatNo(String wechatNo);
+	List<Map<String, Object>> selectAdAcctIdByWechatNo(String wechatNo);
 }

@@ -79,6 +79,16 @@ public class ConsumeAcctGroupServiceImpl implements ConsumeAcctGroupService {
 		return groupMap;
 	}
 
+	@Override
+	public Long selectConsumeAcctGroupReportPageTotalCountSummary(ConsumeAcctGroupReport queryObject) {
+		return consumeAcctGroupMapper.selectConsumeAcctGroupReportPageTotalCountSummary(queryObject);
+	}
+
+	@Override
+	public List<ConsumeAcctGroupReport> selectConsumeAcctGroupReportPageSummary(ConsumeAcctGroupReport queryObject) {
+		return consumeAcctGroupMapper.selectConsumeAcctGroupReportPageSummary(queryObject);
+	}
+
 
 
 }

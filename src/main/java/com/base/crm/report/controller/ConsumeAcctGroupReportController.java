@@ -91,5 +91,34 @@ public class ConsumeAcctGroupReportController {
 		mv.addObject("queryObject", queryObject);
 		return mv;
 	}
+	
+	@RequestMapping(value = "/summary/pageView")
+	@ResponseBody
+	public Map<String, Object> summaryPageView(ConsumeAcctGroupReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
+		queryObject.setPageTools(pageTools);
+		logger.info("saleSummaryReportExport request:"+queryObject);
+		
+		long size = consumeAcctGroupService.selectConsumeAcctGroupReportPageTotalCountSummary(queryObject);
+		pageTools.setTotal(size);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("pageTools", pageTools);
+		return result;
+	}
+	
+	@RequestMapping("/summary/loadPage")
+	public ModelAndView loadSummaryPage(ConsumeAcctGroupReport queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
+		queryObject.setPageTools(pageTools);
+		logger.info("serverSaleReport loadPage request:"+queryObject);
+		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
+		
+		long size = consumeAcctGroupService.selectConsumeAcctGroupReportPageTotalCountSummary(queryObject);
+		pageTools.setTotal(size);
+		List<ConsumeAcctGroupReport> resultList = consumeAcctGroupService.selectConsumeAcctGroupReportPageSummary(queryObject);
+		ModelAndView mv = new ModelAndView(LOAD_PAGE_VIEW);
+		mv.addObject("resultList", resultList);
+		mv.addObject("pageTools", pageTools);
+		mv.addObject("queryObject", queryObject);
+		return mv;
+	}
 
 }

@@ -29,6 +29,8 @@ public interface ConsumeAcctGroupService {
 
 	Map<String, ConsumeAcctGroup> queryGroupAcctRelationData();
 	
+	Long selectConsumeAcctGroupReportPageTotalCountSummary(ConsumeAcctGroupReport queryObject);
 	
+	List<ConsumeAcctGroupReport> selectConsumeAcctGroupReportPageSummary(ConsumeAcctGroupReport queryObject);
 	
 }

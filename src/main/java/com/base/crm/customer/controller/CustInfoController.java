@@ -76,13 +76,13 @@ public class CustInfoController {
 	}
 	
 	private Long queryAcctTypeId(CustInfo custInfo){
-		List<Map<String,String>> acctTypeList = adAcctTypeService.selectAdAcctIdByWechatNo(custInfo.getServeWechatNo());
+		List<Map<String,Object>> acctTypeList = adAcctTypeService.selectAdAcctIdByWechatNo(custInfo.getServeWechatNo());
 		if(acctTypeList.size()==0) return null;
-		if(acctTypeList.size()==1) return Long.parseLong(acctTypeList.get(0).get("id"));
+		if(acctTypeList.size()==1) return Long.parseLong(acctTypeList.get(0).get("id")+"");
 		
-		for(Map<String,String> type : acctTypeList){
+		for(Map<String,Object> type : acctTypeList){
 			if(type.get("defaultFlag").equals("1")){
-				return Long.parseLong(type.get("id"));
+				return Long.parseLong(acctTypeList.get(0).get("id")+"");
 			}
 		}
 		
