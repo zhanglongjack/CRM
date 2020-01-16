@@ -41,6 +41,9 @@ public class CustInfo {
     
     private Long searchUser;
 
+	private String startDate;
+	private String endDate;
+	
     @JsonIgnore
     private PageTools pageTools;
     private Level levelInfo;
@@ -203,6 +206,22 @@ public class CustInfo {
 
 	public void setSearchUser(Long searchUser) {
 		this.searchUser = searchUser;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	@Override

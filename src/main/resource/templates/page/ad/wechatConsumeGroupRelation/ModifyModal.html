@@ -45,9 +45,9 @@
 					<label class="col-sm-2 control-label">微信号</label>
 					<div class="col-sm-10">
 						<select class="form-control" name="wechatNo">
-							<option th:each="map:${@serveWechatContainer.serveWechatMap}" 
-									th:selected="${modifyInfo!=null&&modifyInfo.wechatNo == map.value}" 
-								th:value="${map.value}" th:text="${map.value}"></option>
+							<option th:each="map:${@commonConstants.getDictionarysByKey('wechatAlias')}" 
+									th:selected="${modifyInfo!=null&&modifyInfo.wechatNo == map.key}" 
+								th:value="${map.key}" th:text="${map.value}"></option>
 						</select> 
 					</div>
 				</div>  
@@ -58,6 +58,16 @@
 							<option th:each="map:${@commonConstants.getDictionarysByKey('start_stop')}" 
 									th:selected="${modifyInfo!=null&&modifyInfo.status == map.key}" 
 									th:value="${map.key}" th:text="${map.value}"></option>
+						</select> 
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-sm-2 control-label">是否默认</label>
+					<div class="col-sm-10">
+						<select class="form-control" name="defaultFlag">
+							<option th:each="map:${new Object[] {'0', '1'}}" 
+									th:selected="${modifyInfo!=null&&modifyInfo.defaultFlag == map}" 
+									th:value="${map}" th:text="${map=='1'?'是':'否'}"></option>
 						</select> 
 					</div>
 				</div>

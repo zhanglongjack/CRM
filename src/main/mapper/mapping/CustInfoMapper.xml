@@ -28,7 +28,7 @@
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
-			<if test="custId != null">cust_id=#{custId}</if>
+			<if test="custId != null">and cust_id=#{custId}</if>
 			<if test="userId != null">and user_id=#{userId}</if>
 			<if test="searchUser != null">and serve_wechat_no in (select serve_Wechat_No from serve_wechat s where s.user_id=#{searchUser})</if>
 			<if test="custName != null and custName.length()>0">and cust_name like  CONCAT(#{custName},'%')</if>
@@ -39,8 +39,79 @@
 			<if test="addTime != null and addTime.length()>0">and substr( add_time,1,10) = #{addTime}</if>
 			<if test="orderStatus != null and orderStatus.length()>0">and order_status = #{orderStatus}</if>
 			<if test="status != null and status.length()>0">and status = #{status}</if>
+			<if test="addDate != null and addDate.length()>0">and add_date = #{addDate}</if>
+			<if test="adAcctId != null">and ad_acct_id = #{adAcctId}</if>
+			
+			<if test="startDate != null and startDate.length()>0">and add_date >= #{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and add_date <![CDATA[<=]]> #{endDate}</if>
 		</where>
 	</sql>
+	
+	<sql id="selectWechatAddFansNumSQL"> 
+		select 
+			c.serve_wechat_no serveWechatNo,
+			c.ad_acct_id adAcctId,
+			c.add_date addDate,
+			left(c.add_date,6) addMonth,
+			count(1) fansNum
+		from cust_info c 
+		<include refid="dynamicWhere" />
+		group by c.serve_wechat_no,c.ad_acct_id,c.add_date
+	</sql>
+
+	<select id="selectWechatAddFansNumByDailyPageCount" parameterType="com.base.crm.customer.entity.CustInfoReport"
+		resultType="Long">
+		select 
+			count(1)
+		from (<include refid="selectWechatAddFansNumSQL" />) t
+	</select>
+	
+	<select id="selectWechatAddFansNumByDailyPage" parameterType="com.base.crm.customer.entity.CustInfoReport"
+		resultType="com.base.crm.customer.entity.CustInfoReport">
+		select 
+			* 
+		from (<include refid="selectWechatAddFansNumSQL" />) t
+		where 1=1
+		order by addDate desc,fansNum desc
+		
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
+	</select>
+
+	<select id="selectWechatAddFansNumByMonthPageCount" parameterType="com.base.crm.customer.entity.CustInfoReport"
+		resultType="Long">
+		select count(1) from 
+		(
+			select 
+				count(1)
+			from (<include refid="selectWechatAddFansNumSQL" />) t
+			where 1=1
+			<if test="startMonth != null and startMonth.length()>0">and addMonth >= #{startMonth}</if>
+			<if test="endMonth != null and endMonth.length()>0">and addMonth <![CDATA[<=]]> #{endMonth}</if>
+			group by serveWechatNo,adAcctId,addMonth
+		) t1
+	</select>
+	
+	<select id="selectWechatAddFansNumByMonthPage" parameterType="com.base.crm.customer.entity.CustInfoReport"
+		resultType="com.base.crm.customer.entity.CustInfoReport">
+		select 
+			serveWechatNo,
+			adAcctId,
+			addMonth,
+			sum(fansNum) fansNum
+			
+		from (<include refid="selectWechatAddFansNumSQL" />) t
+		where 1=1
+		<if test="startMonth != null and startMonth.length()>0">and addMonth >= #{startMonth}</if>
+		<if test="endMonth != null and endMonth.length()>0">and addMonth <![CDATA[<=]]> #{endMonth}</if>
+		group by serveWechatNo,adAcctId,addMonth
+		order by addMonth desc,fansNum desc
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
+	</select>
+	
 	<select id="selectCustCountByMonth" parameterType="Map"
 		resultType="java.lang.Long">
 		SELECT  

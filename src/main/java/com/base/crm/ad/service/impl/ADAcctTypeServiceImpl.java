@@ -1,6 +1,7 @@
 package com.base.crm.ad.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class ADAcctTypeServiceImpl implements ADAcctTypeService {
 	}
 
 	@Override
-	public ADAcctType selectAdAcctIdByWechatNo(String wechatNo) {
+	public List<Map<String,String>> selectAdAcctIdByWechatNo(String wechatNo) {
 		return adAcctTypeMapper.selectAdAcctIdByWechatNo(wechatNo);
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.base.crm.customer.entity.CustInfo;
+import com.base.crm.customer.entity.CustInfoReport;
 
 public interface CustInfoService {
     int deleteByPrimaryKey(Long custId);
@@ -31,7 +32,18 @@ public interface CustInfoService {
 	BigDecimal queryServerSalePerformanBy(String month, String serveWechatNo);
 	BigDecimal queryServerSalePerformanBy(String month, String consumeWechatNo, Long serverId);
 
+	/**
+	 * 微信加粉报表分页
+	 */
 	Long selectCustCountByMonth(Map<String, Object> params);
+	
+	Long selectWechatAddFansNumByDailyPageCount(CustInfoReport queryObject);
+	
+	List<CustInfoReport> selectWechatAddFansNumByDailyPage(CustInfoReport queryObject);
+	
+	Long selectWechatAddFansNumByMonthPageCount(CustInfoReport queryObject);
+	
+	List<CustInfoReport> selectWechatAddFansNumByMonthPage(CustInfoReport queryObject);
 
 
 }

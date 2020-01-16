@@ -7,10 +7,11 @@
 		<result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
 		<result column="status" jdbcType="VARCHAR" property="status" />
 		<result column="created_datetime" jdbcType="VARCHAR" property="createdDatetime" />
+		<result column="default_flag" jdbcType="VARCHAR" property="defaultFlag" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		group_id, wechat_no, status, created_datetime
+		group_id, wechat_no, status, created_datetime,default_flag
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -77,6 +78,9 @@
 			<if test="createdDatetime != null">
 				created_datetime,
 			</if>
+			<if test="defaultFlag != null">
+				default_flag,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="groupId != null">
@@ -91,6 +95,9 @@
 			<if test="createdDatetime != null">
 				#{createdDatetime,jdbcType=VARCHAR},
 			</if>
+			<if test="defaultFlag != null">
+				#{defaultFlag,jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 	
@@ -99,6 +106,9 @@
 		<set>
 			<if test="status != null">
 				status = #{status,jdbcType=VARCHAR},
+			</if> 
+			<if test="defaultFlag != null">
+				default_flag = #{defaultFlag,jdbcType=VARCHAR},
 			</if> 
 		</set>
 		where group_id = #{groupId} and wechat_no = #{wechatNo}

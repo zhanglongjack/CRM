@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.base.crm.customer.dao.CustInfoMapper;
 import com.base.crm.customer.entity.CustInfo;
+import com.base.crm.customer.entity.CustInfoReport;
 import com.base.crm.customer.service.CustInfoService;
 
 @Service
@@ -102,6 +103,26 @@ public class CustInfoServiceImpl implements CustInfoService {
 		params.put("userId", queryParams.get("userId"));
 		params.put("status", "1");
 		return custInfoMapper.selectCustCountByMonth(params);
+	}
+
+	@Override
+	public Long selectWechatAddFansNumByDailyPageCount(CustInfoReport queryObject) {
+		return custInfoMapper.selectWechatAddFansNumByDailyPageCount(queryObject);
+	}
+
+	@Override
+	public List<CustInfoReport> selectWechatAddFansNumByDailyPage(CustInfoReport queryObject) {
+		return custInfoMapper.selectWechatAddFansNumByDailyPage(queryObject);
+	}
+
+	@Override
+	public Long selectWechatAddFansNumByMonthPageCount(CustInfoReport queryObject) {
+		return custInfoMapper.selectWechatAddFansNumByMonthPageCount(queryObject);
+	}
+
+	@Override
+	public List<CustInfoReport> selectWechatAddFansNumByMonthPage(CustInfoReport queryObject) {
+		return custInfoMapper.selectWechatAddFansNumByMonthPage(queryObject);
 	}
 
 

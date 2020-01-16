@@ -27,6 +27,7 @@ public class ADAcctType {
     private String createdDate;
     
     private String remark;
+    
 	// query
 	private String startDate ;
 	private String endDate ;
@@ -130,8 +131,6 @@ public class ADAcctType {
         this.company = company;
     }
 
-
-
     public String getStatus() {
 		return status;
 	}
@@ -155,6 +154,4 @@ public class ADAcctType {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
- 
 }

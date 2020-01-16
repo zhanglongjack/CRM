@@ -10,6 +10,9 @@ public class WechatConsumeGroupRelation {
     private String status;
 
     private String createdDatetime;
+    
+    private String defaultFlag;
+    
 	// query
 	private String startDate ;
 	private String endDate ;
@@ -71,4 +74,13 @@ public class WechatConsumeGroupRelation {
     public void setCreatedDatetime(String createdDatetime) {
         this.createdDatetime = createdDatetime;
     }
+
+	public String getDefaultFlag() {
+		return defaultFlag;
+	}
+
+	public void setDefaultFlag(String defaultFlag) {
+		this.defaultFlag = defaultFlag;
+	}
+    
 }

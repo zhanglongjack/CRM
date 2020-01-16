@@ -1,6 +1,7 @@
 package com.base.crm.ad.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.base.crm.ad.entity.ADAcctType;
 
@@ -18,6 +19,6 @@ public interface ADAcctTypeService {
 
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
 	
-	ADAcctType selectAdAcctIdByWechatNo(String wechatNo);
+	List<Map<String,String>> selectAdAcctIdByWechatNo(String wechatNo);
 	
 }

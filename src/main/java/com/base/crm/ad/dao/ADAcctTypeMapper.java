@@ -1,6 +1,7 @@
 package com.base.crm.ad.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,5 +21,5 @@ public interface ADAcctTypeMapper {
 
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
 
-	ADAcctType selectAdAcctIdByWechatNo(String wechatNo);
+	List<Map<String,String>> selectAdAcctIdByWechatNo(String wechatNo);
 }
