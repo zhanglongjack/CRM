@@ -103,7 +103,7 @@ public class IndexController {
 		queryOrderParams.setStartDate(date);
 		queryOrderParams.setEndDate(date);
 		kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
-		mv.addObject("yesterdayReport", kpiList.get(0));
+		mv.addObject("yesterdayReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.put("orderDate", DateUtils.dateToTightStr(DateUtils.getYesterdayDate()));
 //		orderSummaryMap = orderService.selectOrderSummaryBy(params);
@@ -118,7 +118,7 @@ public class IndexController {
 		queryOrderParams.setStartDate(month);
 		queryOrderParams.setEndDate(month);
 		kpiList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryOrderParams);
-		mv.addObject("currentMonthReport", kpiList.get(0));
+		mv.addObject("currentMonthReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.clear();
 //		String month = DateUtils.dateToTightStr(new Date()).substring(0, 6);
@@ -136,7 +136,7 @@ public class IndexController {
 		queryOrderParams.setStartDate(DateUtils.getLastMonth());
 		queryOrderParams.setEndDate(DateUtils.getLastMonth());
 		kpiList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryOrderParams);
-		mv.addObject("lastMonthReport", kpiList.get(0));
+		mv.addObject("lastMonthReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.put("startDate", DateUtils.getLastMonth());
 //		params.put("endDate", DateUtils.getLastMonth());
