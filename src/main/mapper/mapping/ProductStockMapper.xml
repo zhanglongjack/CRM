@@ -1,117 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.base.crm.product.dao.ProductStockMapper">
-  <resultMap id="BaseResultMap" type="com.base.crm.product.entity.ProductStock">
-    <id column="depository_id" jdbcType="BIGINT" property="depositoryId" />
-    <result column="product_id" jdbcType="BIGINT" property="productId" />
-    <result column="stock_num" jdbcType="BIGINT" property="stockNum" />
-    <result column="unit" jdbcType="VARCHAR" property="unit" />
-    <result column="stock_warning" jdbcType="BIGINT" property="stockWarning" />
-    <result column="updated_date" jdbcType="VARCHAR" property="updatedDate" />
-    <result column="created_date" jdbcType="VARCHAR" property="createdDate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    depository_id, product_id, stock_num, unit, stock_warning, updated_date, created_date
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from product_stock
-    where depository_id = #{depositoryId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from product_stock
-    where depository_id = #{depositoryId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.base.crm.product.entity.ProductStock">
-    insert into product_stock (depository_id, product_id, stock_num, 
-      unit, stock_warning, updated_date, 
-      created_date)
-    values (#{depositoryId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{stockNum,jdbcType=BIGINT}, 
-      #{unit,jdbcType=VARCHAR}, #{stockWarning,jdbcType=BIGINT}, #{updatedDate,jdbcType=VARCHAR}, 
-      #{createdDate,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.base.crm.product.entity.ProductStock">
-    insert into product_stock
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="depositoryId != null">
-        depository_id,
-      </if>
-      <if test="productId != null">
-        product_id,
-      </if>
-      <if test="stockNum != null">
-        stock_num,
-      </if>
-      <if test="unit != null">
-        unit,
-      </if>
-      <if test="stockWarning != null">
-        stock_warning,
-      </if>
-      <if test="updatedDate != null">
-        updated_date,
-      </if>
-      <if test="createdDate != null">
-        created_date,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="depositoryId != null">
-        #{depositoryId,jdbcType=BIGINT},
-      </if>
-      <if test="productId != null">
-        #{productId,jdbcType=BIGINT},
-      </if>
-      <if test="stockNum != null">
-        #{stockNum,jdbcType=BIGINT},
-      </if>
-      <if test="unit != null">
-        #{unit,jdbcType=VARCHAR},
-      </if>
-      <if test="stockWarning != null">
-        #{stockWarning,jdbcType=BIGINT},
-      </if>
-      <if test="updatedDate != null">
-        #{updatedDate,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        #{createdDate,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.base.crm.product.entity.ProductStock">
-    update product_stock
-    <set>
-      <if test="productId != null">
-        product_id = #{productId,jdbcType=BIGINT},
-      </if>
-      <if test="stockNum != null">
-        stock_num = #{stockNum,jdbcType=BIGINT},
-      </if>
-      <if test="unit != null">
-        unit = #{unit,jdbcType=VARCHAR},
-      </if>
-      <if test="stockWarning != null">
-        stock_warning = #{stockWarning,jdbcType=BIGINT},
-      </if>
-      <if test="updatedDate != null">
-        updated_date = #{updatedDate,jdbcType=VARCHAR},
-      </if>
-      <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where depository_id = #{depositoryId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.base.crm.product.entity.ProductStock">
-    update product_stock
-    set product_id = #{productId,jdbcType=BIGINT},
-      stock_num = #{stockNum,jdbcType=BIGINT},
-      unit = #{unit,jdbcType=VARCHAR},
-      stock_warning = #{stockWarning,jdbcType=BIGINT},
-      updated_date = #{updatedDate,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=VARCHAR}
-    where depository_id = #{depositoryId,jdbcType=BIGINT}
-  </update>
+	<resultMap id="BaseResultMap" type="com.base.crm.product.entity.ProductStock">
+		<id column="depository_id" jdbcType="BIGINT" property="depositoryId" />
+		<result column="product_id" jdbcType="BIGINT" property="productId" />
+		<result column="stock_num" jdbcType="BIGINT" property="stockNum" />
+		<result column="unit" jdbcType="VARCHAR" property="unit" />
+		<result column="stock_warning" jdbcType="BIGINT" property="stockWarning" />
+		<result column="updated_date" jdbcType="VARCHAR" property="updatedDate" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		depository_id, product_id, stock_num, unit, stock_warning, updated_date,
+		created_date
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="com.base.crm.product.entity.ProductStock"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product_stock
+		where depository_id = #{depositoryId}
+		and product_id=#{productId}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="com.base.crm.product.entity.ProductStock">
+		delete from product_stock
+		where depository_id = #{depositoryId}
+		and product_id=#{productId}
+	</delete>
+	
+	<insert id="insertSelective" parameterType="com.base.crm.product.entity.ProductStock">
+		insert into product_stock
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="depositoryId != null">
+				depository_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="stockNum != null">
+				stock_num,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="stockWarning != null">
+				stock_warning,
+			</if>
+			<if test="updatedDate != null">
+				updated_date,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="depositoryId != null">
+				#{depositoryId,jdbcType=BIGINT},
+			</if>
+			<if test="productId != null">
+				#{productId,jdbcType=BIGINT},
+			</if>
+			<if test="stockNum != null">
+				#{stockNum,jdbcType=BIGINT},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="stockWarning != null">
+				#{stockWarning,jdbcType=BIGINT},
+			</if>
+			<if test="updatedDate != null">
+				#{updatedDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.product.entity.ProductStock">
+		update product_stock
+		<set>
+			<if test="productId != null">
+				product_id = #{productId,jdbcType=BIGINT},
+			</if>
+			<if test="stockNum != null">
+				stock_num = #{stockNum,jdbcType=BIGINT},
+			</if>
+			<if test="unit != null">
+				unit = #{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="stockWarning != null">
+				stock_warning = #{stockWarning,jdbcType=BIGINT},
+			</if>
+			<if test="updatedDate != null">
+				updated_date = #{updatedDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where depository_id = #{depositoryId}
+		and product_id=#{productId}
+	</update>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="productId != null">and product_id=#{productId}</if>
+			<if test="depositoryId != null">and depository_id=#{depositoryId}</if>
+			
+			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">
+				and created_date <![CDATA[<=]]>#{endDate}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.product.entity.ProductStock"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product_stock
+		<include refid="dynamicWhere" />
+		order by created_date desc
+		limit
+		#{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+
+	<select id="selectPageTotalCount" parameterType="com.base.crm.product.entity.ProductStock"
+		resultType="Long">
+		select
+		count(1)
+		from product_stock
+		<include refid="dynamicWhere" />
+	</select>
 </mapper>

@@ -8,15 +8,16 @@ import com.base.crm.product.entity.ProductStock;
 
 @Mapper
 public interface ProductStockMapper {
-    int deleteByPrimaryKey(Long depositoryId);
+    int deleteByPrimaryKey(ProductStock record);
 
     int insertSelective(ProductStock record);
 
-    ProductStock selectByPrimaryKey(Long depositoryId);
+    ProductStock selectByPrimaryKey(ProductStock record);
 
     int updateByPrimaryKeySelective(ProductStock record);
 
 	Long selectPageTotalCount(ProductStock record);
 
 	List<ProductStock> selectPageByObjectForList(ProductStock record);
+
 }

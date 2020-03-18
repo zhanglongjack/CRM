@@ -65,7 +65,7 @@
 
 	<sql id="dynamicWhere">
 		<where>
-			<if test="depositoryId != null">depository_id=#{depositoryId}</if>
+			<if test="depositoryId != null">and depository_id=#{depositoryId}</if>
 			<if test="depositoryName != null and depositoryName.length()>0">and depository_name=#{depositoryName}</if>
 			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
 			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>

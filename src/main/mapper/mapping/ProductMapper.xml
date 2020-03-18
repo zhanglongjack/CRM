@@ -15,7 +15,7 @@
 	
 	<sql id="dynamicWhere">
 		<where>
-			<if test="productId != null">product_id=#{productId}</if>
+			<if test="productId != null">and product_id=#{productId}</if>
 			<if test="productName != null and productName.length()>0">and product_name=#{productName}</if>
 			<if test="status != null and status.length()>0">and status=#{status}</if>
 			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>

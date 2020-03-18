@@ -5,11 +5,11 @@ import java.util.List;
 import com.base.crm.product.entity.ProductStock;
 
 public interface ProductStockService {
-    int deleteByPrimaryKey(Long depositoryId);
+    int deleteByPrimaryKey(Long depositoryId,Long productId);
 
     int insertSelective(ProductStock record);
 
-    ProductStock selectByPrimaryKey(Long depositoryId);
+    ProductStock selectByPrimaryKey(Long depositoryId,Long productId);
 
     int updateByPrimaryKeySelective(ProductStock record);
 
