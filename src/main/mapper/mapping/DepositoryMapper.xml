@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.depository.dao.DepositoryMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.depository.entity.Depository">
+		<id column="depository_id" jdbcType="BIGINT" property="depositoryId" />
+		<result column="depository_name" jdbcType="VARCHAR" property="depositoryName" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		depository_id, depository_name, created_date
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from depository
+		where depository_id = #{depositoryId,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from depository
+		where depository_id = #{depositoryId,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.depository.entity.Depository">
+		insert into depository
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="depositoryId != null">
+				depository_id,
+			</if>
+			<if test="depositoryName != null">
+				depository_name,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="depositoryId != null">
+				#{depositoryId,jdbcType=BIGINT},
+			</if>
+			<if test="depositoryName != null">
+				#{depositoryName,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.depository.entity.Depository">
+		update depository
+		<set>
+			<if test="depositoryName != null">
+				depository_name = #{depositoryName,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where depository_id = #{depositoryId,jdbcType=BIGINT}
+	</update>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="depositoryId != null">depository_id=#{depositoryId}</if>
+			<if test="depositoryName != null and depositoryName.length()>0">and depository_name=#{depositoryName}</if>
+			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">
+				and created_date <![CDATA[<=]]>#{endDate}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.depository.entity.Depository"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from depository
+		<include refid="dynamicWhere" />
+		order by depository_id desc
+		limit
+		#{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+
+	<select id="selectPageTotalCount" parameterType="com.base.crm.depository.entity.Depository"
+		resultType="Long">
+		select
+		count(1)
+		from depository
+		<include refid="dynamicWhere" />
+	</select>
+
+</mapper>

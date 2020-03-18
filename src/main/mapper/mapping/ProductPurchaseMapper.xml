@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.product.dao.ProductPurchaseMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.product.entity.ProductPurchase">
+		<id column="purchase_id" jdbcType="BIGINT" property="purchaseId" />
+		<result column="depository_id" jdbcType="BIGINT" property="depositoryId" />
+		<result column="product_id" jdbcType="BIGINT" property="productId" />
+		<result column="purchase_num" jdbcType="BIGINT" property="purchaseNum" />
+		<result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice" />
+		<result column="unit" jdbcType="VARCHAR" property="unit" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="purchase_datetime" jdbcType="VARCHAR" property="purchaseDatetime" />
+		<result column="updated_date" jdbcType="VARCHAR" property="updatedDate" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		purchase_id, depository_id, product_id, purchase_num,
+		purchase_price, unit,
+		status,
+		purchase_datetime, updated_date,
+		created_date
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product_purchase
+		where purchase_id = #{purchaseId,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		product_purchase
+		where purchase_id = #{purchaseId,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.product.entity.ProductPurchase">
+		insert into product_purchase
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="purchaseId != null">
+				purchase_id,
+			</if>
+			<if test="depositoryId != null">
+				depository_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="purchaseNum != null">
+				purchase_num,
+			</if>
+			<if test="purchasePrice != null">
+				purchase_price,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="purchaseDatetime != null">
+				purchase_datetime,
+			</if>
+			<if test="updatedDate != null">
+				updated_date,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="purchaseId != null">
+				#{purchaseId,jdbcType=BIGINT},
+			</if>
+			<if test="depositoryId != null">
+				#{depositoryId,jdbcType=BIGINT},
+			</if>
+			<if test="productId != null">
+				#{productId,jdbcType=BIGINT},
+			</if>
+			<if test="purchaseNum != null">
+				#{purchaseNum,jdbcType=BIGINT},
+			</if>
+			<if test="purchasePrice != null">
+				#{purchasePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="purchaseDatetime != null">
+				#{purchaseDatetime,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedDate != null">
+				#{updatedDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.product.entity.ProductPurchase">
+		update product_purchase
+		<set>
+			<if test="depositoryId != null">
+				depository_id = #{depositoryId,jdbcType=BIGINT},
+			</if>
+			<if test="productId != null">
+				product_id = #{productId,jdbcType=BIGINT},
+			</if>
+			<if test="purchaseNum != null">
+				purchase_num = #{purchaseNum,jdbcType=BIGINT},
+			</if>
+			<if test="purchasePrice != null">
+				purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="unit != null">
+				unit = #{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="purchaseDatetime != null">
+				purchase_datetime = #{purchaseDatetime,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedDate != null">
+				updated_date = #{updatedDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where purchase_id = #{purchaseId}
+	</update>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="purchaseId != null">purchase_id=#{purchaseId}</if>
+			<if test="productId != null">product_id=#{productId}</if>
+			<if test="depositoryId != null">depository_id=#{depositoryId}</if>
+			
+			<if test="status != null and status.length()>0">and status=#{status}</if>
+			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">
+				and created_date <![CDATA[<=]]>#{endDate}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.product.entity.ProductPurchase"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product_purchase
+		<include refid="dynamicWhere" />
+		order by created_date desc
+		limit
+		#{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+
+	<select id="selectPageTotalCount" parameterType="com.base.crm.product.entity.ProductPurchase"
+		resultType="Long">
+		select
+		count(1)
+		from product_purchase
+		<include refid="dynamicWhere" />
+	</select>
+</mapper>

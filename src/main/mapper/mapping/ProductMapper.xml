@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.crm.product.dao.ProductMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.product.entity.Product">
+		<id column="product_id" jdbcType="BIGINT" property="productId" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="updated_date" jdbcType="VARCHAR" property="updatedDate" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		product_id, product_name, status, updated_date, created_date
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="productId != null">product_id=#{productId}</if>
+			<if test="productName != null and productName.length()>0">and product_name=#{productName}</if>
+			<if test="status != null and status.length()>0">and status=#{status}</if>
+			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">
+				and created_date <![CDATA[<=]]>#{endDate}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product
+		where product_id = #{productId,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from product
+		where product_id = #{productId,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.crm.product.entity.Product">
+		insert into product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="updatedDate != null">
+				updated_date,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productId != null">
+				#{productId,jdbcType=BIGINT},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedDate != null">
+				#{updatedDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.product.entity.Product">
+		update product
+		<set>
+			<if test="productName != null">
+				product_name = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="updatedDate != null">
+				updated_date = #{updatedDate,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where product_id = #{productId,jdbcType=BIGINT}
+	</update>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.product.entity.Product"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product
+		<include refid="dynamicWhere" />
+		order by product_id desc
+		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+	
+	<select id="selectPageTotalCount" parameterType="com.base.crm.product.entity.Product"
+		resultType="Long">
+		select
+			count(1)
+		from product
+		<include refid="dynamicWhere" />
+	</select>
+	
+</mapper>
