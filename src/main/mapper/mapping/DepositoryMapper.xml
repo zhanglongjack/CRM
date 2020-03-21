@@ -82,8 +82,9 @@
 		from depository
 		<include refid="dynamicWhere" />
 		order by depository_id desc
-		limit
-		#{pageTools.rowIndex},#{pageTools.pageSize}
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
 	</select>
 
 	<select id="selectPageTotalCount" parameterType="com.base.crm.depository.entity.Depository"

@@ -16,4 +16,6 @@ public interface ProductService {
 	Long selectPageTotalCount(Product record);
 
 	List<Product> selectPageByObjectForList(Product record);
+
+	List<Product> selectByObjectForList(Product object);
 }

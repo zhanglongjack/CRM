@@ -103,7 +103,10 @@
 		from product
 		<include refid="dynamicWhere" />
 		order by product_id desc
-		limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
+		
 	</select>
 	
 	<select id="selectPageTotalCount" parameterType="com.base.crm.product.entity.Product"

@@ -16,4 +16,6 @@ public interface ProductPurchaseService {
 	Long selectPageTotalCount(ProductPurchase record);
 
 	List<ProductPurchase> selectPageByObjectForList(ProductPurchase record);
+
+	int doUpdate(ProductPurchase editData);
 }

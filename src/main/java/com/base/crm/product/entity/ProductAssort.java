@@ -2,72 +2,39 @@ package com.base.crm.product.entity;
 
 import com.base.common.util.PageTools;
 
-public class ProductStock {
-	
-	private Long id;
-	
-	private Long depositoryId;
-	
-	private Long productId;
-	
-    private Long stockNum;
+public class ProductAssort {
+    private Long id;
 
-    private String unit;
+    private String assortName;
 
-    private Long stockWarning;
+    private String status;
 
     private String updatedDate;
 
     private String createdDate;
 
-    
-    
     public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getDepositoryId() {
-        return depositoryId;
+        return id;
     }
 
-    public void setDepositoryId(Long depositoryId) {
-        this.depositoryId = depositoryId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getProductId() {
-        return productId;
+    public String getAssortName() {
+        return assortName;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setAssortName(String assortName) {
+        this.assortName = assortName;
     }
 
-    public Long getStockNum() {
-        return stockNum;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStockNum(Long stockNum) {
-        this.stockNum = stockNum;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public Long getStockWarning() {
-        return stockWarning;
-    }
-
-    public void setStockWarning(Long stockWarning) {
-        this.stockWarning = stockWarning;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUpdatedDate() {
@@ -85,7 +52,7 @@ public class ProductStock {
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
-
+    
 	// query
 	private String startDate;
 	private String endDate;
@@ -116,4 +83,5 @@ public class ProductStock {
 	public void setPageTools(PageTools pageTools) {
 		this.pageTools = pageTools;
 	}
+	
 }

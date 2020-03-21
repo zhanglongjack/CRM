@@ -15,6 +15,12 @@ import com.base.common.dictionary.entity.Dictionary;
 import com.base.common.dictionary.service.DictionaryService;
 import com.base.crm.ad.entity.ConsumeAcctGroup;
 import com.base.crm.ad.service.ConsumeAcctGroupService;
+import com.base.crm.depository.entity.Depository;
+import com.base.crm.depository.service.DepositoryService;
+import com.base.crm.product.entity.Product;
+import com.base.crm.product.entity.ProductAssort;
+import com.base.crm.product.service.ProductAssortService;
+import com.base.crm.product.service.ProductService;
 
 @Component
 public class CommonConstants implements ApplicationListener<ContextRefreshedEvent> {
@@ -31,11 +37,20 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 	private DictionaryService dictionaryService;
 	@Autowired
 	private ConsumeAcctGroupService consumeAcctGroupService;
-
+	@Autowired
+	private DepositoryService depositoryService;
+	@Autowired
+	private ProductService productService;
+	@Autowired
+	private ProductAssortService productAssortService;
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (dictionaryMap.size() == 0) {
 			init();
+			initProduct();
+			initDepository();
+			initAssort();
 		}
 	}
 
@@ -52,6 +67,57 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 
 			dictionaryMap.get(dict.getBizCode()).put(dict.getCode(), dict.getName());
 		}
+	}
+	
+	public void initProduct(){
+		Map<String, String> productMap = dictionaryMap.get("product_dict");
+		
+		if(productMap==null){
+			productMap = new LinkedHashMap<String, String>();
+			dictionaryMap.put("product_dict", productMap);
+		}
+		
+		List<Product> productList = productService.selectByObjectForList(null);
+		for (Product product : productList) {
+			if (product.getStatus().equals("0")) {
+				continue;
+			}
+
+			productMap.put(product.getProductId()+"", product.getProductName());
+		}
+		
+	}
+	
+	public void initDepository(){
+		Map<String, String> depositoryMap = dictionaryMap.get("depository_dict");
+		
+		if(depositoryMap==null){
+			depositoryMap = new LinkedHashMap<String, String>();
+			dictionaryMap.put("depository_dict", depositoryMap);
+		}
+		
+		List<Depository> depositoryList = depositoryService.selectByObjectForList(null);
+		for (Depository depository : depositoryList) {
+			depositoryMap.put(depository.getDepositoryId()+"", depository.getDepositoryName());
+		}
+		
+	}
+	public void initAssort(){
+		Map<String, String> depositoryMap = dictionaryMap.get("assort_dict");
+		
+		if(depositoryMap==null){
+			depositoryMap = new LinkedHashMap<String, String>();
+			dictionaryMap.put("assort_dict", depositoryMap);
+		}
+		
+		List<ProductAssort> depositoryList = productAssortService.selectByObjectForList(null);
+		for (ProductAssort depository : depositoryList) {
+			if (depository.getStatus().equals("0")) {
+				continue;
+			}
+			depositoryMap.put(depository.getId()+"", depository.getAssortName());
+		}
+		
 	}
 	
 	private static Map<String, ConsumeAcctGroup> adAcctGroup;

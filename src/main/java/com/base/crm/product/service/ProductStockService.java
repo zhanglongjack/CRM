@@ -5,15 +5,17 @@ import java.util.List;
 import com.base.crm.product.entity.ProductStock;
 
 public interface ProductStockService {
-    int deleteByPrimaryKey(Long depositoryId,Long productId);
+    int deleteByPrimaryKey(Long id);
 
     int insertSelective(ProductStock record);
 
-    ProductStock selectByPrimaryKey(Long depositoryId,Long productId);
+    ProductStock selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(ProductStock record);
 
 	Long selectPageTotalCount(ProductStock record);
 
 	List<ProductStock> selectPageByObjectForList(ProductStock record);
+
+	int updateStockNum(ProductStock stock);
 }

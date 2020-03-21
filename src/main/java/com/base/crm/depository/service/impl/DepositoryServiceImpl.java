@@ -42,6 +42,14 @@ public class DepositoryServiceImpl implements DepositoryService {
 	@Override
 	public List<Depository> selectPageByObjectForList(Depository record) {
 		return depositoryMapper.selectPageByObjectForList(record);
+	}
+
+	@Override
+	public List<Depository> selectByObjectForList(Depository record) {
+		if(record!=null){
+			record.setPageTools(null);
+		}
+		return depositoryMapper.selectPageByObjectForList(record);
 	} 
 	
 	

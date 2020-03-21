@@ -14,11 +14,8 @@ public class ProductStockServiceImpl implements ProductStockService {
 	@Autowired
 	private ProductStockMapper productStockMapper;
 	@Override
-	public int deleteByPrimaryKey(Long depositoryId,Long productId) {
-		ProductStock record = new ProductStock();
-		record.setDepositoryId(depositoryId);
-		record.setProductId(productId);
-		return productStockMapper.deleteByPrimaryKey(record);
+	public int deleteByPrimaryKey(Long id) {
+		return productStockMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -27,11 +24,8 @@ public class ProductStockServiceImpl implements ProductStockService {
 	}
 
 	@Override
-	public ProductStock selectByPrimaryKey(Long depositoryId,Long productId) {
-		ProductStock record = new ProductStock();
-		record.setDepositoryId(depositoryId);
-		record.setProductId(productId);
-		return productStockMapper.selectByPrimaryKey(record);
+	public ProductStock selectByPrimaryKey(Long id) {
+		return productStockMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
@@ -47,6 +41,11 @@ public class ProductStockServiceImpl implements ProductStockService {
 	@Override
 	public List<ProductStock> selectPageByObjectForList(ProductStock record) {
 		return productStockMapper.selectPageByObjectForList(record);
+	}
+
+	@Override
+	public int updateStockNum(ProductStock stock) {
+		return productStockMapper.updateStockNum(stock);
 	}
 
 }

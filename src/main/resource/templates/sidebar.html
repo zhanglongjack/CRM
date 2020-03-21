@@ -78,6 +78,46 @@
 								</ul>
 							</div>
 						</li>
+						<li>
+							<a href="#productPage" data-toggle="collapse" id="menu-30">
+								<i class="glyphicon glyphicon-ruble"></i> 
+								<span>产品维护</span> 
+								<i class="icon-submenu lnr lnr-chevron-left"></i>
+							</a>
+							<div id="productPage" class="collapse">
+								<ul class="nav">
+									<li th:if="${session.user.isAdmin()}">
+										<a href="#" data-href="/product" id="menu-31">
+										<i class="glyphicon glyphicon-shopping-cart"></i> 
+										<span>产品信息</span></a>
+									</li>
+									<li><a href="#" data-href="/depository" id="menu-32">
+										<i class="glyphicon glyphicon-piggy-bank"></i> 
+										<span>仓库信息</span></a>
+									</li>
+									<li>
+										<a href="#" data-href="/productStock" id="menu-33">
+										<i class="glyphicon glyphicon-piggy-bank"></i> 
+										<span>产品库存信息</span></a>
+									</li>
+									<li>
+										<a href="#" data-href="/productAssort" id="menu-35">
+										<i class="glyphicon glyphicon-piggy-bank"></i> 
+										<span>产品套装信息</span></a>
+									</li>
+									<li>
+										<a href="#" data-href="/productAssortList" id="menu-36">
+										<i class="glyphicon glyphicon-piggy-bank"></i> 
+										<span>产品套装列表</span></a>
+									</li>
+									<li  th:if="${session.user.isAdmin()}">
+										<a href="#" data-href="/productPurchase" id="menu-34">
+										<i class="glyphicon glyphicon-piggy-bank"></i> 
+										<span>产品采购记录</span></a>
+									</li>
+								</ul>
+							</div>
+						</li>
 						<li th:if="${session.user.isAdmin()}">
 							<a href="#reportPage" data-toggle="collapse" id="menu-14">
 								<i class="lnr lnr-chart-bars"></i> 

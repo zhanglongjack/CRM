@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>test</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+</head>
+
+<body>
+<div th:fragment="dialog-content">
+<script th:inline="javascript">
+/*<![CDATA[*/
+	//var modifyInfo = /*[[${modifyInfo}]]*/;
+/*]]>*/
+ 
+$(function(){
+	initTimePicker();
+})
+</script>
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			&times;
+		</button>
+		<h4 class="modal-title" id="ModifyModalTitle">
+			填写产品信息
+		</h4>
+	</div>
+	<div class="modal-body">
+		<form id="modifyDataFrom" class="form-horizontal" role="form">
+			<input id="modifyId" name="productId" type="hidden" th:attr="value=${modifyInfo==null}?'':${modifyInfo.productId}">
+			<input id="modifyModel" name="modifyModel" type="hidden" th:attr="value=${modifyModel==null}?'':${modifyModel}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">产品名称</label> 
+				<div class="col-sm-10">
+					<input type="text" class="form-control"  placeholder="产品名称" name="productName" 
+						th:attr="value=${modifyInfo==null}?'':${modifyInfo.productName}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-sm-2 control-label">状态</label>
+				<div class="col-sm-10">
+					<select class="form-control" name="status">
+						<option th:each="map:${@commonConstants.getDictionarysByKey('online_offline')}" 
+								th:selected="${modifyInfo!=null&&modifyInfo.status+'' == map.key}" 
+								th:value="${map.key}" th:text="${map.value}"></option>
+					</select> 
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+		</button>
+		<button type="button" class="btn btn-primary" id="ModifyModalSubmit">
+			提交
+		</button>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$("#ModifyModal").on("hidden.bs.modal", function() {  
+		    $(this).removeData("bs.modal");  
+		}); 
+		
+	    $('#modifyDataFrom').bootstrapValidator({
+	        message: '输入无效,请重新输入',
+	        group:'.form-group',
+	        trigger: 'keyup focus',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	productName: {
+	                message: '产品名称不合法',
+	                validators: {
+	                    notEmpty: {
+	                        message: '产品名称不能为空'
+	                    }
+	                }
+	            }
+	        }
+	    });
+	});
+</script>
+</html>

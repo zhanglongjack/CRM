@@ -24,6 +24,8 @@ public class ProductPurchase {
     private String updatedDate;
 
     private String createdDate;
+    
+    private String oldStatus;
 
     public Long getPurchaseId() {
         return purchaseId;
@@ -104,7 +106,22 @@ public class ProductPurchase {
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
-    
+
+	public String getOldStatus() {
+		return oldStatus;
+	}
+
+	public void setOldStatus(String oldStatus) {
+		this.oldStatus = oldStatus;
+	}
+
+	@Override
+	public String toString() {
+		return String.format(
+				"ProductPurchase [purchaseId=%s, depositoryId=%s, productId=%s, purchaseNum=%s, purchasePrice=%s, unit=%s, status=%s, purchaseDatetime=%s]",
+				purchaseId, depositoryId, productId, purchaseNum, purchasePrice, unit, status, purchaseDatetime);
+	}
+
 
 	// query
 	private String startDate;
@@ -136,4 +153,6 @@ public class ProductPurchase {
 	public void setPageTools(PageTools pageTools) {
 		this.pageTools = pageTools;
 	}
+	
+	
 }

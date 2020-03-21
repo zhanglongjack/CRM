@@ -220,7 +220,6 @@ public class OrdersController {
 		logger.info("importModalView request");
 		return "page/orders/ImportModalView";
 	}
-	
 
     @PostMapping("/import")
     @ResponseBody
@@ -236,6 +235,4 @@ public class OrdersController {
         return result;
     }
     
-     
-
 }

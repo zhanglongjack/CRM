@@ -17,4 +17,6 @@ public interface DepositoryService {
 	Long selectPageTotalCount(Depository record);
 
 	List<Depository> selectPageByObjectForList(Depository record);
+
+	List<Depository> selectByObjectForList(Depository object);
 }

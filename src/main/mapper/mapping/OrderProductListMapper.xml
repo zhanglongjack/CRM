@@ -1,52 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.base.crm.product.dao.ProductStockMapper">
-	<resultMap id="BaseResultMap" type="com.base.crm.product.entity.ProductStock">
-		<id column="id" jdbcType="BIGINT" property="id" />
+<mapper namespace="com.base.crm.orders.dao.OrderProductListMapper">
+	<resultMap id="BaseResultMap" type="com.base.crm.orders.entity.OrderProductList">
+		<id column="list_id" jdbcType="BIGINT" property="listId" />
 		<result column="depository_id" jdbcType="BIGINT" property="depositoryId" />
 		<result column="product_id" jdbcType="BIGINT" property="productId" />
-		<result column="stock_num" jdbcType="BIGINT" property="stockNum" />
-		<result column="unit" jdbcType="VARCHAR" property="unit" />
-		<result column="stock_warning" jdbcType="BIGINT" property="stockWarning" />
+		<result column="order_id" jdbcType="BIGINT" property="orderId" />
+		<result column="num" jdbcType="BIGINT" property="num" />
 		<result column="updated_date" jdbcType="VARCHAR" property="updatedDate" />
 		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		id,depository_id, product_id, stock_num, unit, stock_warning, updated_date,
-		created_date
+		list_id, depository_id, product_id, order_id, num, updated_date, created_date
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="Long"
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from product_stock
-		where id = #{id}
+		from order_product_list
+		where list_id = #{listId,jdbcType=BIGINT}
 	</select>
 	
-	<delete id="deleteByPrimaryKey" parameterType="Long">
-		delete from product_stock
-		where id = #{id}
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from order_product_list
+		where list_id = #{listId,jdbcType=BIGINT}
 	</delete>
-	
-	<insert id="insertSelective" parameterType="com.base.crm.product.entity.ProductStock">
-		insert into product_stock
+
+	<insert id="insertSelective" parameterType="com.base.crm.orders.entity.OrderProductList">
+		insert into order_product_list
 		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="listId != null">
+				list_id,
+			</if>
 			<if test="depositoryId != null">
 				depository_id,
 			</if>
 			<if test="productId != null">
 				product_id,
 			</if>
-			<if test="stockNum != null">
-				stock_num,
+			<if test="orderId != null">
+				order_id,
 			</if>
-			<if test="unit != null">
-				unit,
-			</if>
-			<if test="stockWarning != null">
-				stock_warning,
+			<if test="num != null">
+				num,
 			</if>
 			<if test="updatedDate != null">
 				updated_date,
@@ -56,20 +54,20 @@
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="listId != null">
+				#{listId,jdbcType=BIGINT},
+			</if>
 			<if test="depositoryId != null">
 				#{depositoryId,jdbcType=BIGINT},
 			</if>
 			<if test="productId != null">
 				#{productId,jdbcType=BIGINT},
 			</if>
-			<if test="stockNum != null">
-				#{stockNum,jdbcType=BIGINT},
+			<if test="orderId != null">
+				#{orderId,jdbcType=BIGINT},
 			</if>
-			<if test="unit != null">
-				#{unit,jdbcType=VARCHAR},
-			</if>
-			<if test="stockWarning != null">
-				#{stockWarning,jdbcType=BIGINT},
+			<if test="num != null">
+				#{num,jdbcType=BIGINT},
 			</if>
 			<if test="updatedDate != null">
 				#{updatedDate,jdbcType=VARCHAR},
@@ -80,8 +78,8 @@
 		</trim>
 	</insert>
 	
-	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.product.entity.ProductStock">
-		update product_stock
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.orders.entity.OrderProductList">
+		update order_product_list
 		<set>
 			<if test="depositoryId != null">
 				depository_id = #{depositoryId,jdbcType=BIGINT},
@@ -89,14 +87,11 @@
 			<if test="productId != null">
 				product_id = #{productId,jdbcType=BIGINT},
 			</if>
-			<if test="stockNum != null">
-				stock_num = #{stockNum,jdbcType=BIGINT},
+			<if test="orderId != null">
+				order_id = #{orderId,jdbcType=BIGINT},
 			</if>
-			<if test="unit != null">
-				unit = #{unit,jdbcType=VARCHAR},
-			</if>
-			<if test="stockWarning != null">
-				stock_warning = #{stockWarning,jdbcType=BIGINT},
+			<if test="num != null">
+				num = #{num,jdbcType=BIGINT},
 			</if>
 			<if test="updatedDate != null">
 				updated_date = #{updatedDate,jdbcType=VARCHAR},
@@ -105,24 +100,15 @@
 				created_date = #{createdDate,jdbcType=VARCHAR},
 			</if>
 		</set>
-		where id = #{id}
-	</update>
-	
-	<update id="updateStockNum" parameterType="com.base.crm.product.entity.ProductStock">
-		update product_stock
-		
-		set stock_num = stock_num + #{stockNum},
-		updated_date = #{updatedDate}
-		
-		where depository_id=#{depositoryId}
-		and product_id=#{productId}
+		where list_id = #{listId,jdbcType=BIGINT}
 	</update>
 	
 	<sql id="dynamicWhere">
 		<where>
-			<if test="id != null">and id=#{id}</if>
+			<if test="listId != null">and list_id=#{listId}</if>
 			<if test="productId != null">and product_id=#{productId}</if>
 			<if test="depositoryId != null">and depository_id=#{depositoryId}</if>
+			<if test="orderId != null">and order_id=#{orderId}</if>
 			
 			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
 			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
@@ -132,22 +118,22 @@
 		</where>
 	</sql>
 
-	<select id="selectPageByObjectForList" parameterType="com.base.crm.product.entity.ProductStock"
+	<select id="selectPageByObjectForList" parameterType="com.base.crm.orders.entity.OrderProductList"
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from product_stock
+		from order_product_list
 		<include refid="dynamicWhere" />
 		order by created_date desc
 		limit
 		#{pageTools.rowIndex},#{pageTools.pageSize}
 	</select>
 
-	<select id="selectPageTotalCount" parameterType="com.base.crm.product.entity.ProductStock"
+	<select id="selectPageTotalCount" parameterType="com.base.crm.orders.entity.OrderProductList"
 		resultType="Long">
 		select
 		count(1)
-		from product_stock
+		from order_product_list
 		<include refid="dynamicWhere" />
 	</select>
 </mapper>

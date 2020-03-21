@@ -134,6 +134,24 @@
 			}
 		});
 	}
+	
+	function jumpToUrl(vUrl){
+		$('#main-content').empty();
+		$('#loadingModal').modal('show');
+		
+		$.ajax({
+			url: vUrl,
+			type: 'POST',
+			data: params,
+			//dataType: 'json',
+			success: function(response) {
+				$('#loadingModal').modal('hide');
+				$('#main-content').empty();
+				$('#main-content').html(response);
+			}
+		});
+		
+	}
 </script>
 
 <style type="text/css">

@@ -43,5 +43,13 @@ public class ProductServiceImpl implements ProductService  {
 	@Override
 	public List<Product> selectPageByObjectForList(Product record) {
 		return productMapper.selectPageByObjectForList(record);
+	}
+
+	@Override
+	public List<Product> selectByObjectForList(Product record) {
+		if(record!=null){
+			record.setPageTools(null);
+		}
+		return productMapper.selectPageByObjectForList(record);
 	} 
 }
