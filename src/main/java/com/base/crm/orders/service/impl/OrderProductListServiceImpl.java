@@ -44,4 +44,12 @@ public class OrderProductListServiceImpl implements OrderProductListService {
 		return orderProductMapper.selectPageByObjectForList(record);
 	}
 
+	@Override
+	public List<OrderProductList> selectByObjectForList(OrderProductList record) {
+		if(record!=null){
+			record.setPageTools(null);
+		}
+		return selectPageByObjectForList(record);
+	}
+
 }

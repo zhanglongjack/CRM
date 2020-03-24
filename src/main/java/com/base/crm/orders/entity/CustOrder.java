@@ -2,11 +2,6 @@ package com.base.crm.orders.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Locale;
-
-import org.thymeleaf.util.DateUtils;
-
-import com.base.common.util.DateFormateType;
 import com.base.common.util.PageTools;
 import com.base.crm.customer.entity.CustInfo;
 import com.base.crm.users.entity.UserInfo;
@@ -51,6 +46,8 @@ public class CustOrder {
 	private String remark;
 	private String buyStatus;
 	private Double expressAmount;
+	private Long depositoryId;
+	private Long assortId;
 	
 	private PageTools pageTools;
 	private UserInfo user;
@@ -283,6 +280,22 @@ public class CustOrder {
 
 	public void setExpressAmount(Double expressAmount) {
 		this.expressAmount = expressAmount;
+	}
+
+	public Long getDepositoryId() {
+		return depositoryId;
+	}
+
+	public void setDepositoryId(Long depositoryId) {
+		this.depositoryId = depositoryId;
+	}
+
+	public Long getAssortId() {
+		return assortId;
+	}
+
+	public void setAssortId(Long assortId) {
+		this.assortId = assortId;
 	}
 
 	@Override

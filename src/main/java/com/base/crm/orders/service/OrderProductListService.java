@@ -16,4 +16,6 @@ public interface OrderProductListService {
 	Long selectPageTotalCount(OrderProductList record);
 
 	List<OrderProductList> selectPageByObjectForList(OrderProductList record);
+
+	List<OrderProductList> selectByObjectForList(OrderProductList record);
 }

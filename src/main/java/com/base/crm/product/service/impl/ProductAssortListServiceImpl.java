@@ -43,4 +43,12 @@ public class ProductAssortListServiceImpl implements ProductAssortListService{
 	public List<ProductAssortList> selectPageByObjectForList(ProductAssortList record) {
 		return ProductAssortListMapper.selectPageByObjectForList(record);
 	}
+
+	@Override
+	public List<ProductAssortList> selectByObjectForList(ProductAssortList record) {
+		if(record!=null){
+			record.setPageTools(null);
+		}
+		return selectPageByObjectForList(record);
+	}
 }

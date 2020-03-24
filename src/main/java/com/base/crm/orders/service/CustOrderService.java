@@ -51,4 +51,8 @@ public interface CustOrderService {
 	List<OrderSalesRateReport> selectSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
 	
 	Long selectSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
+
+	int doInsert(CustOrder order);
+
+	void batchUpdateProductStock(CustOrder order, int plusOrSubtract);
 }

@@ -92,14 +92,6 @@ var initOrderCheck = function(){
                     }
                 }
             },
-            productList: {
-                message: '产品列表信息输入无效',
-                validators: {
-                    notEmpty: {
-                        message: '产品列表不能为空'
-                    }
-                }
-            },
             address: {
                 message: '地址输入无效',
                 validators: {
@@ -116,6 +108,22 @@ var initOrderCheck = function(){
 						return true;
                     }
                 }
+            },
+            depositoryId: {
+            	message: '选择仓库错误',
+            	validators: {
+            		notEmpty: {
+                        message: '请选择仓库'
+                    }
+            	}
+            },
+            assortId: {
+            	message: '选择产品套装错误',
+            	validators: {
+            		notEmpty: {
+            			message: '请选择产品套装'
+            		}
+            	}
             },
             totalAmt: {
                 message: '总金额输入无效',

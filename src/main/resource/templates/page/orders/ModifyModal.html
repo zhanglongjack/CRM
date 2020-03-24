@@ -32,6 +32,8 @@
 			<form id="modifyDataFrom" class="form-horizontal" role="form">
 				<input id="modifyId" name="orderNo" type="hidden"
 					th:attr="value=${modifyOrder==null}?'':${modifyOrder.orderNo}">
+				<input name="oldOrderStatus" type="hidden"
+					th:attr="value=${modifyOrder==null}?'':${modifyOrder.orderStatus}">
 				<input id="userId" name="userId" type="hidden" th:attr="value=${modifyOrder!=null&&modifyOrder.userId!=null?modifyOrder.userId:session.user.uId}">
 				<input id="modifyModel" name="modifyModel" type="hidden"
 					th:attr="value=${modifyModel==null}?'':${modifyModel}">
@@ -196,13 +198,28 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group col-sm-6">
-					<label class="col-sm-3 control-label">产品列表</label>
+					<label  class="col-sm-3 control-label">存放仓库</label>
 					<div class="col-sm-9">
-						<textarea name="productList" class="form-control" rows="3" placeholder="产品列表信息"
-							th:text="${modifyOrder==null}?'':${modifyOrder.productList}"
-							th:attr="readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}"></textarea>
+						<select class="form-control" name="depositoryId">
+							<option value="">===选择仓库===</option>
+							<option th:each="map:${@commonConstants.getDictionarysByKey('depository_dict')}" 
+									th:selected="${modifyOrder!=null&&modifyOrder.depositoryId+'' == map.key}" 
+									th:value="${map.key}" th:text="${map.value}"></option>
+						</select> 
 					</div>
 				</div>
+				<div class="form-group col-sm-6">
+					<label  class="col-sm-3 control-label">所属套装</label>
+					<div class="col-sm-9">
+						<select class="form-control" name="assortId">
+							<option value="">===选择套装===</option>
+							<option th:each="map:${@commonConstants.getDictionarysByKey('assort_dict')}" 
+									th:selected="${modifyOrder!=null&&modifyOrder.assortId+'' == map.key}" 
+									th:value="${map.key}" th:text="${map.value}"></option>
+						</select> 
+					</div>
+				</div>
+				<div class="clearfix"></div>
 				<div class="form-group col-sm-6">
 					<label class="col-sm-3 control-label">备注</label>
 					<div class="col-sm-9">

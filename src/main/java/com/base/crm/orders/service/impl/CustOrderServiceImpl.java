@@ -1,5 +1,6 @@
 package com.base.crm.orders.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.base.common.util.DateUtils;
 import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.orders.dao.CustOrderMapper;
 import com.base.crm.orders.entity.CustOrder;
+import com.base.crm.orders.entity.OrderProductList;
 import com.base.crm.orders.entity.OrderSalesRateReport;
 import com.base.crm.orders.service.CustOrderService;
+import com.base.crm.orders.service.OrderProductListService;
+import com.base.crm.product.entity.ProductAssortList;
+import com.base.crm.product.entity.ProductStock;
+import com.base.crm.product.service.ProductAssortListService;
+import com.base.crm.product.service.ProductStockService;
 import com.base.crm.report.entity.SummaryReport;
 @Service
 public class CustOrderServiceImpl implements CustOrderService {
@@ -22,6 +30,12 @@ public class CustOrderServiceImpl implements CustOrderService {
 	private CustOrderMapper custOrderMapper;
 	@Autowired 
 	private CustInfoService custInfoService;
+	@Autowired 
+	private ProductAssortListService productAssortListService;
+	@Autowired 
+	private OrderProductListService orderProductListService;
+	@Autowired
+	private ProductStockService productStockService;
 	
 	@Override
 	public int deleteByPrimaryKey(Long orderNo) {
@@ -142,5 +156,53 @@ public class CustOrderServiceImpl implements CustOrderService {
 	@Override
 	public Long selectSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject) {
 		return custOrderMapper.selectSalesRateReportPageCountByMonth(queryObject);
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public int doInsert(CustOrder order) {
+		insertSelective(order);
+		
+		ProductAssortList palParam = new ProductAssortList();
+		palParam.setAssortId(order.getAssortId());
+		List<ProductAssortList> palList = productAssortListService.selectByObjectForList(palParam);
+		
+		OrderProductList opl = new OrderProductList();
+		for(ProductAssortList pal : palList){
+			opl.setDepositoryId(order.getDepositoryId());
+			opl.setProductId(pal.getProductId());
+			opl.setOrderId(order.getOrderNo());
+			opl.setNum(pal.getNum());
+			opl.setCreatedDate(DateUtils.dateToStrLong(new Date()));
+			orderProductListService.insertSelective(opl);
+		}
+		
+		return 1;
+	}
+
+	@Override
+	/**
+	 * 增加库存或减少库存,<br>
+	 * plusOrSubtract如果为正数1则增加库存<br>
+	 * plusOrSubtract如果为负数-1则减少库存
+	 * @param order
+	 * @param plusOrSubtract
+	 */
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public void batchUpdateProductStock(CustOrder order,int plusOrSubtract) {
+		
+		OrderProductList palParam = new OrderProductList();
+		palParam.setOrderId(order.getOrderNo());
+		List<OrderProductList> palList = orderProductListService.selectByObjectForList(palParam);
+		
+		for(OrderProductList pal : palList){
+			ProductStock ps = new ProductStock();
+			ps.setDepositoryId(order.getDepositoryId());
+			ps.setProductId(pal.getProductId());
+			ps.setStockNum(pal.getNum()* plusOrSubtract);
+			ps.setUpdatedDate(DateUtils.dateToStrLong(new Date()));
+			
+			productStockService.updateStockNum(ps);
+		}
 	}
 }

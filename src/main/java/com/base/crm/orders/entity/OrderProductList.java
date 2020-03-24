@@ -1,5 +1,7 @@
 package com.base.crm.orders.entity;
 
+import com.base.common.util.PageTools;
+
 public class OrderProductList {
     private Long listId;
 
@@ -70,4 +72,36 @@ public class OrderProductList {
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
+    
+
+	// query
+	private String startDate;
+	private String endDate;
+	
+//    @JsonIgnore
+    private PageTools pageTools;
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public PageTools getPageTools() {
+		return pageTools;
+	}
+
+	public void setPageTools(PageTools pageTools) {
+		this.pageTools = pageTools;
+	}
 }

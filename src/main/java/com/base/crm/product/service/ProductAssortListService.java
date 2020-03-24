@@ -16,4 +16,6 @@ public interface ProductAssortListService {
 	Long selectPageTotalCount(ProductAssortList record);
 
 	List<ProductAssortList> selectPageByObjectForList(ProductAssortList record);
+
+	List<ProductAssortList> selectByObjectForList(ProductAssortList pal);
 }

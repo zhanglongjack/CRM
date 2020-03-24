@@ -104,8 +104,9 @@
 		from product_assort_list
 		<include refid="dynamicWhere" />
 		order by created_date desc
-		limit
-		#{pageTools.rowIndex},#{pageTools.pageSize}
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
 	</select>
 
 	<select id="selectPageTotalCount" parameterType="com.base.crm.product.entity.ProductAssortList"

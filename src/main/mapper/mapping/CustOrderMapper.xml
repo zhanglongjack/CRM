@@ -23,6 +23,8 @@
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="buy_status" jdbcType="VARCHAR" property="buyStatus" />
 		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
+		<result column="depository_id" jdbcType="DECIMAL" property="depositoryId" />
+		<result column="assort_id" jdbcType="DECIMAL" property="assortId" />
 	</resultMap>
 	
 	<resultMap id="pageCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
@@ -47,6 +49,8 @@
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="buy_status" jdbcType="VARCHAR" property="buyStatus" />
 		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
+		<result column="depository_id" jdbcType="DECIMAL" property="depositoryId" />
+		<result column="assort_id" jdbcType="DECIMAL" property="assortId" />
         <collection property="user" column="user_id" select="com.base.crm.users.dao.UserInfoMapper.selectByPrimaryKey">
         </collection>
         <collection property="custInfo" column="o_wechat_no" select="com.base.crm.customer.dao.CustInfoMapper.selectByPrimaryWechatNo">
@@ -58,7 +62,7 @@
 		product_list,
 		deposits, cash_on_delivery_amt, total_amt, after_Discount_Amt, pay_Amount,
 		payment_method,
-		express_company, express_no, order_date, order_datetime,remark,buy_status,express_amount
+		express_company, express_no, order_date, order_datetime,remark,buy_status,express_amount,depository_id,assort_id
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -337,7 +341,9 @@
 		where order_no = #{orderNo,jdbcType=BIGINT}
 	</delete>
 
-	<insert id="insertSelective" parameterType="com.base.crm.orders.entity.CustOrder">
+	<insert id="insertSelective" parameterType="com.base.crm.orders.entity.CustOrder"
+		useGeneratedKeys="true" keyProperty="orderNo">
+		
 		insert into cust_orders
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="orderNo != null">
@@ -402,6 +408,12 @@
 			</if>
 			<if test="expressAmount != null"> 
 				express_amount,
+			</if>
+			<if test="depositoryId != null"> 
+				depository_id,
+			</if>
+			<if test="assortId != null"> 
+				assort_id,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -468,6 +480,12 @@
 			<if test="expressAmount != null"> 
 				#{expressAmount},
 			</if>
+			<if test="depositoryId != null"> 
+				#{depositoryId},
+			</if>
+			<if test="assortId != null"> 
+				#{assortId},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.orders.entity.CustOrder">
@@ -532,6 +550,12 @@
 			</if>
 			<if test="expressAmount != null"> 
 				express_amount = #{expressAmount},
+			</if>
+			<if test="depositoryId != null"> 
+				depository_id = #{depositoryId},
+			</if>
+			<if test="assortId != null"> 
+				assort_id = #{assortId},
 			</if>
 		</set>
 		where order_no = #{orderNo,jdbcType=BIGINT}

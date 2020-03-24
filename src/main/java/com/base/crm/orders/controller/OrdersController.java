@@ -1,11 +1,8 @@
 package com.base.crm.orders.controller;
 
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -23,11 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.expression.Dates;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.base.common.util.ExcelMappingsAbstract;
 import com.base.common.util.ExcelView;
 import com.base.common.util.PageTools;
 import com.base.crm.common.constants.OrderStatus;
@@ -74,6 +67,13 @@ public class OrdersController {
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public Map<String,Object>  orderEdit(CustOrder order) throws Exception{
 		logger.info("orderEdit request :"+order);
+		if(order.getOldOrderStatus()!=null){
+			if(order.getOldOrderStatus()>OrderStatus.NON_DELIVERY.getKey()&&order.getOrderStatus()==OrderStatus.NON_DELIVERY.getKey()){
+				throw new RuntimeException("此单不可修改为下单状态!");
+			}else if(order.getOldOrderStatus()>=OrderStatus.SIGNED.getKey()){
+				throw new RuntimeException("此单不可修改状态!");
+			}
+		}
 		
 		CustOrder resultOrder = custOrderService.selectByPrimaryKey(order.getOrderNo());
 		CustomerConsume consume = new CustomerConsume();
@@ -93,6 +93,9 @@ public class OrdersController {
 				consume.setAmount(new BigDecimal(order.getPayAmount()).negate());
 				consume.setRemark(String.format("微信号[%s]的余额消费:%s元,订单号[%s]",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			}
+			
+			custOrderService.batchUpdateProductStock(order,-1);
+			
 		}else if(order.getOrderStatus()==OrderStatus.SIGNED.getKey()){
 			if(order.getPayAmount()!=order.getTotalAmt()){
 				double payment = order.getDeposits()+ order.getCashOnDeliveryAmt();
@@ -111,6 +114,8 @@ public class OrdersController {
 			consume.setConsumeType(6);
 			consume.setAmount(amount.negate());
 			consume.setRemark(String.format("微信号[%s]的退款:%s元,订单号[%s]元,拒收或退款",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
+			
+			custOrderService.batchUpdateProductStock(order,1);
 		}
 		int paymentMethod = order.getPaymentMethod()==null?-1:order.getPaymentMethod();
 		if(consume.getRemark()!=null && paymentMethod!=3){
@@ -137,7 +142,8 @@ public class OrdersController {
 	@ResponseBody
 	public Map<String,Object>  orderAdd(CustOrder order) throws Exception{
 		logger.info("orderAdd request:"+order);
-		int num = custOrderService.insertSelective(order);
+//		int num = custOrderService.insertSelective(order);
+		int num = custOrderService.doInsert(order);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);
