@@ -30,12 +30,7 @@
 							</a>
 							<div id="productPage" class="collapse">
 								<ul class="nav">
-									<li  th:if="${session.user.isAdmin()}">
-										<a href="#" data-href="/productPurchase" id="menu-34">
-										<i class="glyphicon glyphicon-piggy-bank"></i> 
-										<span>产品采购记录</span></a>
-									</li>
-									<li th:if="${session.user.isAdmin()}">
+									<li>
 										<a href="#" data-href="/product" id="menu-31">
 										<i class="glyphicon glyphicon-shopping-cart"></i> 
 										<span>产品信息</span></a>
@@ -127,6 +122,7 @@
 							<div id="reportPage" class="collapse" aria-expanded="false">
 								<ul class="nav">
 									<li><a href="#" data-href="/report/saleSummary" id="menu-sub-3">销售利润统计</a></li>
+									<li><a href="#" data-href="/expressReport/expressReport" id="menu-sub-11">快递费统计报表</a></li>
 									<!-- 
 									<li><a href="#" data-href="/serverSaleReport/serverSaleReport" id="menu-sub-1">客服销售业绩</a></li>
 									<li><a href="#" data-href="/serverSaleMonthReport/serverSaleReport" id="menu-sub-4">客服销售业绩新</a></li>

@@ -4,17 +4,23 @@
 	<resultMap id="BaseResultMap" type="com.base.crm.procurement.entity.ProcurementCosts">
 		<id column="id" jdbcType="INTEGER" property="id" />
 		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="depository_id" jdbcType="VARCHAR" property="depositoryId" />
+		<result column="product_id" jdbcType="VARCHAR" property="productId" />
+		<result column="unit" jdbcType="VARCHAR" property="unit" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
 		<result column="num" jdbcType="INTEGER" property="num" />
 		<result column="amount" jdbcType="VARCHAR" property="amount" />
 		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		id, product_name, num, amount, created_date
+		id, product_name, num, amount, created_date,depository_id,product_id,unit,status
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
 			<if test="id != null">id=#{id}</if>
+			<if test="depositoryId != null">depository_id=#{depositoryId}</if>
+			<if test="productId != null">product_id=#{productId}</if>
 			<if test="productName != null and productName.length()>0">and product_name=#{productName}</if>
 			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
 			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
@@ -107,6 +113,18 @@
 			<if test="createdDate != null">
 				created_date,
 			</if>
+			<if test="depositoryId != null">
+				depository_id,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -124,9 +142,21 @@
 			<if test="createdDate != null">
 				#{createdDate,jdbcType=VARCHAR},
 			</if>
+			<if test="depositoryId != null">
+				#{depositoryId},
+			</if>
+			<if test="productId != null">
+				#{productId},
+			</if>
+			<if test="unit != null">
+				#{unit},
+			</if>
+			<if test="status != null">
+				#{status},
+			</if>
 		</trim>
 	</insert>
-	
+
 	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.procurement.entity.ProcurementCosts">
 		update procurement_costs
 		<set>
@@ -142,8 +172,20 @@
 			<if test="createdDate != null">
 				created_date = #{createdDate,jdbcType=VARCHAR},
 			</if>
+			<if test="depositoryId != null">
+				depository_id = #{depositoryId},
+			</if>
+			<if test="productId != null">
+				product_id = #{productId},
+			</if>
+			<if test="unit != null">
+				unit = #{unit},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	 
+
 </mapper>

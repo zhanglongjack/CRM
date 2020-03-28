@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.entity.OrderSalesRateReport;
+import com.base.crm.report.entity.ExpressReport;
 import com.base.crm.report.entity.SummaryReport;
 @Mapper
 public interface CustOrderMapper {
@@ -52,6 +53,10 @@ public interface CustOrderMapper {
 	List<OrderSalesRateReport> selectSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
 	
 	Long selectSalesRateReportPageCountByMonth(OrderSalesRateReport queryObject);
+
+	List<ExpressReport> selectExpressReportPageBy(ExpressReport queryObject);
+
+	long selectExpressReportPageCountBy(ExpressReport queryObject);
 
 	
 }

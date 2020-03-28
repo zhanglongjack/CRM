@@ -264,8 +264,12 @@
 													<td style="border-collapse: collapse" th:text="${#numbers.formatCurrency(obj.cashOnDeliveryAmt*0.03)}"></td>
 												</tr>
 												<tr>
-													<td style="border-collapse: collapse" width="25%">购买产品</td>
-													<td style="border-collapse: collapse" th:text="${obj.productList}"></td>
+													<td style="border-collapse: collapse" width="25%">仓库</td>
+													<td style="border-collapse: collapse" th:text="${@commonConstants.getDictionarysByKey('depository_dict').get(obj.depositoryId+'')}"></td>
+												</tr>
+												<tr>
+													<td style="border-collapse: collapse" width="25%">产品套装</td>
+													<td style="border-collapse: collapse" th:text="${@commonConstants.getDictionarysByKey('assort_dict').get(obj.assortId+'')}"></td>
 												</tr>
 												<tr>
 													<td style="border-collapse: collapse" width="25%">地址</td>

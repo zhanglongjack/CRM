@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.entity.OrderSalesRateReport;
+import com.base.crm.report.entity.ExpressReport;
 import com.base.crm.report.entity.SummaryReport;
 
 public interface CustOrderService {
@@ -55,4 +56,8 @@ public interface CustOrderService {
 	int doInsert(CustOrder order);
 
 	void batchUpdateProductStock(CustOrder order, int plusOrSubtract);
+
+	List<ExpressReport> selectExpressReportPageBy(ExpressReport queryObject);
+
+	long selectExpressReportPageCountBy(ExpressReport queryObject);
 }

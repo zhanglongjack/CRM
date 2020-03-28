@@ -86,7 +86,7 @@ public class ProcurementController {
 	@ResponseBody
 	public Map<String,Object> edit(ProcurementCosts editData){
 		logger.info("procurementEdit request:{}",editData);
-		int num = procurementCostService.updateByPrimaryKeySelective(editData);
+		int num = procurementCostService.doUpdate(editData);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);

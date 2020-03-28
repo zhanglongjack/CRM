@@ -23,6 +23,8 @@ public interface ProcurementCostService {
 	BigDecimal querySumAmountByMonth(String month);
 
 	List<String> queryMonthBy(String month);
+
+	int doUpdate(ProcurementCosts editData);
  
 
 }

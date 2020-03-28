@@ -22,6 +22,7 @@ import com.base.crm.product.entity.ProductAssortList;
 import com.base.crm.product.entity.ProductStock;
 import com.base.crm.product.service.ProductAssortListService;
 import com.base.crm.product.service.ProductStockService;
+import com.base.crm.report.entity.ExpressReport;
 import com.base.crm.report.entity.SummaryReport;
 @Service
 public class CustOrderServiceImpl implements CustOrderService {
@@ -204,5 +205,15 @@ public class CustOrderServiceImpl implements CustOrderService {
 			
 			productStockService.updateStockNum(ps);
 		}
+	}
+
+	@Override
+	public List<ExpressReport> selectExpressReportPageBy(ExpressReport queryObject) {
+		return custOrderMapper.selectExpressReportPageBy(queryObject);
+	}
+
+	@Override
+	public long selectExpressReportPageCountBy(ExpressReport queryObject) {
+		return custOrderMapper.selectExpressReportPageCountBy(queryObject);
 	}
 }

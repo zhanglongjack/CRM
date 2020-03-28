@@ -76,7 +76,7 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 			productMap = new LinkedHashMap<String, String>();
 			dictionaryMap.put("product_dict", productMap);
 		}
-		
+		productMap.clear();
 		List<Product> productList = productService.selectByObjectForList(null);
 		for (Product product : productList) {
 			if (product.getStatus().equals("0")) {
@@ -95,7 +95,7 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 			depositoryMap = new LinkedHashMap<String, String>();
 			dictionaryMap.put("depository_dict", depositoryMap);
 		}
-		
+		depositoryMap.clear();
 		List<Depository> depositoryList = depositoryService.selectByObjectForList(null);
 		for (Depository depository : depositoryList) {
 			depositoryMap.put(depository.getDepositoryId()+"", depository.getDepositoryName());
@@ -109,7 +109,7 @@ public class CommonConstants implements ApplicationListener<ContextRefreshedEven
 			depositoryMap = new LinkedHashMap<String, String>();
 			dictionaryMap.put("assort_dict", depositoryMap);
 		}
-		
+		depositoryMap.clear();
 		List<ProductAssort> depositoryList = productAssortService.selectByObjectForList(null);
 		for (ProductAssort depository : depositoryList) {
 			if (depository.getStatus().equals("0")) {

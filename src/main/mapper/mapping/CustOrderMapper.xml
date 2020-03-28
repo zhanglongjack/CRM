@@ -576,4 +576,50 @@
 		and s.buy_status not in ( 'reordered')
 	</update>
 	
+	<sql id="ExpressReportDynamicWhere">
+		<where>
+			<if test="depositoryId != null">and depositoryId=#{depositoryId}</if>
+			<if test="month != null and month.length()>0">and month=#{month}</if>
+		</where>
+	</sql>
+
+	<select id="selectExpressReportPageBy" parameterType="com.base.crm.report.entity.ExpressReport"
+		resultType="com.base.crm.report.entity.ExpressReport">
+		select
+		*
+		from 
+		(
+			select 
+				depository_id depositoryId,
+			    sum((case when order_status = 4 then (express_amount*2) else express_amount end )) expressTotalFee,
+			    sum((case when order_status = 4 then 0 else ROUND((cash_on_delivery_amt*0.03) ,2) end )) expressCommissionTotalFee,
+				left(order_date,6) month
+				
+			FROM cust_orders o
+			where o.order_status between 1 and 4
+			group by left(order_date,6) ,depository_id
+		) t
+		<include refid="ExpressReportDynamicWhere" />
+		order by month desc
+		<if test="pageTools != null">
+			limit #{pageTools.rowIndex},#{pageTools.pageSize}
+		</if>
+	</select>
+
+	<select id="selectExpressReportPageCountBy" parameterType="com.base.crm.report.entity.ExpressReport"
+		resultType="Long">
+		select
+			count(1)
+		from 
+		(
+			select 
+				depository_id depositoryId,
+				left(order_date,6) month
+				
+			FROM cust_orders o
+			where o.order_status between 1 and 4
+			group by left(order_date,6) ,depository_id
+		) t
+		<include refid="ExpressReportDynamicWhere" />
+	</select>
 </mapper>

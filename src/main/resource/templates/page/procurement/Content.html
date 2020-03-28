@@ -40,10 +40,24 @@
 									th:attr="value=${queryObject==null}?'':${queryObject.id}">
 							</div>
 							<div class="form-group col-sm-2">
-								<label>采购产品</label>
-								<br>
-								<input type="text" class="form-control" placeholder="采购产品" name="productName"
-									th:attr="value=${queryObject==null}?'':${queryObject.productName}">
+								<label>仓库</label>
+								<br> 
+								<select class="form-control" name="depositoryId">
+									<option value="" >===仓库===</option>
+									<option th:each="map:${@commonConstants.getDictionarysByKey('depository_dict')}" 
+											th:selected="${queryObject!=null&&queryObject.depositoryId+'' == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+								</select>
+							</div>
+							<div class="form-group col-sm-2">
+								<label>产品</label>
+								<br> 
+								<select class="form-control" name="productId">
+									<option value="" >===产品===</option>
+									<option th:each="map:${@commonConstants.getDictionarysByKey('product_dict')}" 
+											th:selected="${queryObject!=null&&queryObject.productId+'' == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+								</select>
 							</div>
 							<div class="form-group col-sm-2">
 								<label>开始日期</label><br>
@@ -92,9 +106,13 @@
 							<thead>
 								<tr>
 									<th>采购编号</th>
-									<th>采购产品</th>
+									<th>仓库编号</th>
+									<th>产品编号</th>
+									<th>产品描述</th>
 									<th>采购数量</th>
 									<th>采购金额</th>
+									<th>产品单位</th>
+									<th>状态</th>
 									<th>采购日期</th>
 									<th>操作</th>
 								</tr>
@@ -102,9 +120,16 @@
 							<tbody>
 								<tr th:each="obj : ${resultList}">
 									<td th:text="${obj.id}"></td>
+									<td th:text="${@commonConstants.getDictionarysBy('depository_dict',obj.depositoryId+'')}"></td>
+									<td th:text="${@commonConstants.getDictionarysBy('product_dict',obj.productId+'')}"></td>
 									<td th:text="${obj.productName}"></td>
 									<td th:text="${obj.num}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.amount)}"></td>
+									<td th:text="${obj.unit}"></td>
+									<td>
+										<span class="label label-default" th:if="${obj.status=='1'}" >待收货</span>
+										<span class="label label-success" th:if="${obj.status=='2'}">已收货</span>
+									</td>
 									<td th:text="${obj.createdDate}"></td>
 									<td>
 										<div class="btn-group">

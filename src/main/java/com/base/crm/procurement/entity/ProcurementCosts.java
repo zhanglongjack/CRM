@@ -13,12 +13,22 @@ public class ProcurementCosts {
     private Long id;
 
     private String productName;
-
+    
+    private Long depositoryId;
+    
+    private Long productId;
+    
+    private String unit;
+    
+    private String status;
+    private String oldStatus;
+    
     private Integer num;
-
+    
     private String amount;
 
     private String createdDate;
+    
     
 	// query
 	private String startDate = DateUtils.format(new Date(),"yyyyMM01", Locale.getDefault());
@@ -89,6 +99,46 @@ public class ProcurementCosts {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public Long getDepositoryId() {
+		return depositoryId;
+	}
+
+	public void setDepositoryId(Long depositoryId) {
+		this.depositoryId = depositoryId;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getOldStatus() {
+		return oldStatus;
+	}
+
+	public void setOldStatus(String oldStatus) {
+		this.oldStatus = oldStatus;
 	}
 
 	@Override
