@@ -155,6 +155,8 @@
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/serve/wechat" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>服务微信管理</span></a></li>
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/dictionary" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>字典维护</span></a></li>
 									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/websiteStatusCheckLog" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>网站检查日志</span></a></li>
+									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/emailTemplate" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>邮件模版配置</span></a></li>
+									<li th:if="${session.user.isAdmin()}"><a href="#" data-href="/emailReceiver" id="menu-8"><i class="glyphicon glyphicon-phone"></i> <span>邮件接收人维护</span></a></li>
 									
 								</ul>
 							</div>

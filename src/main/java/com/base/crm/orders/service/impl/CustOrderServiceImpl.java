@@ -216,4 +216,11 @@ public class CustOrderServiceImpl implements CustOrderService {
 	public long selectExpressReportPageCountBy(ExpressReport queryObject) {
 		return custOrderMapper.selectExpressReportPageCountBy(queryObject);
 	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
+	public int doDelete(Long orderNo) {
+		orderProductListService.deleteByOrderId(orderNo);
+		return custOrderMapper.deleteByPrimaryKey(orderNo);
+	}
 }

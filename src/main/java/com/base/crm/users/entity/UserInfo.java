@@ -18,6 +18,8 @@ public class UserInfo {
 
     private Long phone;
 
+    private String email;
+    
     private String entryDate;
 
     private Date createDate;
@@ -80,7 +82,15 @@ public class UserInfo {
         this.phone = phone;
     }
 
-    public String getEntryDate() {
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEntryDate() {
         return entryDate;
     }
 

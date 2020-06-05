@@ -19,4 +19,6 @@ public interface OrderProductListMapper {
 	Long selectPageTotalCount(OrderProductList record);
 
 	List<OrderProductList> selectPageByObjectForList(OrderProductList record);
+
+	int deleteByOrderId(Long orderNo);
 }

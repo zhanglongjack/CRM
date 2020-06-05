@@ -68,13 +68,18 @@ public class OrdersController {
 	public Map<String,Object>  orderEdit(CustOrder order) throws Exception{
 		logger.info("orderEdit request :"+order);
 		if(order.getOldOrderStatus()!=null){
-			if(order.getOldOrderStatus()>OrderStatus.NON_DELIVERY.getKey()&&order.getOrderStatus()==OrderStatus.NON_DELIVERY.getKey()){
-				throw new RuntimeException("此单不可修改为下单状态!");
+			if(order.getOldOrderStatus()>OrderStatus.DELIVERING.getKey()&&order.getOrderStatus()==OrderStatus.DELIVERING.getKey()){
+				throw new RuntimeException("此单不可修改为派送中状态!");
 			}else if(order.getOldOrderStatus()>=OrderStatus.SIGNED.getKey()){
 				throw new RuntimeException("此单不可修改状态!");
+			}else if(order.getOldOrderStatus()>=OrderStatus.DELIVERING.getKey()&&order.getOrderStatus()==OrderStatus.INVALIDATED.getKey()){
+				throw new RuntimeException("此单不可修改作废态!");
+			}else if(order.getOldOrderStatus()>=OrderStatus.DELIVERING.getKey()&&order.getOrderStatus() < OrderStatus.DELIVERING.getKey()){
+				throw new RuntimeException("此单不可回退状态!");
 			}
+			
 		}
-		
+
 		CustOrder resultOrder = custOrderService.selectByPrimaryKey(order.getOrderNo());
 		CustomerConsume consume = new CustomerConsume();
 		consume.setUserId(order.getUserId());
@@ -93,8 +98,6 @@ public class OrdersController {
 				consume.setAmount(new BigDecimal(order.getPayAmount()).negate());
 				consume.setRemark(String.format("微信号[%s]的余额消费:%s元,订单号[%s]",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			}
-			
-			custOrderService.batchUpdateProductStock(order,-1);
 			
 		}else if(order.getOrderStatus()==OrderStatus.SIGNED.getKey()){
 			if(order.getPayAmount()!=order.getTotalAmt()){
@@ -115,8 +118,19 @@ public class OrdersController {
 			consume.setAmount(amount.negate());
 			consume.setRemark(String.format("微信号[%s]的退款:%s元,订单号[%s]元,拒收或退款",consume.getWechatNo(), consume.getAmount().toPlainString(),consume.getOrderNo()));
 			
+		}
+		
+		if(OrderStatus.DELIVERING.getKey()==order.getOrderStatus()){
+			order.setDepositoryId(resultOrder.getDepositoryId());
+			order.setAssortId(resultOrder.getAssortId());
+			// 控制同一状态不会重复更新库存减少
+			if(order.getOldOrderStatus()!=null&&OrderStatus.DELIVERING.getKey()!=order.getOldOrderStatus()){
+				custOrderService.batchUpdateProductStock(order,-1);
+			}
+		}else if( OrderStatus.REFUSED.getKey()==order.getOrderStatus()){
 			custOrderService.batchUpdateProductStock(order,1);
 		}
+		
 		int paymentMethod = order.getPaymentMethod()==null?-1:order.getPaymentMethod();
 		if(consume.getRemark()!=null && paymentMethod!=3){
 			logger.info(consume.getRemark());
@@ -151,6 +165,18 @@ public class OrdersController {
 		return map;
 	}
 
+	@RequestMapping(value="/orderDel")
+	@ResponseBody
+	public Map<String,Object> orderDel(Long id) throws Exception{
+		logger.info("orderDel request:{}",id);
+		int num = custOrderService.doDelete(id);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("success", true);
+		map.put("addNumber", num);
+		return map;
+	}
+	
 	@RequestMapping(value="/loadPage")
 	public ModelAndView loadPage(CustOrder order,PageTools pageTools,@ModelAttribute("user") UserInfo user) throws Exception{
 		logger.info("loadPage request:"+order +" page info ==="+pageTools);

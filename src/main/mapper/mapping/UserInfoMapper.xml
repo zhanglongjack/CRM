@@ -10,10 +10,11 @@
 		<result column="phone" jdbcType="BIGINT" property="phone" />
 		<result column="entry_date" jdbcType="VARCHAR" property="entryDate" />
 		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="email" jdbcType="TIMESTAMP" property="email" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		u_id, name, wechat_number, password, level, phone,
-		entry_date, create_date
+		entry_date, create_date,email
 	</sql>
 	<sql id="dynamicWhere">
 		<where>
@@ -98,6 +99,9 @@
 			<if test="createDate != null">
 				create_date,
 			</if>
+			<if test="email != null">
+				email,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="uId != null">
@@ -124,6 +128,9 @@
 			<if test="createDate != null">
 				#{createDate,jdbcType=TIMESTAMP},
 			</if>
+			<if test="email != null">
+				#{email},
+			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.base.crm.users.entity.UserInfo">
@@ -146,6 +153,9 @@
 			</if>
 			<if test="entryDate != null">
 				entry_date = #{entryDate,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email},
 			</if>
 		</set>
 		where u_id = #{uId,jdbcType=BIGINT}

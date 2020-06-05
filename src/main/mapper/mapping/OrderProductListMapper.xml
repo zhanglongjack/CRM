@@ -27,6 +27,11 @@
 		delete from order_product_list
 		where list_id = #{listId,jdbcType=BIGINT}
 	</delete>
+	
+	<delete id="deleteByOrderId" parameterType="java.lang.Long">
+		delete from order_product_list
+		where order_id = #{orderId}
+	</delete>
 
 	<insert id="insertSelective" parameterType="com.base.crm.orders.entity.OrderProductList">
 		insert into order_product_list

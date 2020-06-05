@@ -60,4 +60,6 @@ public interface CustOrderService {
 	List<ExpressReport> selectExpressReportPageBy(ExpressReport queryObject);
 
 	long selectExpressReportPageCountBy(ExpressReport queryObject);
+
+	int doDelete(Long orderNo);
 }

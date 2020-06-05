@@ -52,4 +52,9 @@ public class OrderProductListServiceImpl implements OrderProductListService {
 		return selectPageByObjectForList(record);
 	}
 
+	@Override
+	public void deleteByOrderId(Long orderNo) {
+		orderProductMapper.deleteByOrderId(orderNo);
+	}
+
 }

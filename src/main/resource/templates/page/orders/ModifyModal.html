@@ -200,7 +200,8 @@
 				<div class="form-group col-sm-6">
 					<label  class="col-sm-3 control-label">存放仓库</label>
 					<div class="col-sm-9">
-						<select class="form-control" name="depositoryId">
+						<select class="form-control" name="depositoryId"
+							th:attr="disabled=${modifyOrder!=null&&modifyOrder.orderStatus>=0}">
 							<option value="">===选择仓库===</option>
 							<option th:each="map:${@commonConstants.getDictionarysByKey('depository_dict')}" 
 									th:selected="${modifyOrder!=null&&modifyOrder.depositoryId+'' == map.key}" 
@@ -211,7 +212,8 @@
 				<div class="form-group col-sm-6">
 					<label  class="col-sm-3 control-label">所属套装</label>
 					<div class="col-sm-9">
-						<select class="form-control" name="assortId">
+						<select class="form-control" name="assortId" 
+						th:attr="disabled=${modifyOrder!=null&&modifyOrder.orderStatus>=0}">
 							<option value="">===选择套装===</option>
 							<option th:each="map:${@commonConstants.getDictionarysByKey('assort_dict')}" 
 									th:selected="${modifyOrder!=null&&modifyOrder.assortId+'' == map.key}" 

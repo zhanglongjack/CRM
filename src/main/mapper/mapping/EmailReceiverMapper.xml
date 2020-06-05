@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.base.common.email.dao.EmailReceiverMapper">
+	<resultMap id="BaseResultMap" type="com.base.common.email.entity.EmailReceiver">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="email_temp_id" jdbcType="VARCHAR" property="emailTempId" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="created_date" jdbcType="VARCHAR" property="createdDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, email_temp_id, user_id, status, created_date
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from email_receiver
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectByEmailTemplateId" parameterType="java.lang.Long"
+		resultType="String">
+		select
+			email
+		from email_receiver er
+		inner join user_info u on u.u_id = er.user_id
+		where email_temp_id = #{emailTempId}
+		and status = 1
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		email_receiver
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.base.common.email.entity.EmailReceiver">
+		insert into email_receiver
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="emailTempId != null">
+				email_temp_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createdDate != null">
+				created_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="emailTempId != null">
+				#{emailTempId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				#{createdDate,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.base.common.email.entity.EmailReceiver">
+		update email_receiver
+		<set>
+			<if test="emailTempId != null">
+				email_temp_id = #{emailTempId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="id != null">and id=#{id}</if>
+			<if test="emailTempId != null">and email_temp_id=#{emailTempId}</if>
+			<if test="userId != null">and user_id=#{userId}</if>
+			<if test="status != null">and status=#{status}</if>
+			
+			<if test="createdDate != null and createdDate.length()>0">and created_date=#{createdDate}</if>
+			<if test="startDate != null and startDate.length()>0">and created_date>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">
+				and created_date <![CDATA[<=]]>#{endDate}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectPageByObjectForList" parameterType="com.base.common.email.entity.EmailReceiver"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from email_receiver
+		<include refid="dynamicWhere" />
+		order by created_date desc
+		limit
+		#{pageTools.rowIndex},#{pageTools.pageSize}
+	</select>
+
+	<select id="selectPageTotalCount" parameterType="com.base.common.email.entity.EmailReceiver"
+		resultType="Long">
+		select
+		count(1)
+		from email_receiver
+		<include refid="dynamicWhere" />
+	</select>
+</mapper>

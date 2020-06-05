@@ -18,4 +18,6 @@ public interface OrderProductListService {
 	List<OrderProductList> selectPageByObjectForList(OrderProductList record);
 
 	List<OrderProductList> selectByObjectForList(OrderProductList record);
+
+	void deleteByOrderId(Long orderNo);
 }

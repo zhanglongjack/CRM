@@ -16,11 +16,11 @@ public class UserTest {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Test
 	public void test(){
 		UserInfo user = userService.selectByUserPhone(15999585921L);
 		System.out.println(user.getName());
 	}
-	
+
 }

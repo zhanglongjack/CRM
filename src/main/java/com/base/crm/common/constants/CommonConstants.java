@@ -24,7 +24,9 @@ import com.base.crm.product.service.ProductService;
 
 @Component
 public class CommonConstants implements ApplicationListener<ContextRefreshedEvent> {
-	public static final String COMMON_LAYOUT = "commonLayout";
+//	public static final String COMMON_LAYOUT = "commonLayout";
+	public static final String PRODUCT_DICT = "product_dict";
+	public static final String DEPOSITORY_DICT = "depository_dict";
 	public static Map<String, String> custOrderStatusMap;
 //	public static Map<String, String> buyStatusMap;
 //	public static Map<String, String> adAccountTypeMap;
