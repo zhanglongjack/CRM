@@ -104,7 +104,7 @@
 	<sql id="dynamicWhere">
 		<where>
 			<if test="id != null">and id=#{id}</if>
-			<if test="status != null">and status=#{status}</if>
+			<if test="status != null and status.length()>0">and status=#{status}</if>
 			
 			<if test="subject != null and subject.length()>0">and subject=#{subject}</if>
 			<if test="content != null and content.length()>0">and content=#{content}</if>

@@ -57,19 +57,20 @@ public class IndexController {
 			queryOrderParams.setPageTools(new PageTools(1, 15));
 			List<SummaryReport> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
 
-			PageTools pageTools = new PageTools();
-			pageTools.setPageSize(15);
-			WebsiteStatusCheckLog log = new WebsiteStatusCheckLog();
-			log.setStatus("1");
-			log.setPageTools(pageTools);
+//			PageTools pageTools = new PageTools();
+//			pageTools.setPageSize(15);
+//			WebsiteStatusCheckLog log = new WebsiteStatusCheckLog();
+//			log.setStatus("1");
+//			log.setPageTools(pageTools);
+//			
+//			Long size = websiteStatusCheckLogService.selectPageTotalCount(log);
+//			
+//			List<WebsiteStatusCheckLog> netWorkCheckList = websiteStatusCheckLogService.selectPageByObjectForList(log);
+//			mv.addObject("netWorkCheckList", netWorkCheckList);
+//			mv.addObject("errorSize", size);
 			
-			Long size = websiteStatusCheckLogService.selectPageTotalCount(log);
-			
-			List<WebsiteStatusCheckLog> netWorkCheckList = websiteStatusCheckLogService.selectPageByObjectForList(log);
-			mv.addObject("netWorkCheckList", netWorkCheckList);
 			mv.addObject("consumeAcctGroupReportList", resultList);
 			mv.addObject("kpiList", kpiList);
-			mv.addObject("errorSize", size);
 		}
 
 		logger.info("index response===" + mv);

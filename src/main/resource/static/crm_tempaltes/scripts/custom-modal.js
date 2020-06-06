@@ -3,9 +3,11 @@ $(function() {
 });
 
 function modifyModal(){
-	console.log("初始化模态框")
-	$("#ModifyModal").on("shown.bs.modal", function() {  
+	console.log("初始化模态框222")
+	$("#ModifyModal").on("shown.bs.modal", function() {
+		console.log("模态框绑定点击事件")
 		$("#ModifyModalSubmit").click(function(){
+			console.log("准备弹出模态框")
 			var bootstrapValidator = $("#modifyDataFrom").data("bootstrapValidator");
 			$('#modifyDataFrom').data('bootstrapValidator').resetForm();
 			bootstrapValidator.validate();
