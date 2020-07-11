@@ -1,7 +1,6 @@
 package com.base.crm.orders.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.entity.OrderSalesRateReport;
@@ -29,21 +28,13 @@ public interface CustOrderService {
 
 	void batchUpdateOrders(List<CustOrder> orderList);
 
-	SummaryReport querySumAmountByMonth(String month);
+//	SummaryReport querySumAmountByMonth(String month);
 
 //	Map<String, Integer> selectOrderCountByMonth(String month, Long userId);
 
 	void doUpdateBuyStatus();
 
-	Map<String, Double> selectOrderSummaryBy(Map<String, Object> params);
-
-	List<SummaryReport> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject);
-
-	long selectDailyKPIOrderSummaryPageCountBy(CustOrder queryObject);
-	
-	List<SummaryReport> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject);
-	
-	Long selectDailyKPIOrderSummaryPageCountByMonth(CustOrder queryObject);
+//	Map<String, Double> selectOrderSummaryBy(Map<String, Object> params);
 	
 	List<OrderSalesRateReport> selectOrderSalesRateReportPageByMonth(OrderSalesRateReport queryObject);
 	
@@ -62,4 +53,14 @@ public interface CustOrderService {
 	long selectExpressReportPageCountBy(ExpressReport queryObject);
 
 	int doDelete(Long orderNo);
+
+	long selectMonthCountBy(CustOrder queryObject);
+
+	List<SummaryReport> selectServicerKPIForMonthPageBy(CustOrder queryObject);
+
+	long selectDailyCountBy(CustOrder queryObject);
+
+	List<SummaryReport> selectServicerKPIForDalilyPageBy(CustOrder queryObject);
+
+	List<SummaryReport> selectSalesPerformanceSummaryReport(CustOrder orderParams);
 }

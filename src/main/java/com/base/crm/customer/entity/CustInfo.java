@@ -227,9 +227,12 @@ public class CustInfo {
 	@Override
 	public String toString() {
 		return String.format(
-				"CustInfo [custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, status=%s, addDate=%s, createDate=%s, updateDate=%s, searchUser=%s, pageTools=%s, levelInfo=%s]",
-				custId, userId, custName, custWechatNo, serveWechatNo, custPhone, level, amt, addTime, address, remark,
-				orderStatus, status, addDate, createDate, updateDate, searchUser, pageTools, levelInfo);
+				"CustInfo [adAcctId=%s, custId=%s, userId=%s, custName=%s, custWechatNo=%s, serveWechatNo=%s, custPhone=%s, level=%s, amt=%s, addTime=%s, address=%s, remark=%s, orderStatus=%s, status=%s, addDate=%s, createDate=%s, updateDate=%s, searchUser=%s, startDate=%s, endDate=%s, pageTools=%s, levelInfo=%s]",
+				adAcctId, custId, userId, custName, custWechatNo, serveWechatNo, custPhone, level, amt, addTime,
+				address, remark, orderStatus, status, addDate, createDate, updateDate, searchUser, startDate, endDate,
+				pageTools, levelInfo);
 	}
+
+
 
 }

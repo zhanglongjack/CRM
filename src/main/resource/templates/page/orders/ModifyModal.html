@@ -190,12 +190,19 @@
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
-					<label class="col-sm-3 control-label">地址</label>
+					<label class="col-sm-3 control-label">发货日期</label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" placeholder="地址" name="address"
-							th:attr="value=${modifyOrder==null}?'':${modifyOrder.address},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+						<span class="input-group input-append date" datepicker-flag="datepicker">
+							<input readonly type="text" class="form-control" name="deliveryDate" placeholder="yyyymmdd"
+								data-date-format="yyyymmdd"
+								th:attr="value=${modifyOrder==null}?${#dates.format(#dates.createNow(), 'yyyyMMdd')}:${modifyOrder.deliveryDate}">
+							<span class="input-group-addon add-on">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+						</span>
 					</div>
 				</div>
+				
 				<div class="clearfix"></div>
 				<div class="form-group col-sm-6">
 					<label  class="col-sm-3 control-label">存放仓库</label>
@@ -222,6 +229,13 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
+				<div class="form-group col-sm-6">
+					<label class="col-sm-3 control-label">地址</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" placeholder="地址" name="address"
+							th:attr="value=${modifyOrder==null}?'':${modifyOrder.address},readonly=${modifyOrder!=null&&modifyOrder.orderStatus>0}">
+					</div>
+				</div>
 				<div class="form-group col-sm-6">
 					<label class="col-sm-3 control-label">备注</label>
 					<div class="col-sm-9">

@@ -1,9 +1,7 @@
 package com.base.crm.orders.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +16,11 @@ import com.base.crm.orders.entity.OrderProductList;
 import com.base.crm.orders.entity.OrderSalesRateReport;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.orders.service.OrderProductListService;
+import com.base.crm.product.entity.ProductAssort;
 import com.base.crm.product.entity.ProductAssortList;
 import com.base.crm.product.entity.ProductStock;
 import com.base.crm.product.service.ProductAssortListService;
+import com.base.crm.product.service.ProductAssortService;
 import com.base.crm.product.service.ProductStockService;
 import com.base.crm.report.entity.ExpressReport;
 import com.base.crm.report.entity.SummaryReport;
@@ -37,6 +37,8 @@ public class CustOrderServiceImpl implements CustOrderService {
 	private OrderProductListService orderProductListService;
 	@Autowired
 	private ProductStockService productStockService;
+	@Autowired
+	private ProductAssortService productAssortService;
 	
 	@Override
 	public int deleteByPrimaryKey(Long orderNo) {
@@ -91,13 +93,13 @@ public class CustOrderServiceImpl implements CustOrderService {
         }
 	}
 
-	@Override
-	public SummaryReport querySumAmountByMonth(String month) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("month", month);
-		
-		return custOrderMapper.querySumAmountByMonth(params);
-	}
+//	@Override
+//	public SummaryReport querySumAmountByMonth(String month) {
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("month", month);
+//		
+//		return custOrderMapper.querySumAmountByMonth(params);
+//	}
 
 //	@Override
 //	public Map<String, Integer> selectOrderCountByMonth(String month,Long userId) {
@@ -114,30 +116,10 @@ public class CustOrderServiceImpl implements CustOrderService {
 		custInfoService.updateCustOrderStatus();
 	}
 
-	@Override
-	public Map<String, Double> selectOrderSummaryBy(Map<String, Object> params) {
-		return custOrderMapper.selectOrderSummaryBy(params);
-	}
-
-	@Override
-	public List<SummaryReport> selectDailyKPIOrderSummaryPageBy(CustOrder queryObject) {
-		return custOrderMapper.selectDailyKPIOrderSummaryPageBy(queryObject);
-	}
-
-	@Override
-	public long selectDailyKPIOrderSummaryPageCountBy(CustOrder queryObject) {
-		return custOrderMapper.selectDailyKPIOrderSummaryPageCountBy(queryObject);
-	}
-
-	@Override
-	public List<SummaryReport> selectDailyKPIOrderSummaryPageByMonth(CustOrder queryObject) {
-		return custOrderMapper.selectDailyKPIOrderSummaryPageByMonth(queryObject);
-	}
-
-	@Override
-	public Long selectDailyKPIOrderSummaryPageCountByMonth(CustOrder queryObject) {
-		return custOrderMapper.selectDailyKPIOrderSummaryPageCountByMonth(queryObject);
-	}
+//	@Override
+//	public Map<String, Double> selectOrderSummaryBy(Map<String, Object> params) {
+//		return custOrderMapper.selectOrderSummaryBy(params);
+//	}
 
 	@Override
 	public List<OrderSalesRateReport> selectOrderSalesRateReportPageByMonth(OrderSalesRateReport queryObject) {
@@ -162,6 +144,8 @@ public class CustOrderServiceImpl implements CustOrderService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public int doInsert(CustOrder order) {
+		ProductAssort pa = productAssortService.selectByPrimaryKey(order.getAssortId());
+		order.setProductList(pa.getAssortName());
 		insertSelective(order);
 		
 		ProductAssortList palParam = new ProductAssortList();
@@ -222,5 +206,30 @@ public class CustOrderServiceImpl implements CustOrderService {
 	public int doDelete(Long orderNo) {
 		orderProductListService.deleteByOrderId(orderNo);
 		return custOrderMapper.deleteByPrimaryKey(orderNo);
+	}
+
+	@Override
+	public long selectMonthCountBy(CustOrder queryObject) {
+		return custOrderMapper.selectMonthCountBy(queryObject);
+	}
+
+	@Override
+	public List<SummaryReport> selectServicerKPIForMonthPageBy(CustOrder queryObject) {
+		return custOrderMapper.selectServicerKPIForMonthPageBy(queryObject);
+	}
+
+	@Override
+	public long selectDailyCountBy(CustOrder queryObject) {
+		return custOrderMapper.selectDailyCountBy(queryObject);
+	}
+
+	@Override
+	public List<SummaryReport> selectServicerKPIForDalilyPageBy(CustOrder queryObject) {
+		return custOrderMapper.selectServicerKPIForDalilyPageBy(queryObject);
+	}
+
+	@Override
+	public List<SummaryReport> selectSalesPerformanceSummaryReport(CustOrder orderParams) {
+		return custOrderMapper.selectSalesPerformanceSummaryReport(orderParams);
 	}
 }

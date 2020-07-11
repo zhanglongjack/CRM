@@ -69,12 +69,25 @@
 	
 	<select id="selectAdAcctIdByWechatNo" parameterType="String" resultType="java.util.HashMap">
 		select 
-			aat.id,r.default_flag defaultFlag
+			aat.id,
+			r.default_flag defaultFlag
 		from ad_acct_type aat
 		inner join consume_acct_group cag on cag.acct_id = aat.id
 		inner join wechat_consume_group_relation r on r.group_id = cag.id
 		where cag.status = 1 and aat.status = 1
 		and r.wechat_no = #{wechatNo}
+	</select>
+	
+	<select id="countWechatGroupExistsBy" parameterType="java.util.HashMap" resultType="java.lang.Long">
+		select 
+			g.acct_id 
+		from ad_consume a
+		inner join consume_acct_group g on g.acct_id = a.ad_acct_id
+		inner join wechat_consume_group_relation gr on gr.group_id=g.id
+		where consume_date = #{addDate} 
+		and wechat_no = #{serveWechatNo}
+		and gr.created_datetime <![CDATA[<=]]> #{addDate}
+		order by consume_date desc
 	</select>
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

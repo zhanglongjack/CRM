@@ -76,7 +76,7 @@ public class ExtensionStatusCheckSchedule {
 		EmailTemplate temp = emailTemplateService.selectByFunCode(functionCode);
 		String content = "";
 		
-		logger.info("开始构建邮件内容");
+		logger.info("开始构建邮件内容:"+temp);
 		for(WebsiteStatusCheckLog stock : errorLogList){
 			if(stock.getStatus().equals("1")){
 				content+=sendMailService.buildContent(temp.getContent(), stock.getCheckUrl())+"\r\n";

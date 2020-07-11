@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -66,8 +67,16 @@ public class CustInfoController {
 	@ResponseBody
 	public Map<String,Object> custInfoEdit(CustInfo custInfo){
 		custInfo.setAddDate(custInfo.getAddTime().substring(0,10).replaceAll("-", ""));
-		logger.info("custInfoEdit request");
-		custInfo.setAdAcctId(queryAcctTypeId(custInfo));
+		logger.info("custInfoEdit request:"+custInfo);
+		
+		CustInfo resultCust = custInfoService.selectByPrimaryKey(custInfo.getCustId());	
+		if(!resultCust.getServeWechatNo().equals(custInfo.getServeWechatNo())){
+			Long adAcctId = adAcctTypeService.countWechatGroupExistsBy(custInfo.getServeWechatNo(),resultCust.getAddDate());
+			Assert.notNull(adAcctId,"服务微信分组异常,请找超管检查!");
+			
+			custInfo.setAdAcctId(adAcctId);
+		}
+		
 		int num = custInfoService.updateByPrimaryKeySelective(custInfo);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("success", true);
@@ -80,13 +89,13 @@ public class CustInfoController {
 		if(acctTypeList.size()==0) return null;
 		if(acctTypeList.size()==1) return Long.parseLong(acctTypeList.get(0).get("id")+"");
 		
-		for(Map<String,Object> type : acctTypeList){
-			if(type.get("defaultFlag").equals("1")){
-				return Long.parseLong(acctTypeList.get(0).get("id")+"");
-			}
-		}
+		throw new RuntimeException("同一个微信号被分成了两组以上并启用");
+//		for(Map<String,Object> type : acctTypeList){
+//			if(type.get("defaultFlag").equals("1")){
+//				return Long.parseLong(acctTypeList.get(0).get("id")+"");
+//			}
+//		}
 		
-		return null;
 		
 	}
 	

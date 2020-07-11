@@ -55,6 +55,15 @@
 									</span>
 								</span>
 							</div>
+							<div class="form-group col-sm-2">
+								<label>客服</label>
+								<br>
+								<select class="form-control" name="userId">
+									<option value="" >===选择客服===</option>
+									<option th:each="map:${@userContainer.userMap}" th:selected="${queryObject!=null&&queryObject.userId == map.key}" 
+											th:value="${map.key}" th:text="${map.value}"></option>
+								</select>
+							</div> 
 						</div>
 						<div class="panel-body border-up-down">
 							<div class="btn-right">
@@ -78,6 +87,7 @@
 							<thead>
 								<tr>
 									<th>日期</th>
+									<th>客服</th>
 									<th>粉丝数量</th>
 									<th>订单数量</th>
 									<th>客服业绩</th>
@@ -90,10 +100,11 @@
 							</thead>
 							<tbody>
 								<tr th:each="obj : ${resultList}">
-									<td th:text="${obj.dates}"></td>
+									<td th:text="${obj.month}"></td>
+									<td th:text="${@userContainer.get(obj.userId)}"></td>
 									<td th:text="${obj.fansNum}"></td>
 									<td th:text="${obj.sumOrders}"></td>
-									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.serviceKPI),'0')}"></td>
+									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount-obj.refuseAmount),'0')}"></td>
 									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.expectAmount),'0')}"></td>
 									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount),'0')}"></td>
 									<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.realAmount),'0')}"></td>

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.base.common.util.PageTools;
-import com.base.crm.ad.service.ConsumeAcctGroupService;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.report.entity.SummaryReport;
@@ -41,7 +40,7 @@ public class DayliKPIReportController {
 		queryObject.setPageTools(pageTools);
 		logger.info("saleSummaryReportExport request:"+queryObject);
 		
-		long size = orderService.selectDailyKPIOrderSummaryPageCountBy(queryObject);
+		long size = orderService.selectDailyCountBy(queryObject);
 		pageTools.setTotal(size);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("pageTools", pageTools);
@@ -54,10 +53,10 @@ public class DayliKPIReportController {
 		logger.info("serverSaleReport loadPage request:"+queryObject);
 		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
 		
-		long size = orderService.selectDailyKPIOrderSummaryPageCountBy(queryObject);
+		long size = orderService.selectDailyCountBy(queryObject);
 		pageTools.setTotal(size);
 		
-		List<SummaryReport> resultList = orderService.selectDailyKPIOrderSummaryPageBy(queryObject);
+		List<SummaryReport> resultList = orderService.selectServicerKPIForDalilyPageBy(queryObject);
 		
 		ModelAndView mv = new ModelAndView(LOAD_PAGE_VIEW);
 		mv.addObject("resultList", resultList);
@@ -72,7 +71,7 @@ public class DayliKPIReportController {
 		queryObject.setPageTools(pageTools);
 		logger.info("saleSummaryReportExport request:"+queryObject);
 		
-		long size = orderService.selectDailyKPIOrderSummaryPageCountByMonth(queryObject);
+		long size = orderService.selectMonthCountBy(queryObject);
 		pageTools.setTotal(size);
 		Map<String,Object> result = new HashMap<String,Object>();
 		result.put("pageTools", pageTools);
@@ -85,10 +84,10 @@ public class DayliKPIReportController {
 		logger.info("serverSaleReport loadPage request:"+queryObject);
 		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
 		
-		long size = orderService.selectDailyKPIOrderSummaryPageCountByMonth(queryObject);
+		long size = orderService.selectMonthCountBy(queryObject);
 		pageTools.setTotal(size);
 		
-		List<SummaryReport> resultList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryObject);
+		List<SummaryReport> resultList = orderService.selectServicerKPIForMonthPageBy(queryObject);
 		
 		ModelAndView mv = new ModelAndView(LOAD_PAGE_MONTH_VIEW);
 		mv.addObject("resultList", resultList);

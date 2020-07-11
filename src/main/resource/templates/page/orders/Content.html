@@ -80,6 +80,17 @@
 										 </span>
 									</div>	
 									<div class="form-group col-sm-2">
+										<label>发货日期</label><br>
+										<span class="input-group input-append date" datepicker-flag="datepicker">
+											<input type="text" class="form-control" name="deliveryDate"
+	                                            placeholder="yyyymmdd" data-date-format="yyyymmdd" readonly
+	                                            th:attr="value=${queryOrder.deliveryDate}">
+	                                         <span class="input-group-addon add-on">
+	                                            <i class="glyphicon glyphicon-calendar"></i>
+	                                         </span>
+										 </span>
+									</div>	
+									<div class="form-group col-sm-2">
 										<label>订单编号</label><br> 
 										<input type="text" class="form-control"  placeholder="编号" name="orderNo" 
 											th:attr="value=${queryOrder==null}?'':${queryOrder.orderNo}">
@@ -179,7 +190,6 @@
 									<th th:if="${session.user.isAdmin()}">客服名称</th>
 									<th>下单微信</th>
 									<th>联系人</th>
-									<th>电话</th>
 									<th>付款方式</th>
 									<th>定金</th>
 									<th>到付金额</th>
@@ -190,6 +200,7 @@
 									<th>实收金额</th>
 									<th>订复购</th>
 									<th>下单日期</th>
+									<th>发货日期</th>
 									<th>订单状态</th>
 									<!-- 
 									<th>下单时间</th>
@@ -204,7 +215,6 @@
 									<td th:text="${obj.user.name}" th:if="${session.user.isAdmin()}"></td>								
 									<td th:text="${obj.oWechatNo}"></td>							
 									<td th:text="${obj.contact}"></td>
-									<td th:text="${obj.oPhone}"></td>
 									<td th:text="${session.paymentMethodMap.get(obj.paymentMethod)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.deposits)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.cashOnDeliveryAmt)}"></td>
@@ -215,6 +225,7 @@
 									<td th:text="${#numbers.formatCurrency(obj.payAmount)}"></td>
 									<td th:text="${@commonConstants.custOrderStatusMap.get(obj.buyStatus)}"></td>
 									<td th:text="${obj.orderDate}"></td> 
+									<td th:text="${obj.deliveryDate}"></td> 
 									<td>
 										<span class="label label-info" th:if="${obj.orderStatus==0}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
 										<span class="label label-primary" th:if="${obj.orderStatus==1}" th:text="${session.orderStatusMap.get(obj.orderStatus)}"></span>
@@ -284,6 +295,10 @@
 												<tr>
 													<td style="border-collapse: collapse" width="25%">产品套装</td>
 													<td style="border-collapse: collapse" th:text="${@commonConstants.getDictionarysByKey('assort_dict').get(obj.assortId+'')}"></td>
+												</tr>
+												<tr>
+													<td style="border-collapse: collapse" width="25%">电话</td>
+													<td style="border-collapse: collapse" th:text="${obj.oPhone}"></td>
 												</tr>
 												<tr>
 													<td style="border-collapse: collapse" width="25%">地址</td>

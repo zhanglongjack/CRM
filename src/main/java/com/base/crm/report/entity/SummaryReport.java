@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class SummaryReport {
 	private String month;
 	private String dates;
+	private Long userId;
 	private BigDecimal saleTotalAmount = new BigDecimal("0.00");
 	private BigDecimal realncomeTotalAmount = new BigDecimal("0.00");
 	private BigDecimal procurementCosts = new BigDecimal("0.00");
@@ -27,6 +28,26 @@ public class SummaryReport {
 	private Integer sumOrders = 0;
 	private Integer fansNum = 0;
 
+	//查询字段条件
+	private String startDate;
+	private String endDate;
+	
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	public String getMonth() {
 		return month;
 	}
@@ -41,6 +62,14 @@ public class SummaryReport {
 
 	public void setDates(String dates) {
 		this.dates = dates;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public BigDecimal getSaleTotalAmount() {

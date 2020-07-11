@@ -17,26 +17,23 @@ import org.springframework.web.servlet.ModelAndView;
 import com.base.common.util.DateUtils;
 import com.base.common.util.PageTools;
 import com.base.crm.ad.service.ConsumeAcctGroupService;
-import com.base.crm.customer.service.CustInfoService;
 import com.base.crm.orders.entity.CustOrder;
 import com.base.crm.orders.service.CustOrderService;
 import com.base.crm.report.entity.ConsumeAcctGroupReport;
 import com.base.crm.report.entity.SummaryReport;
 import com.base.crm.users.entity.UserInfo;
-import com.base.crm.website.entity.WebsiteStatusCheckLog;
-import com.base.crm.website.service.WebsiteStatusCheckLogService;
 
 @Controller
 @SessionAttributes("user")
 public class IndexController {
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
-
-	@Autowired
-	private CustInfoService custInfoService;
+//
+//	@Autowired
+//	private CustInfoService custInfoService;
 	@Autowired
 	private CustOrderService orderService;
-	@Autowired
-	private WebsiteStatusCheckLogService websiteStatusCheckLogService;
+//	@Autowired
+//	private WebsiteStatusCheckLogService websiteStatusCheckLogService;
 	@Autowired
 	private ConsumeAcctGroupService consumeAcctGroupService;
 
@@ -55,7 +52,7 @@ public class IndexController {
 
 			CustOrder queryOrderParams = new CustOrder();
 			queryOrderParams.setPageTools(new PageTools(1, 15));
-			List<SummaryReport> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
+			List<SummaryReport> kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
 
 //			PageTools pageTools = new PageTools();
 //			pageTools.setPageSize(15);
@@ -87,7 +84,7 @@ public class IndexController {
 		queryOrderParams.setUserId(userId);
 		queryOrderParams.setStartDate(date);
 		queryOrderParams.setEndDate(date);
-		List<SummaryReport> kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
+		List<SummaryReport> kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
 		mv.addObject("currentReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.put("orderDate", DateUtils.dateToTightStr(new Date()));
@@ -103,7 +100,7 @@ public class IndexController {
 		queryOrderParams.setUserId(userId);
 		queryOrderParams.setStartDate(date);
 		queryOrderParams.setEndDate(date);
-		kpiList = orderService.selectDailyKPIOrderSummaryPageBy(queryOrderParams);
+		kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
 		mv.addObject("yesterdayReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.put("orderDate", DateUtils.dateToTightStr(DateUtils.getYesterdayDate()));
@@ -118,7 +115,7 @@ public class IndexController {
 		queryOrderParams.setUserId(userId);
 		queryOrderParams.setStartDate(month);
 		queryOrderParams.setEndDate(month);
-		kpiList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryOrderParams);
+		kpiList = orderService.selectServicerKPIForMonthPageBy(queryOrderParams);
 		mv.addObject("currentMonthReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.clear();
@@ -136,7 +133,7 @@ public class IndexController {
 		queryOrderParams.setUserId(userId);
 		queryOrderParams.setStartDate(DateUtils.getLastMonth());
 		queryOrderParams.setEndDate(DateUtils.getLastMonth());
-		kpiList = orderService.selectDailyKPIOrderSummaryPageByMonth(queryOrderParams);
+		kpiList = orderService.selectServicerKPIForMonthPageBy(queryOrderParams);
 		mv.addObject("lastMonthReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
 //		params.put("startDate", DateUtils.getLastMonth());

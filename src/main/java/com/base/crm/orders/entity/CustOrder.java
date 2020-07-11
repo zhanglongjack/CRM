@@ -48,6 +48,7 @@ public class CustOrder {
 	private Double expressAmount;
 	private Long depositoryId;
 	private Long assortId;
+	private String deliveryDate;
 	
 	private PageTools pageTools;
 	private UserInfo user;
@@ -296,6 +297,14 @@ public class CustOrder {
 
 	public void setAssortId(Long assortId) {
 		this.assortId = assortId;
+	}
+
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 
 	@Override

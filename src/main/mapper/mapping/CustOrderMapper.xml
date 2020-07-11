@@ -25,6 +25,7 @@
 		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
 		<result column="depository_id" jdbcType="DECIMAL" property="depositoryId" />
 		<result column="assort_id" jdbcType="DECIMAL" property="assortId" />
+		<result column="delivery_date" jdbcType="DECIMAL" property="deliveryDate" />
 	</resultMap>
 	
 	<resultMap id="pageCustOrderMap" type="com.base.crm.orders.entity.CustOrder" >
@@ -51,6 +52,7 @@
 		<result column="express_amount" jdbcType="DECIMAL" property="expressAmount" />
 		<result column="depository_id" jdbcType="DECIMAL" property="depositoryId" />
 		<result column="assort_id" jdbcType="DECIMAL" property="assortId" />
+		<result column="delivery_date" jdbcType="DECIMAL" property="deliveryDate" />
         <collection property="user" column="user_id" select="com.base.crm.users.dao.UserInfoMapper.selectByPrimaryKey">
         </collection>
         <collection property="custInfo" column="o_wechat_no" select="com.base.crm.customer.dao.CustInfoMapper.selectByPrimaryWechatNo">
@@ -62,7 +64,8 @@
 		product_list,
 		deposits, cash_on_delivery_amt, total_amt, after_Discount_Amt, pay_Amount,
 		payment_method,
-		express_company, express_no, order_date, order_datetime,remark,buy_status,express_amount,depository_id,assort_id
+		express_company, express_no, order_date, order_datetime,remark,buy_status,
+		express_amount,depository_id,assort_id,delivery_date
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -81,9 +84,10 @@
 			<if test="expressCompany != null and expressCompany.length()>0">and express_company like  CONCAT(#{expressCompany},'%')</if>
 			<if test="expressNo != null and expressNo.length()>0">and express_no = #{expressNo}</if>
 			<if test="buyStatus != null and buyStatus.length()>0">and buy_status = #{buyStatus}</if>
+			<if test="deliveryDate != null and deliveryDate.length()>0">and delivery_date = #{deliveryDate}</if>
 		</where>
 	</sql>
-
+	<!-- 废弃
 	<sql id="orderStatistics">
 		select 
 			ifnull(sum(deposits),0) handselAmount,
@@ -112,7 +116,7 @@
 		group by t.month desc
 	</select>
 	
-	<!-- 废弃
+
 	<select id="selectOrderCountByMonth" parameterType="Map" resultType="java.util.HashMap">
 		SELECT 
 			ifnull(sum(deposits),0) handselAmount,
@@ -127,7 +131,7 @@
 		<if test="userId != null">and user_id=#{userId}</if>
 		and  order_status between 1 and 3
 	</select>
-	-->
+	
 	
 	<select id="selectOrderSummaryBy" parameterType="Map" resultType="java.util.HashMap">
 		select 
@@ -136,23 +140,19 @@
 		group by t.month desc
 		
 	</select>
-	
-	<select id="selectDailyKPIOrderSummaryPageCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
+	-->
+	<select id="selectDailyCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
 		resultType="Long">
-		select count(1) from 
-		(
-			select 
-				daily_date
-			from statistics_date_view c 
-			where 1=1
-			<if test="startDate != null and startDate.length()>0">and c.daily_date>=#{startDate}</if>
-			<if test="endDate != null and endDate.length()>0">and c.daily_date <![CDATA[<=]]>#{endDate}</if>
-			group by c.daily_date 
-			order by c.daily_date desc
-		) t
+		select count(1) from  date_dict c
+		
+		where 1=1
+		<if test="startDate != null and startDate.length()>0">and c.date_id>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and c.date_id <![CDATA[<=]]>#{endDate}</if>
+		order by c.date_id desc
 	</select>
 	
-	<select id="selectDailyKPIOrderSummaryPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
+	
+	<!-- 废弃
 		select 
 			d.daily_date dates,
 			( 
@@ -171,31 +171,65 @@
 		left join (
 				<include refid="orderStatistics" />
 		) od on od.order_date = d.daily_date
+	 -->
+	<select id="selectServicerKPIForDalilyPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
+		select * from kpi_for_user_view d
+		
 		where 1=1
-		<if test="startDate != null and startDate.length()>0">and d.daily_date>=#{startDate}</if>
-		<if test="endDate != null and endDate.length()>0">and d.daily_date <![CDATA[<=]]>#{endDate}</if>
-				
-		order by d.daily_date desc
+		<if test="startDate != null and startDate.length()>0">and d.dates>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and d.dates <![CDATA[<=]]>#{endDate}</if>
+		<if test="userId != null">and d.userId = #{userId}</if>
+		
+		order by d.dates desc
 		
        <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
 	</select>
 	
-	<select id="selectDailyKPIOrderSummaryPageCountByMonth" parameterType="com.base.crm.orders.entity.CustOrder"
+	<select id="selectMonthCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
 		resultType="Long">
 		select count(1) 
 		from 
 		(
-			select 
-				month_date
-			from statistics_date_view c 
-			group by month_date
+			select d.yyyymm month,u.u_id userId
+			from date_dict d,user_info u 
+	        where date_id <![CDATA[<=]]> date_format(CURDATE(),'%Y%m%d')
+	        group by yyyymm,u.u_id
 		) t
 		where 1=1
-		<if test="startDate != null and startDate.length()>0">and t.month_date>=#{startDate}</if>
-		<if test="endDate != null and endDate.length()>0">and t.month_date <![CDATA[<=]]>#{endDate}</if>
+		<if test="startDate != null and startDate.length()>0">and t.month>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.month <![CDATA[<=]]>#{endDate}</if>
+		<if test="userId != null">and t.userId = #{userId}</if>
 
 	</select>
 	
+	<select id="selectServicerKPIForMonthPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
+		select 
+			d.month,
+			d.userId,
+			sum(handselAmount) handselAmount,
+			sum(expectAmount) expectAmount,
+			sum(realAmount) realAmount,
+			sum(expressCommissionTotalFee) expressCommissionTotalFee,
+			sum(sumOrders) sumOrders,
+			sum(refuseAmount) refuseAmount,
+			sum(refusePaymentAmount) refusePaymentAmount,
+			sum(expressTotalFee) expressTotalFee,
+			sum(fansNum) fansNum
+		
+		from kpi_for_user_view d
+		
+		where 1=1
+		<if test="startDate != null and startDate.length()>0">and d.month>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and d.month <![CDATA[<=]]>#{endDate}</if>
+		<if test="userId != null">and d.userId = #{userId}</if>
+		
+		group by d.month,userId desc
+		order by d.month desc
+		
+       <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
+	</select>
+	
+	<!-- 废弃
 	<select id="selectDailyKPIOrderSummaryPageByMonth" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
 		SELECT 
 			ad.*,
@@ -249,6 +283,20 @@
         <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
        
 	</select>
+	
+	-->
+	<select id="selectSalesPerformanceSummaryReport" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
+		select * from kpi_for_sum_view t 
+		where 1=1
+		<if test="startDate != null and startDate.length()>0">and t.month>=#{startDate}</if>
+		<if test="endDate != null and endDate.length()>0">and t.month <![CDATA[<=]]>#{endDate}</if>
+		
+        group by t.month
+        order by t.month desc
+        <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
+       
+	</select>
+	
 	
 	<select id="selectOrderSalesRateReportPageCountByMonth" parameterType="com.base.crm.orders.entity.OrderSalesRateReport"
 		resultType="Long">
@@ -415,6 +463,9 @@
 			<if test="assortId != null"> 
 				assort_id,
 			</if>
+			<if test="deliveryDate != null"> 
+				delivery_date,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="orderNo != null">
@@ -485,6 +536,9 @@
 			</if>
 			<if test="assortId != null"> 
 				#{assortId},
+			</if>
+			<if test="deliveryDate != null"> 
+				#{deliveryDate},
 			</if>
 		</trim>
 	</insert>
@@ -557,6 +611,9 @@
 			<if test="assortId != null"> 
 				assort_id = #{assortId},
 			</if>
+			<if test="deliveryDate != null"> 
+				delivery_date = #{deliveryDate},
+			</if>
 		</set>
 		where order_no = #{orderNo,jdbcType=BIGINT}
 		<if test="oldOrderStatus != null">
@@ -593,11 +650,11 @@
 				depository_id depositoryId,
 			    sum((case when order_status = 4 then (express_amount*2) else express_amount end )) expressTotalFee,
 			    sum((case when order_status = 4 then 0 else ROUND((cash_on_delivery_amt*0.03) ,2) end )) expressCommissionTotalFee,
-				left(order_date,6) month
+				left(delivery_date,6) month
 				
 			FROM cust_orders o
 			where o.order_status between 1 and 4
-			group by left(order_date,6) ,depository_id
+			group by left(delivery_date,6) ,depository_id
 		) t
 		<include refid="ExpressReportDynamicWhere" />
 		order by month desc
@@ -614,11 +671,11 @@
 		(
 			select 
 				depository_id depositoryId,
-				left(order_date,6) month
+				left(delivery_date,6) month
 				
 			FROM cust_orders o
 			where o.order_status between 1 and 4
-			group by left(order_date,6) ,depository_id
+			group by left(delivery_date,6) ,depository_id
 		) t
 		<include refid="ExpressReportDynamicWhere" />
 	</select>

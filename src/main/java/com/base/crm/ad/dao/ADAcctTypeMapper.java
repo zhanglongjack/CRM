@@ -22,4 +22,6 @@ public interface ADAcctTypeMapper {
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
 
 	List<Map<String, Object>> selectAdAcctIdByWechatNo(String wechatNo);
+
+	Long countWechatGroupExistsBy(Map<String, String> params);
 }

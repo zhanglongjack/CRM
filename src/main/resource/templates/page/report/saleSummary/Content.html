@@ -45,11 +45,22 @@
 					<form class="form-inline" id="queryFrom">
 						<div class="panel-body">
 							<div class="form-group col-sm-2">
-								<label>业绩月份</label><br>
+								<label>开始月份</label><br>
 								<span class="input-group input-append date" datepicker-moth-id="datepickerMoth">
-									<input type="text" class="form-control" name="month"
+									<input type="text" class="form-control" name="startDate" readonly
                                            placeholder="yyyymm" data-date-format="yyyymm"
-                                           th:attr="value=${queryObject.month==null?'':queryObject.month}">
+                                           th:attr="value=${queryObject.startDate==null?'':queryObject.startDate}">
+                                        <span class="input-group-addon add-on">
+                                           <i class="glyphicon glyphicon-calendar"></i>
+                                        </span>
+								 </span>
+							</div>	
+							<div class="form-group col-sm-2">
+								<label>结束月份</label><br>
+								<span class="input-group input-append date" datepicker-moth-id="datepickerMoth">
+									<input type="text" class="form-control" name="endDate" readonly
+                                           placeholder="yyyymm" data-date-format="yyyymm"
+                                           th:attr="value=${queryObject.endDate==null?'':queryObject.endDate}">
                                         <span class="input-group-addon add-on">
                                            <i class="glyphicon glyphicon-calendar"></i>
                                         </span>
@@ -85,12 +96,14 @@
 									<th width="8%">实发薪资</th>
 									<th width="8%">快递费用</th>
 									<th width="8%">快递佣金</th>
+									<th width="8%">拒签已收额</th>
+									<th width="8%">未签总额</th>
 									<th width="8%" data-container="body" data-toggle="popover"
 										data-trigger="hover" data-placement="left" 
 										data-content='当月订单总金额的总额'>预计业绩</th>
 									<th width="8%" data-container="body" data-toggle="popover"
 										data-trigger="hover" data-placement="left" data-content='实际已收款总额=实际业绩'>实收总额</th>
-									<th width="8%">未签总额</th>
+
 									<th width="8%" class="textOverFlowHide" data-container="body" data-toggle="popover"
 										data-trigger="hover" data-placement="left" data-content='预计利润 = 销售总额 - 实际广告费 - 采购成本 - 实发薪资 - 快递费用 - 快递佣金'>预计利润</th>
 									<th width="8%" class="textOverFlowHide" data-container="body" data-toggle="popover"
@@ -99,16 +112,17 @@
 							</thead>
 							<tbody>
 								<tr th:each="obj : ${resultList}">
-									<td th:text="${obj.dates}"></td>
+									<td th:text="${obj.month}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.procurementCosts)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.consumeAD)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realConsumeAD)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realSalary)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.expressTotalFee)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.expressCommissionTotalFee)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.refuseAmount)}"></td>
+									<td th:text="${#numbers.formatCurrency(obj.refusePaymentAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.expectAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realAmount)}"></td>
-									<td th:text="${#numbers.formatCurrency(obj.refusePaymentAmount)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.profit)}"></td>
 									<td th:text="${#numbers.formatCurrency(obj.realProfit)}"></td>
 								</tr>

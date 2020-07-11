@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.base.crm.ad.entity.ADAcctType;
+import com.sun.istack.internal.NotNull;
 
 public interface ADAcctTypeService {
 	
@@ -20,5 +21,7 @@ public interface ADAcctTypeService {
 	List<ADAcctType> selectPageByObjectForList(ADAcctType queryObject);
 	
 	List<Map<String, Object>> selectAdAcctIdByWechatNo(String wechatNo);
-	
+
+	Long countWechatGroupExistsBy(@NotNull String serveWechatNo, @NotNull String addDate);
+
 }
