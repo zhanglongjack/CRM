@@ -41,35 +41,31 @@ public class IndexController {
 	public ModelAndView index(@ModelAttribute("user") UserInfo user) {
 		logger.info("index request");
 		Long userId = user.isAdmin() ? null : user.getuId();
+		List<SummaryReport> kpiList = null;
+		List<SummaryReport> kpiMonthList = null;
 		ModelAndView mv = new ModelAndView("page/index");
 		mv.addObject("date", new Date());
-		orderReport(mv, userId);
+		orderReport(mv, userId); // 单日/月表查询处理
+		
+		CustOrder queryOrderParams = new CustOrder();
+		queryOrderParams.setPageTools(new PageTools(1, 15));
+		kpiMonthList = orderService.selectServicerKPIForMonthPageBy(queryOrderParams);
+		
+		queryOrderParams.setUserId(userId==null?null:userId);
 		if (userId==null) {
 			ConsumeAcctGroupReport queryObject = new ConsumeAcctGroupReport();
 			queryObject.setStatus("1");
 			queryObject.setPageTools(new PageTools(7l));
 			List<ConsumeAcctGroupReport> resultList = consumeAcctGroupService.selectConsumeAcctGroupReportPage(queryObject);
-
-			CustOrder queryOrderParams = new CustOrder();
-			queryOrderParams.setPageTools(new PageTools(1, 15));
-			List<SummaryReport> kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
-
-//			PageTools pageTools = new PageTools();
-//			pageTools.setPageSize(15);
-//			WebsiteStatusCheckLog log = new WebsiteStatusCheckLog();
-//			log.setStatus("1");
-//			log.setPageTools(pageTools);
-//			
-//			Long size = websiteStatusCheckLogService.selectPageTotalCount(log);
-//			
-//			List<WebsiteStatusCheckLog> netWorkCheckList = websiteStatusCheckLogService.selectPageByObjectForList(log);
-//			mv.addObject("netWorkCheckList", netWorkCheckList);
-//			mv.addObject("errorSize", size);
-			
 			mv.addObject("consumeAcctGroupReportList", resultList);
-			mv.addObject("kpiList", kpiList);
+			
+			kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
+		}else{
+			kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
 		}
 
+		mv.addObject("kpiList", kpiList);
+		mv.addObject("kpiMonthList", kpiMonthList);
 		logger.info("index response===" + mv);
 		return mv;
 	}
@@ -80,70 +76,51 @@ public class IndexController {
 		
 		// 查询当日订单报表
 		String date = DateUtils.dateToTightStr(new Date());
+		SummaryReport currentReport = selectReportBy(userId, date,1);
+		mv.addObject("currentReport", currentReport);
+
+		// 查询昨日订单报表
+		date = DateUtils.dateToTightStr(DateUtils.getYesterdayDate());
+		SummaryReport yesterdayReport = selectReportBy(userId, date,1);
+		mv.addObject("yesterdayReport", yesterdayReport);
+		
+		// 查询当月订单报表
+		String month = DateUtils.dateToTightStr(new Date()).substring(0, 6);
+		SummaryReport currentMonthReport = selectReportBy(userId, month,2);
+		mv.addObject("currentMonthReport", currentMonthReport);
+		
+		// 查询上月订单报表
+		SummaryReport lastMonthReport = selectReportBy(userId, DateUtils.getLastMonth(),2);
+		mv.addObject("lastMonthReport", lastMonthReport);
+
+		return mv;
+	}
+
+	private SummaryReport selectReportBy(Long userId, String date,int reportFlag) {
+		List<SummaryReport> kpiList = null;
 		CustOrder queryOrderParams = new CustOrder();
 		queryOrderParams.setUserId(userId);
 		queryOrderParams.setStartDate(date);
 		queryOrderParams.setEndDate(date);
-		List<SummaryReport> kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
-		mv.addObject("currentReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
 		
-//		params.put("orderDate", DateUtils.dateToTightStr(new Date()));
-//		Map<String, Double> orderSummaryMap = orderService.selectOrderSummaryBy(params);
-//		Long count = custInfoService.selectCustCountByMonth(params);
-//		mv.addObject("date", new Date());
-//		mv.addObject("currentReport", kpiList);
-//		mv.addObject("currentDayCount", count); // 当日粉丝数
-
-		// 查询昨日订单报表
-		date = DateUtils.dateToTightStr(DateUtils.getYesterdayDate());
-		queryOrderParams = new CustOrder();
-		queryOrderParams.setUserId(userId);
-		queryOrderParams.setStartDate(date);
-		queryOrderParams.setEndDate(date);
-		kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
-		mv.addObject("yesterdayReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
-		
-//		params.put("orderDate", DateUtils.dateToTightStr(DateUtils.getYesterdayDate()));
-//		orderSummaryMap = orderService.selectOrderSummaryBy(params);
-//		Long yesterdayCount = custInfoService.selectCustCountByMonth(params);
-//		mv.addObject("yesterdayReport", orderSummaryMap);
-//		mv.addObject("yesterdayCount", yesterdayCount); // 昨日粉丝数
-
-		// 查询当月订单报表
-		String month = DateUtils.dateToTightStr(new Date()).substring(0, 6);
-		queryOrderParams = new CustOrder();
-		queryOrderParams.setUserId(userId);
-		queryOrderParams.setStartDate(month);
-		queryOrderParams.setEndDate(month);
-		kpiList = orderService.selectServicerKPIForMonthPageBy(queryOrderParams);
-		mv.addObject("currentMonthReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
-		
-//		params.clear();
-//		String month = DateUtils.dateToTightStr(new Date()).substring(0, 6);
-//		params.put("userId", userId);
-//		params.put("startDate", month);
-//		params.put("endDate", month);
-//		orderSummaryMap = orderService.selectOrderSummaryBy(params);
-//		Long monthCustCount = custInfoService.selectCustCountByMonth(params);
-//		mv.addObject("currentMonthReport", orderSummaryMap);
-//		mv.addObject("monthCustCount", monthCustCount); // 当月粉丝数
-
-		// 查询上月订单报表
-		queryOrderParams = new CustOrder();
-		queryOrderParams.setUserId(userId);
-		queryOrderParams.setStartDate(DateUtils.getLastMonth());
-		queryOrderParams.setEndDate(DateUtils.getLastMonth());
-		kpiList = orderService.selectServicerKPIForMonthPageBy(queryOrderParams);
-		mv.addObject("lastMonthReport", kpiList.size()>0?kpiList.get(0):new SummaryReport());
-		
-//		params.put("startDate", DateUtils.getLastMonth());
-//		params.put("endDate", DateUtils.getLastMonth());
-//		orderSummaryMap = orderService.selectOrderSummaryBy(params);
-//		Long lastMonthCustCount = custInfoService.selectCustCountByMonth(params);
-//		mv.addObject("lastMonthReport", orderSummaryMap);
-//		mv.addObject("lastMonthCustCount", lastMonthCustCount); // 上月粉丝数
-
-		return mv;
+		if(userId==null&&reportFlag==2){
+			kpiList = orderService.selectSalesPerformanceSummaryReport(queryOrderParams);
+		}else if(userId!=null&&reportFlag==2){
+			kpiList = orderService.selectServicerKPIForMonthPageBy(queryOrderParams);
+		}else if(userId!=null&&reportFlag==1){
+			kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
+		}else if(userId==null&&reportFlag==1){
+			kpiList = orderService.selectServicerKPIForDalilyPageBy(queryOrderParams);
+			SummaryReport sr = new SummaryReport();
+			if(kpiList.size()>0){
+				for(SummaryReport temp : kpiList){
+					sr.sum(temp);
+				}
+			}
+			kpiList.clear();
+			kpiList.add(sr);
+		}
+		return kpiList.size()>0?kpiList.get(0):new SummaryReport();
 	}
 	
 	public static void main(String[] args) {

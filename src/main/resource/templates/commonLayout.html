@@ -105,7 +105,7 @@
 		}
 		$("#modalDailog").addClass("modal-lg");
 		
-		var reqURL=preUrl+"/pageView";
+		var reqURL=preUrl+"/pageView?roundTime="+(new Date().getTime());
 		//$("#loading").show();
 		$('#main-content').empty();
 		$('#loadingModal').modal('show');

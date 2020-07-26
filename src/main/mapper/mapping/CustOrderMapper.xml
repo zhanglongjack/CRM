@@ -141,6 +141,7 @@
 		
 	</select>
 	-->
+	
 	<select id="selectDailyCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
 		resultType="Long">
 		select count(1) from  date_dict c
@@ -184,37 +185,45 @@
 		
        <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
 	</select>
-	
+
+
 	<select id="selectMonthCountBy" parameterType="com.base.crm.orders.entity.CustOrder"
 		resultType="Long">
 		select count(1) 
 		from 
 		(
-			select d.yyyymm month,u.u_id userId
-			from date_dict d,user_info u 
-	        where date_id <![CDATA[<=]]> date_format(CURDATE(),'%Y%m%d')
-	        group by yyyymm,u.u_id
+			select 
+				d.month
+			from kpi_for_user_view d
+			
+			where 1=1
+			<if test="startDate != null and startDate.length()>0">and d.month>=#{startDate}</if>
+			<if test="endDate != null and endDate.length()>0">and d.month <![CDATA[<=]]>#{endDate}</if>
+			<if test="userId != null">and d.userId = #{userId}</if>
+			
+			group by d.month,userId
 		) t
 		where 1=1
-		<if test="startDate != null and startDate.length()>0">and t.month>=#{startDate}</if>
-		<if test="endDate != null and endDate.length()>0">and t.month <![CDATA[<=]]>#{endDate}</if>
-		<if test="userId != null">and t.userId = #{userId}</if>
 
 	</select>
-	
+
+	<sql id="KPISummarySqlColumns">
+		sum(handselAmount) handselAmount,
+		sum(expectAmount) expectAmount,
+		sum(realAmount) realAmount,
+		sum(expressCommissionTotalFee) expressCommissionTotalFee,
+		sum(sumOrders) sumOrders,
+		sum(refuseAmount) refuseAmount,
+		sum(refusePaymentAmount) refusePaymentAmount,
+		sum(expressTotalFee) expressTotalFee,
+		sum(fansNum) fansNum
+	</sql>
+
 	<select id="selectServicerKPIForMonthPageBy" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
 		select 
 			d.month,
 			d.userId,
-			sum(handselAmount) handselAmount,
-			sum(expectAmount) expectAmount,
-			sum(realAmount) realAmount,
-			sum(expressCommissionTotalFee) expressCommissionTotalFee,
-			sum(sumOrders) sumOrders,
-			sum(refuseAmount) refuseAmount,
-			sum(refusePaymentAmount) refusePaymentAmount,
-			sum(expressTotalFee) expressTotalFee,
-			sum(fansNum) fansNum
+			<include refid="KPISummarySqlColumns" />
 		
 		from kpi_for_user_view d
 		
@@ -223,12 +232,12 @@
 		<if test="endDate != null and endDate.length()>0">and d.month <![CDATA[<=]]>#{endDate}</if>
 		<if test="userId != null">and d.userId = #{userId}</if>
 		
-		group by d.month,userId desc
+		group by d.month,userId
 		order by d.month desc
 		
        <if test="pageTools != null"> limit #{pageTools.rowIndex},#{pageTools.pageSize}</if>
 	</select>
-	
+
 	<!-- 废弃
 	<select id="selectDailyKPIOrderSummaryPageByMonth" parameterType="com.base.crm.orders.entity.CustOrder" resultType="com.base.crm.report.entity.SummaryReport">
 		SELECT 

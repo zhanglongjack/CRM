@@ -51,7 +51,6 @@ public class DayliKPIReportController {
 	public ModelAndView loadPage(CustOrder queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
 		queryObject.setPageTools(pageTools);
 		logger.info("serverSaleReport loadPage request:"+queryObject);
-		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
 		
 		long size = orderService.selectDailyCountBy(queryObject);
 		pageTools.setTotal(size);
@@ -82,7 +81,6 @@ public class DayliKPIReportController {
 	public ModelAndView loadPageMonth(CustOrder queryObject,PageTools pageTools,@ModelAttribute("user") UserInfo user){
 		queryObject.setPageTools(pageTools);
 		logger.info("serverSaleReport loadPage request:"+queryObject);
-		Assert.isTrue(user.isAdmin(), "非管理员不允许查询"); 
 		
 		long size = orderService.selectMonthCountBy(queryObject);
 		pageTools.setTotal(size);

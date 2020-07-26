@@ -234,6 +234,7 @@ public class SummaryReport {
 		this.expressCommissionTotalFee= this.expressCommissionTotalFee.add(report.expressCommissionTotalFee);
 		this.serviceKPI				  = this.serviceKPI.add(report.serviceKPI);
 		this.sumOrders 				  = this.sumOrders + report.sumOrders;
+		this.fansNum				  = this.fansNum+report.fansNum;
 	}
 	
 	@Override

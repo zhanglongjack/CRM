@@ -314,11 +314,11 @@
 					</div>
 					<!-- END RECENT PURCHASES -->
 				</div>
-				<div class="col-md-6" th:if="${session.user.isAdmin()}">
+				<div class="col-md-6" >
 					<!-- RECENT PURCHASES -->
 					<div class="panel">
 						<div class="panel-heading">
-							<h3 class="panel-title">每日销售统计</h3>
+							<h3 class="panel-title">分日销售业绩统计</h3>
 							<div class="right">
 								<button type="button" class="btn-toggle-collapse">
 									<i class="lnr lnr-chevron-up"></i>
@@ -333,6 +333,7 @@
 								<thead>
 									<tr>
 										<th>日期</th>
+										<th>客服</th>
 										<th>粉丝数量</th>
 										<th>订单数量</th>
 										<th>定金总额</th>
@@ -343,6 +344,7 @@
 								<tbody>
 									<tr th:each="obj : ${kpiList}">
 										<td th:text="${obj.dates}"></td>
+										<td th:text="${@userContainer.get(obj.userId)}"></td>
 										<td th:text="${obj.fansNum}"></td>
 										<td th:text="${obj.sumOrders}"></td>
 										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount),'0')}"></td>
@@ -356,7 +358,62 @@
 							<div class="row">
 								<div class="col-md-6">
 									<span class="panel-note"> <i class="fa fa-clock-o"></i>
-										最近半月内业绩展示
+										最近7天内业绩展示
+									</span>
+								</div>
+								<div class="col-md-6 text-right">
+									<a data-href="" jumb-href="/kpiReport/dailyKPIReport" href="#"  class="btn btn-primary">查看更多</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END RECENT PURCHASES -->
+				</div>
+				<div class="col-md-6" >
+					<!-- RECENT PURCHASES -->
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title">分月销售业绩统计</h3>
+							<div class="right">
+								<button type="button" class="btn-toggle-collapse">
+									<i class="lnr lnr-chevron-up"></i>
+								</button>
+								<button type="button" class="btn-remove">
+									<i class="lnr lnr-cross"></i>
+								</button>
+							</div>
+						</div>
+						<div class="panel-body no-padding">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>日期</th>
+										<th>客服</th>
+										<th>粉丝数量</th>
+										<th>订单数量</th>
+										<th>定金总额</th>
+										<th>预计业绩</th>
+										<th>实际业绩</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="obj : ${kpiMonthList}">
+										<td th:text="${obj.month}"></td>
+										<td th:text="${@userContainer.get(obj.userId)}"></td>
+										<td th:text="${obj.fansNum}"></td>
+										<td th:text="${obj.sumOrders}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.handselAmount),'0')}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.expectAmount),'0')}"></td>
+										<td th:text="${#strings.defaultString(#numbers.formatCurrency(obj.realAmount),'0')}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="panel-footer">
+							<div class="row">
+								<div class="col-md-6">
+									<span class="panel-note"> <i class="fa fa-clock-o"></i>
+										最近几个月内业绩展示
 									</span>
 								</div>
 								<div class="col-md-6 text-right">
